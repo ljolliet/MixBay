@@ -1,0 +1,32 @@
+DURANT LA SEANCE:
+*Vérifier que les besoins fonctionnels (BF) en sont bien et que les besoins non fonctionnels (BNF) en sont bien:
+**La taille des playlists (3.1.3) est un BNF
+**Accord d'utilisation de données est un BF
+*Le mot "récupérer" (3.1.6 et 3.2.2) doit être associé à un autre verbe : récupérer pour quoi ?
+*Les mots comme "simplifier", "améliorer", etc. sont à éviter: un besoin se dissimule derrière
+
+
+TODO:
+*Faire des scénarios (essentiel)
+*BNF doivent être quantifiés et justifiés (contraintes)
+**
+*Calculer la complexité des algorithmes notamment pour justifier la taille des playlists
+*Lister les interactions avec le lecteur
+*Détailler "simplifier" (3.1.6)
+*Eventuellement sciender l'importance d'un besoin "Essentiel" en 2 :
+**Essentiel on le fera
+**Essentiel on n'aura pas le temps
+*Nouveau BF (avant 3.1.7): faire fonctionner l'application avec l'API de Spotify
+*Ajouter une partie test à chaque besoin essentiel (donner le critère d'évaluation)
+* 3.2.1 Quantifier la rapidité ou enlever. On pourrait: 
+**Citer une étude qui cherche à savoir combien de temps les utilisateurs sont prêts à attendre un chargement avant de fermer l'application
+**Faire un protocole pour quantifier les "quelconques secondes"
+*Ergonomie à détailler:
+**Trouver un standard déjà existant
+**En écrire un
+*Clarifier la techno
+
+
+REMARQUE:
+*Rajouter une contrainte signifie enlever de la liberté, si ce n'est pas le cas cette "contrainte" doit être enlevée 
+*Le document qu'on fait combine le cahier d'analys des besoins et celui des charges. Ce dernier se manifeste par les adjectifs pour qualifier l'importance d'un besoin
