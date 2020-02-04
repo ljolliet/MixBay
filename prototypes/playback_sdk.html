@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Spotify Web Playback SDK Quick Start Tutorial</title>
+</head>
+<body>
+  <h1>Spotify Web Playback SDK Quick Start Tutorial</h1>
+  <h2>Open your console log: <code>View > Developer > JavaScript Console</code></h2>
+
+  <button onclick="pause()">pause</button>
+  <button onclick="play()">play</button>
+
+
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script src="spotify-web-api.js"></script>
+  <script>
+  let player = null;
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      const token = 'BQB3jsIhnp9txSavBjGK1jjQyT7OoVLF82vWRo6Kx3-ZXbIopJule1go52ME8aK3d2MhrExBRNB5PulRlfULGizpBJYPYIc8II0pzBVcNLglz9Lk90AJNg44iRZdsaTJe0E4u-s0lU2Jpv4r1vYDWV6JttXE2yim4moJT8IOoRNHsb3Zx50DO4LY3YRTO_tFVp5tbWMtma2ya88';
+      player = new Spotify.Player({
+        name: 'Web Playback SDK Quick Start Player',
+        getOAuthToken: cb => { cb(token); }
+      });
+
+      // Error handling
+      player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      player.addListener('authentication_error', ({ message }) => { console.error(message); });
+      player.addListener('account_error', ({ message }) => { console.error(message); });
+      player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+      // Playback status updates
+      player.addListener('player_state_changed', state => { console.log(state); });
+
+      // Ready
+      player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+      });
+
+      // Not Ready
+      player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+      });
+
+      // Connect to the player!
+      player.connect();
+    };
+
+  let spotifyApi = new SpotifyWebApi();
+  spotifyApi.setAccessToken('BQDypi_8VU4tgTslou2BbLlA4GtlVwBwSpsmK9ewNNsBYsK8o4oOJ1NAfaLIRntH3hu3lC1LepU_GJ_-StXtuXBS3f_eO36l7sufE_J6N26DCavIYjFIx4amKtRG6JFJjzRzqR49L_L-78rUQ2mkcIIgL1gGAN_f82OZm222-xOXBZ8o9q93IijTyi5T6U5eyxJKu7hoWZg7tlk');
+
+  spotifyApi.getAlbums(['5U4W9E5WsYb2jUQWePT8Xm', '3KyVcddATClQKIdtaap4bV'])
+    .then(function(data) {
+      console.log('Albums information', data);
+    }, function(err) {
+      console.error(err);
+    });
+  spotifyApi.getUserPlaylists()  // note that we don't pass a user id
+    .then(function(data) {
+      console.log('User playlists', data);
+    }, function(err) {
+      console.error(err);
+    });
+
+  function play(){
+    player.resume().then(() => {
+      console.log('Resumed!');
+    });
+  }
+  function pause(){
+       player.pause().then(() => {
+         console.log('Paused!');
+       });
+  }
+  </script>
+
+</body>
+</html>
