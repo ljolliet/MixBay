@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Spotify Web Playback SDK Quick Start Tutorial</title>
+</head>
+<body>
+<h2>Open your console log: <code>View > Developer > JavaScript Console</code></h2>
+<a href="https://developer.spotify.com/documentation/web-playback-sdk/quick-start/#">Get Token on Spotify API</a> <span> and add it in js script </span>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="spotify-web-api.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>  <!-- celui là je sais plus -->
+
+<script>
+    const TOKEN = 'BQCF2b8KIc3P32Wz8X2RWlSbT5PdRDPQTx9tNIxTLjdgMlHOucTEGMGKUm-ZPmSu1WLpaFVqsi2BCDL7Jpr2a47YbIe5wi7A51699H21lHMniyaqjvUi1oKGfeDMsqOlaf7PBmUAIxqq_UDXc_Q5gtKNaLXfqRNY6BJ8VJP5TlVbeZwTsz-pVPxLMaVMIHOKKmqFIxz3MmZiULE';
+    let spotifyApi = new SpotifyWebApi();
+    spotifyApi.setAccessToken(TOKEN);
+
+
+    spotifyApi.getUserPlaylists("vilvilain")
+        .then(function(data) {
+            console.log('User playlists', data);
+        }, function(err) {
+            console.error(err);
+        });
+    console.log("Token: ", spotifyApi.getAccessToken());
+    console.log("Me: ", spotifyApi.getMe());
+/*
+    console.log("Top artists :", spotifyApi.getMyTopArtists());
+    console.log("Top artists :", spotifyApi.getMySavedTracks());
+*/
+    spotifyApi.getPlaylistTracks("6qZ4HrhrZf2A0QXAoWsZp5")
+        .then(function(data) {
+            console.log('User playlists tracks', data);
+        }, function(err) {
+            console.error(err);
+        });
+/*
+    $.ajax({
+        url: 'https://api.spotify.com/v1/playlists/6qZ4HrhrZf2A0QXAoWsZp5/tracks',
+        headers: {
+            'Authorization': 'Bearer ' + TOKEN
+        },
+        success: function(response) {
+        console.log(response)
+        }});*/
+
+  //  console.log("Top tracks :", spotifyApi.getMyTopTracks());   // console.log("Current tracks :", spotifyApi.getMyCurrentPlayingTrack());
+ //   console.log("Recommandations :", spotifyApi.getRecommendations());
+//    console.log("Recommandations :", spotifyApi.getRecommendations());
+
+
+
+
+</script>
+
+</body>
+</html>
