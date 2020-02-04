@@ -1,0 +1,28 @@
+TODO:
+*Choisir 1 ou 2 (voire plus) algorithmes depuis les ref et les détailler dans le document. Ecrire les BF qui en découlent (s'il y en a). Choisir les plus simples ou les plus judicieux au vue des données que l'on peut récupérer avec l'API Spotify. Décrire le fonctionnement des l'algorithmes dans la partie BF et éventuellement entrer plus dans les détails en annexe
+*Créer une sorte de lexique pour expliciter certains termes:
+**Playlist personnelle. S'il y en a plusieurs lesquelles choisir ?
+**Musique appréciée (selon un article)
+**Goût (selon un article)
+// Remarque: par exemple un article peut dire que le goût est lié à la tonalité des morceaux 
+*Nom du projet à ajouter sur la page de garde
+*Définir clairement les acteurs (compte principal, secondaires, serveur ?, ...)
+*Bien détailler les scénarios (surtout 1 et 2). Faire en sorte qu'ils soient de vrais scénarios et pas un mix maladroit entre BF et scénarios
+*Réécrire le BF 3.1.1: Choisir une plateforme de streaming musical sur laquelle s'interfacer. Essentiel: Spotify & Optionnel: Deezer.
+*Réécrire le BF 3.1.2: faire en sorte que le BF ressemble plus à un BF et moins à un scénario. Réécrire (/split) le BF pour qu'il soit de la forme suivante:
+**S'authentifier via l'API Spotify
+**Créer un groupe/session d'écoute (et définir)
+**S'abonner au groupe ~~ (ajouter des membres secondaires au groupe)
+*Réécrire le BF 3.1.4 Optionnel 2ème puce : clairifier les options
+*Réécrire le BF 3.1.7 : définir la nature des méta-données. Montrer comment elles sont structurer
+*Clarifier les termes "lire les playlists"
+*synchroniser les BF cachés dans les scénarios avec les BF écrits
+*Mettre les prototypes dans le git (/prototypes ou /demo) et marquer la ref du commit dans le rapport partie prototype en expliquant ce qu'on y a implémenté
+*Enlever toute possibilité d'interprétation dans notre document
+*Overall régler les problèmes de confusion entre scénarios et BF
+
+
+REMARQUE:
+*Les points que l'ont reporte tout le temps sont en réalité les plus compliqués et donc ceux dont il faut s'occuper en priorité
+*Il est idéal de pouvoir associer à un BF un élement concret de l'application (ex: 3.1.1 un bouton pour choisir d'utiliser l'API Spotify un autre pour l'API Deezer). Si cela n'est pas possible c'est que le BF n'est probablement pas assez détaillé
+*La 1ère realease sert à valider les grandes lignes de l'application. On y teste la faisabilité de l'application, il faut donc essayer de coder un peu toutes les parties. /!\ Essayer de coder un algo ou au minimum savoir comment il fonctionne est un + (dans ce cas là coder algo random). Dans le cas où on découvre que faire qqchose s'avène impossible (contraintes de temps, techniques ...) c'est le moment de le justifier afin de le changer 
