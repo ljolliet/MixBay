@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import fr.pdp.mixbay.models.APIManagerI;
 import fr.pdp.mixbay.models.Session;
-import fr.pdp.mixbay.models.api.SpotifyAPI;
+import fr.pdp.mixbay.models.SpotifyAPI;
 
 
 public class MainActivity extends AppCompatActivity {
