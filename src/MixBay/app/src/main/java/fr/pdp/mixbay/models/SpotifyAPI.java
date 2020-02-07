@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.models.api;
+package fr.pdp.mixbay.models;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,9 +11,6 @@ import com.spotify.protocol.types.Track;
 
 import java.util.Set;
 
-import fr.pdp.mixbay.models.APIManagerI;
-import fr.pdp.mixbay.models.Playlist;
-import fr.pdp.mixbay.models.User;
 
 
 public class SpotifyAPI implements APIManagerI {
