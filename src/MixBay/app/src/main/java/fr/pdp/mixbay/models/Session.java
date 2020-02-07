@@ -1,6 +1,10 @@
 package fr.pdp.mixbay.models;
 
+import android.content.Context;
+
 import java.util.Set;
+
+import fr.pdp.mixbay.MainActivity;
 
 public class Session {
 
@@ -11,5 +15,20 @@ public class Session {
     private AlgoI algo;
     private LogManagerI logManager;
     private APIManagerI apiManager;
+    
+    public Session(){
+        
+    }
 
+    public Session(APIManagerI api) {
+        this.apiManager = api;
+    }
+
+    public void start(Context mainActivity) {
+        apiManager.connect(mainActivity);
+    }
+
+    public void end() {
+        apiManager.disconnect();
+    }
 }
