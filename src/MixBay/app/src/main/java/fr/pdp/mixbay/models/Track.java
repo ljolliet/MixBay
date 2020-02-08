@@ -56,9 +56,6 @@ public class Track {
         return false;
     }
 
-    /**
-     * HashCode based on track's id.
-     */
     @Override
     public int hashCode() {
         return Objects.hash(id);
