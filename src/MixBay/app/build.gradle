@@ -24,6 +24,9 @@ android {
 }
 
 dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.12.3'
+
+    implementation 'com.spotify.android:auth:1.2.3'
     implementation project(':spotify-app-remote')
     implementation "com.google.code.gson:gson:2.8.5"
 
