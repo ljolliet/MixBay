@@ -86,6 +86,32 @@ public class SpotifyAPI implements APIManagerI {
 
     @Override
     public User getUser(String id) {
+        final Request request = new Request.Builder()
+                .url("https://api.spotify.com/v1/users/" + id)
+                .addHeader("Authorization","Bearer " + this.accessToken)
+                .build();
+
+        Call call = this.requestClient.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("SpotifyAPI", "Failed to fetch data: " + e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    final JSONObject jsonObject = new JSONObject(response.body().string());
+                    Log.d("SpotifyAPI", "Data: " + jsonObject.toString());
+
+                    User user = new User(id, jsonObject.getString("display_name"));
+                } catch (JSONException e) {
+                    Log.d("SpotifyAPI", "Failed to fetch data: " + e);
+                }
+            }
+        });
+
         return null;
     }
 
