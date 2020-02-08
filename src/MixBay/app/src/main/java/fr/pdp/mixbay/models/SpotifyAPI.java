@@ -21,14 +21,14 @@ public class SpotifyAPI implements APIManagerI {
     private SpotifyAppRemote mSpotifyAppRemote;
 
     @Override
-    public boolean connect(Context mainActivity) {
+    public boolean connect(Context context) {
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
                         .setRedirectUri(REDIRECT_URI)
                         .showAuthView(true)
                         .build();
 
-        SpotifyAppRemote.connect(mainActivity, connectionParams,
+        SpotifyAppRemote.connect(context, connectionParams,
                 new Connector.ConnectionListener() {
 
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
