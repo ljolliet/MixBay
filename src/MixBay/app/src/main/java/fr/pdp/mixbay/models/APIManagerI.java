@@ -12,5 +12,6 @@ public interface APIManagerI {
     public Set<Playlist> getUserPlaylist(String id);
     public void playCurrentTrack();
     public void playTrack(String id);
+    public void setAccessToken(String token);
 
 }
