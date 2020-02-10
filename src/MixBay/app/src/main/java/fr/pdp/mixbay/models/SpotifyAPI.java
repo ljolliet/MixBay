@@ -27,7 +27,6 @@ import okhttp3.Response;
 
 public class SpotifyAPI implements APIManagerI {
 
-    private static final int SPOTIFY_REQUEST_CODE = 1337;
     private static final String CLIENT_ID = "cb64858e27964a13b85d3e7e5e19b1d3";
     private static final String REDIRECT_URI = "mixbay://callback";
     private static final String[] SCOPES = new String[]{"app-remote-control", "user-read-email", "user-read-private"};

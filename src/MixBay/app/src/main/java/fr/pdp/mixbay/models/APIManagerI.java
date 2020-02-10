@@ -6,12 +6,14 @@ import java.util.Set;
 
 public interface APIManagerI {
 
-    public boolean connect(Context context);
-    public boolean disconnect();
-    public User getUser(String id);
-    public Set<Playlist> getUserPlaylist(String id);
-    public void playCurrentTrack();
-    public void playTrack(String id);
-    public void setAccessToken(String token);
+    int SPOTIFY_REQUEST_CODE = 1337;
+
+    boolean connect(Context context);
+    boolean disconnect();
+    User getUser(String id);
+    Set<Playlist> getUserPlaylist(String id);
+    void playCurrentTrack();
+    void playTrack(String id);
+    void setAccessToken(String token);
 
 }
