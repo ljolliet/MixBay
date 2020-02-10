@@ -20,11 +20,14 @@ public class Session {
         this.apiManager = api;
         this.localePlaylist = new Playlist("01", "MixBay Playlist");
         this.users = new HashSet<>();
+        this.algo = new RandomAlgo();
+
     }
 
     public void start(Context context) {
         apiManager.connect(context);
         randomInit();
+        mix();
     }
 
     public void mix(){

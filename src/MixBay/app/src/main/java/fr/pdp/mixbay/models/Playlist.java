@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class Playlist {
 
+    public static final int SIZE_MAX = 25;
     public final String id;
     public final String name;
 

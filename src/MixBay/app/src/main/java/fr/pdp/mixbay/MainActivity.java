@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         api = new SpotifyAPI();
         session = new Session(api);
         session.start(this);
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
