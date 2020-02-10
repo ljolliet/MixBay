@@ -28,7 +28,7 @@ public class Session {
     }
 
     public void mix(){
-        localePlaylist = algo.compute();
+        localePlaylist = algo.compute(this.users);
     }
 
     @Deprecated

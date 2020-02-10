@@ -4,16 +4,6 @@ import java.util.Set;
 
 public class RandomAlgo implements AlgoI {
 
-    Set<User> users;
-
-    public RandomAlgo(Set<User> users){
-        setUsers(users);
-    }
-
-    @Override
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
 
     @Override
     public String getName() {
@@ -21,7 +11,7 @@ public class RandomAlgo implements AlgoI {
     }
 
     @Override
-    public Playlist compute() {
+    public Playlist compute(Set<User> users) {
         Playlist newPlaylist = new Playlist("001", "locale playlist");
         for(User u : users) {
             if (!u.isMute()) {

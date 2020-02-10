@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 case TOKEN:
                     Log.d("MainActivity", "The token is: " + response.getAccessToken());
                     this.api.setAccessToken(response.getAccessToken());
-
+                    this.api.getUser("vilvilain");
                     break;
 
                 // Auth flow returned an error
