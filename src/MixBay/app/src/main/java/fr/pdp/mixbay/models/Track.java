@@ -17,11 +17,11 @@ public class Track {
 
     /**
      * A track is an unchangeable public object. It is based on music streaming API datas.
-     * @param id unique id of the track
-     * @param title track's title
-     * @param album track's album
-     * @param artists track's author(s)
-     * @param cover_url cover's url of the track's album
+     * @param id unique id of the track.
+     * @param title track's title.
+     * @param album track's album.
+     * @param artists track's author(s).
+     * @param cover_url cover's url of the track's album.
      * @param features TODO
      */
     public Track(String id, String title, String album, Set<String> artists, String cover_url, TrackFeatures features) {
@@ -36,11 +36,11 @@ public class Track {
     /**
      * A track is an unchangeable public object. It is based on music streaming API datas.
      * To simplify developers job, this constructor takes a unique artist and calls the previous constructor.
-     * @param id unique id of the track
-     * @param title track's title
-     * @param album track's album
-     * @param artist track's author
-     * @param cover_url cover's url of the track's album
+     * @param id unique id of the track.
+     * @param title track's title.
+     * @param album track's album.
+     * @param artist track's author.
+     * @param cover_url cover's url of the track's album.
      * @param features TODO
      */
     public Track(String id, String title, String album, String artist, String cover_url, TrackFeatures features) {
