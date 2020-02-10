@@ -12,6 +12,7 @@ public class Track {
         public final String album;
         public final Set<String> artists;
         public final String cover_url;
+        public final TrackFeatures features; //TODO
 
 
     /**
@@ -21,13 +22,15 @@ public class Track {
      * @param album track's album
      * @param artists track's author(s)
      * @param cover_url cover's url of the track's album
+     * @param features TODO
      */
-    public Track(String id, String title, String album, Set<String> artists, String cover_url) {
+    public Track(String id, String title, String album, Set<String> artists, String cover_url, TrackFeatures features) {
         this.id = id;
         this.title = title;
         this.album = album;
         this.artists = artists;
         this.cover_url = cover_url;
+        this.features = features;
     }
 
     /**
@@ -38,9 +41,10 @@ public class Track {
      * @param album track's album
      * @param artist track's author
      * @param cover_url cover's url of the track's album
+     * @param features TODO
      */
-    public Track(String id, String title, String album, String artist, String cover_url) {
-        this(id,title,album, new HashSet<>(Collections.singletonList( artist )), cover_url);
+    public Track(String id, String title, String album, String artist, String cover_url, TrackFeatures features) {
+        this(id,title,album, new HashSet<>(Collections.singletonList( artist )), cover_url, features);
     }
 
     /**

@@ -43,9 +43,10 @@ public class Session {
 
         for(User u : users)
         {
-            Playlist p = new Playlist(Integer.toString(playlistID), "Playlist "+ playlistID);
+            Playlist p = new Playlist(Integer.toString(++playlistID), "Playlist "+ playlistID);
             for(int i=0; i< 100; i++){
-                p.addTrack(new Track(Integer.toString(trackID), "Track " + trackID, "Random Album", "Random Artist", "Random Cover"));
+                TrackFeatures features = new TrackFeatures(Math.random(), Math.random(), Math.random(), Math.random(), Math.random());
+                p.addTrack(new Track(Integer.toString(++trackID), "Track " + trackID, "Random Album", "Random Artist", "Random Cover", features));
             }
             u.addPlaylist(p);
         }
