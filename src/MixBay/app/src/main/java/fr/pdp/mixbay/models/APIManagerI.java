@@ -2,6 +2,7 @@ package fr.pdp.mixbay.models;
 
 import android.content.Context;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 
 public interface APIManagerI {
@@ -10,8 +11,8 @@ public interface APIManagerI {
 
     boolean connect(Context context);
     boolean disconnect();
-    User getUser(String id);
-    Set<Playlist> getUserPlaylist(String id);
+    Future<User> getUser(String id);
+    Future<Set<Playlist>> getUserPlaylists(String userId);
     void playCurrentTrack();
     void playTrack(String id);
     void setAccessToken(String token);

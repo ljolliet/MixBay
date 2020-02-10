@@ -7,22 +7,22 @@ import android.util.Log;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.types.Track;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 
 
 public class SpotifyAPI implements APIManagerI {
@@ -87,39 +87,94 @@ public class SpotifyAPI implements APIManagerI {
     }
 
     @Override
-    public User getUser(String id) {
+    public Future<User> getUser(String id) {
+        // Create request
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/users/" + id)
                 .addHeader("Authorization","Bearer " + this.accessToken)
                 .build();
 
         Call call = this.requestClient.newCall(request);
+        ExecutorService pool = Executors.newFixedThreadPool(1);
 
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("SpotifyAPI", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                    Log.d("SpotifyAPI", "Data: " + jsonObject.toString());
-
-                    User user = new User(id, jsonObject.getString("display_name"));
-                } catch (JSONException e) {
-                    Log.d("SpotifyAPI", "Failed to fetch data: " + e);
-                }
-            }
+        // Return a Future
+        return pool.submit(() -> {
+            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+            return new User(id, jsonObject.getString("display_name"));
         });
-
-        return null;
     }
 
     @Override
-    public Set<Playlist> getUserPlaylist(String id) {
-        return null;
+    public Future<Set<Playlist>> getUserPlaylists(String userId) {
+        // Create request
+        final Request request = new Request.Builder()
+                .url("https://api.spotify.com/v1/users/" + userId + "/playlists")
+                .addHeader("Authorization","Bearer " + this.accessToken)
+                .build();
+
+        Call call = this.requestClient.newCall(request);
+        ExecutorService pool = Executors.newFixedThreadPool(1);
+
+        // Return a Future
+        return pool.submit(() -> {
+            Set<Playlist> playlists = new HashSet<>();
+
+            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+            JSONArray itemsArray = jsonObject.getJSONArray("items");
+
+            for (int i = 0; i < itemsArray.length(); i++) {
+                JSONObject playlistObject = itemsArray.getJSONObject(i);
+
+                // Get info from JSON
+                String playlist_id = playlistObject.getString("id");
+                String playlist_name = playlistObject.getString("name");
+
+                Playlist playlist = new Playlist(playlist_id, playlist_name);
+                playlists.add(playlist);
+
+                playlist.addTracks(this.getTracksFromPlaylist(playlist_id).get());
+            }
+            return playlists;
+        });
+    }
+
+    private Future<Set<Track>> getTracksFromPlaylist(String playlistId) {
+        // Create request
+        final Request request = new Request.Builder()
+                .url("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks")
+                .addHeader("Authorization","Bearer " + this.accessToken)
+                .build();
+
+        Call call = this.requestClient.newCall(request);
+        ExecutorService pool = Executors.newFixedThreadPool(1);
+
+        // Return a Future
+        return pool.submit(() -> {
+            Set<Track> tracks = new HashSet<>();
+
+            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+            JSONArray itemsArray = jsonObject.getJSONArray("items");
+
+            for (int i = 0; i < itemsArray.length(); i++) {
+                JSONObject trackObject = itemsArray.getJSONObject(i).getJSONObject("track");
+
+                // Get info from JSON
+                String track_id = trackObject.getString("id");
+                String track_title = trackObject.getString("name");
+                String track_album = trackObject.getJSONObject("album").getString("name");
+
+                Set<String> artists = new HashSet<>();
+                JSONArray artistArray = trackObject.getJSONArray("artists");
+                for (int j = 0; j < artistArray.length(); j++)
+                    artists.add(artistArray.getJSONObject(j).getString("name"));
+
+                String cover_url = trackObject.getJSONObject("album").getJSONArray("images").getJSONObject(2).getString("url");
+
+                Track track = new Track(track_id, track_title, track_album, artists, cover_url, null);
+                tracks.add(track);
+            }
+            return tracks;
+        });
     }
 
     @Override
@@ -137,7 +192,7 @@ public class SpotifyAPI implements APIManagerI {
         mSpotifyAppRemote.getPlayerApi()
                 .subscribeToPlayerState()
                 .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
+                    final com.spotify.protocol.types.Track track = playerState.track;
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                     }

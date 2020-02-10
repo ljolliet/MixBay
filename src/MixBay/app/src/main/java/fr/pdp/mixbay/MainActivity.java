@@ -9,9 +9,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
 import fr.pdp.mixbay.models.APIManagerI;
+import fr.pdp.mixbay.models.Playlist;
 import fr.pdp.mixbay.models.Session;
 import fr.pdp.mixbay.models.SpotifyAPI;
+import fr.pdp.mixbay.models.Track;
+import fr.pdp.mixbay.models.User;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         api = new SpotifyAPI();
         session = new Session(api);
         session.start(this);
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -45,7 +50,23 @@ public class MainActivity extends AppCompatActivity {
                 case TOKEN:
                     Log.d("MainActivity", "The token is: " + response.getAccessToken());
                     this.api.setAccessToken(response.getAccessToken());
-                    this.api.getUser("vilvilain");
+
+                    try {
+                        User user = this.api.getUser("vilvilain").get();
+                        System.out.println("id: " + user.id + " ; display_name: " + user.username);
+
+                        Set<Playlist> playlists = this.api.getUserPlaylists("vilvilain").get();
+                        System.out.println(playlists.toString());
+                        for (Playlist p: playlists) {
+                            System.out.println("Playlist name:" + p.name);
+
+                            for (Track t: p.getTracks()) {
+                                System.out.println("\t" + t.title);
+                            }
+                        }
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     break;
 
                 // Auth flow returned an error
