@@ -1,0 +1,10 @@
+PENDANT LA SEANCE:
+*Mentionné le problème des versions disponibles de l'API : seule la version beta (avec une doc approximative) est disponible
+*Explication des algorithmes (least misery strategy)
+
+TODO:
+*Créer des fausses données plutôt que de s'engouffrer dans l'API au début afin de pouvoir présenter des fonctionnalités lors de la première release
+*Enventuellement, exporter les logs générés pour les rendre lisibles pour les utilisateurs 
+*Justifier nos choix pour nos données (d'abord les publiques puis les privées éventuellement)
+*Implémenter plusieurs algo et connaître les situations dans lesquels les utiliser (trouver les défauts de chaque algo)
+    -> On peut implémenter des algo naïfs si on en a discuté autour et que c'est justifié
