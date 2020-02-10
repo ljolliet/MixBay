@@ -9,7 +9,6 @@ DURANT LA SEANCE:
 TODO:
 *Faire des scénarios (essentiel)
 *BNF doivent être quantifiés et justifiés (contraintes)
-**
 *Calculer la complexité des algorithmes notamment pour justifier la taille des playlists
 *Lister les interactions avec le lecteur
 *Détailler "simplifier" (3.1.6)
