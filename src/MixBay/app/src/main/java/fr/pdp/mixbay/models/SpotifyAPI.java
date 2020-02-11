@@ -187,19 +187,44 @@ public class SpotifyAPI implements APIManagerI {
                 .setResultCallback(
                         playerState -> {
                             if (playerState.isPaused) {
-                                Log.d("Event API" ," Track played");
                                 mSpotifyAppRemote
                                         .getPlayerApi()
-                                        .resume();
+                                        .resume()
+                                        .setResultCallback(
+                                                empty -> Log.d("Event API" ," Track played")
+                                        );
 
                             } else {
-                                Log.d("Event API" ," Track paused");
                                 mSpotifyAppRemote
                                         .getPlayerApi()
-                                        .pause();
+                                        .pause().setResultCallback(
+                                        empty ->  Log.d("Event API" ," Track paused")
+                                );
                             }
                         });
 
+    }
+
+    @Override
+    public void skipNextTrack(){
+
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .skipNext()
+                .setResultCallback(
+                        empty -> Log.d("Event API" ," skip next")
+                );
+    }
+
+    @Override
+    public void skipPreviousTrack (){
+
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .skipPrevious()
+                .setResultCallback(
+                        empty -> Log.d("Event API" ," skip next")
+                );
     }
 
     @Override
