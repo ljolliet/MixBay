@@ -20,7 +20,7 @@ public class Session {
         this.apiManager = api;
         this.localePlaylist = new Playlist("01", "MixBay Playlist");
         this.users = new HashSet<>();
-        this.algo = new RandomAlgo();
+        this.algo = new FirstAlgo();
 
     }
 
@@ -38,9 +38,11 @@ public class Session {
     private void randomInit(){
         mainUser = new User("123", "tmp");
         User secondUser = new User("456","tmp2");
+        User thirdUser = new User("789", "tmp3");
         currentuser = mainUser;
         users.add(mainUser);
         users.add(secondUser);
+        users.add(thirdUser);
         int playlistID = 0;
         int trackID = 0;
 
