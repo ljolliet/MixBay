@@ -12,8 +12,8 @@ public class PlaylistTest {
 
     @Test
     public void noDuplicateTracks(){
-        Track track = new Track("123", "Let it Be", "Let it Be", "The Beatles", "random_url");
-        Track track2 = new Track("123", "Get Back", "Let it Be", "The Beatles", "random_url");
+        Track track = new Track("123", "Let it Be", "Let it Be", "The Beatles", "random_url", null);
+        Track track2 = new Track("123", "Get Back", "Let it Be", "The Beatles", "random_url", null);
         Playlist playlist = new Playlist("456", "rock");
         playlist.addTrack(track);
         playlist.addTrack(track);
@@ -23,8 +23,8 @@ public class PlaylistTest {
 
     @Test
     public void checkEncapsulation(){
-        Track track = new Track("123", "Let it Be", "Let it Be", "The Beatles", "random_url");
-        Track track2 = new Track("456", "Get Back", "Let it Be", "The Beatles", "random_url");
+        Track track = new Track("123", "Let it Be", "Let it Be", "The Beatles", "random_url", null);
+        Track track2 = new Track("456", "Get Back", "Let it Be", "The Beatles", "random_url", null);
         Playlist playlist = new Playlist("789", "rock");
         playlist.addTrack(track);
         playlist.getTracks().add(track2);
