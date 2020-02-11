@@ -3,7 +3,7 @@ package fr.pdp.mixbay.models;
 
 //TODO think about a different architecture
 
-class TrackFeatures {
+public class TrackFeatures {
 
     public final double danceability;
     public final double energy;
