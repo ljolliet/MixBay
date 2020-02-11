@@ -3,13 +3,26 @@ package fr.pdp.mixbay.models;
 
 //TODO think about a different architecture
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TrackFeatures {
+
+    public enum Name{
+        DANCEABILITY,
+        ENERGY,
+        SPEECHINESS,
+        ACOUSTICNESS,
+        INSTRUMENTALNESS
+    }
 
     public final double danceability;
     public final double energy;
     public final double speechiness;
     public final double acousticness;
     public final double instrumentalness;
+
+    private Map<Name, Double> allFeatures;
 
 
     TrackFeatures(double danceability, double energy, double speechiness, double acousticness, double instrumentalness) {
@@ -18,7 +31,18 @@ public class TrackFeatures {
         this.speechiness = speechiness;
         this.acousticness = acousticness;
         this.instrumentalness = instrumentalness;
+        this.allFeatures = new HashMap<>();
+        allFeatures.put(Name.DANCEABILITY, danceability);
+        allFeatures.put(Name.ENERGY, energy);
+        allFeatures.put(Name.SPEECHINESS, speechiness);
+        allFeatures.put(Name.ACOUSTICNESS, acousticness);
+        allFeatures.put(Name.INSTRUMENTALNESS, instrumentalness);
     }
+
+    public Map<Name, Double> getAll() {
+        return this.allFeatures;
+    }
+
 }
 
 /*
