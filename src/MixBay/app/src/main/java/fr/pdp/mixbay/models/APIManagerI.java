@@ -14,6 +14,12 @@ public interface APIManagerI {
     Future<User> getUser(String id);
     Future<Set<Playlist>> getUserPlaylists(String userId);
     void playCurrentTrack();
+    void skipNextTrack();
+    void skipPreviousTrack();
+    void toggleRepeat();
+    void toggleShuffle();
+    void seekFordward();
+    void seekBackward();
     void playTrack(String id);
     void setAccessToken(String token);
 

@@ -37,6 +37,7 @@ public class SpotifyAPI implements APIManagerI {
     private final OkHttpClient requestClient = new OkHttpClient();
     private String accessToken;
 
+
     @Override
     public boolean connect(Context context) {
         this.context = context;
@@ -180,12 +181,96 @@ public class SpotifyAPI implements APIManagerI {
     @Override
     public void playCurrentTrack() {
 
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .getPlayerState()
+                .setResultCallback(
+                        playerState -> {
+                            if (playerState.isPaused) {
+                                mSpotifyAppRemote
+                                        .getPlayerApi()
+                                        .resume()
+                                        .setResultCallback(
+                                                empty -> Log.d("Event API" ," Track played")
+                                        );
+
+                            } else {
+                                mSpotifyAppRemote
+                                        .getPlayerApi()
+                                        .pause().setResultCallback(
+                                        empty ->  Log.d("Event API" ," Track paused")
+                                );
+                            }
+                        });
+
+    }
+
+    @Override
+    public void skipNextTrack(){
+
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .skipNext()
+                .setResultCallback(
+                        data -> Log.d("Event API" ," skip next")
+                );
+    }
+
+    @Override
+    public void skipPreviousTrack (){
+
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .skipPrevious()
+                .setResultCallback(
+                        data -> Log.d("Event API" ," skip next")
+                );
     }
 
     @Override
     public void playTrack(String id) {
 
     }
+
+    @Override
+    public void toggleRepeat(){
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .toggleRepeat()
+                .setResultCallback(
+                        data -> Log.d("Event API" ," toggle repeat")
+                );
+    }
+
+    @Override
+    public void toggleShuffle(){
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .skipPrevious()
+                .setResultCallback(
+                        data -> Log.d("Event API" ," toggle shuffle")
+                );
+    }
+
+    @Override
+    public void seekFordward(){
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .seekToRelativePosition(15000)
+                .setResultCallback(
+                        data -> Log.d("Event API" ," seek fordward")
+                );
+    }
+
+    @Override
+    public void seekBackward(){
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .seekToRelativePosition(-15000)
+                .setResultCallback(data -> Log.d("Event API" ," seek backward")
+                );
+    }
+
 
     private void getPlayerInfo() {
         // Subscribe to PlayerState
