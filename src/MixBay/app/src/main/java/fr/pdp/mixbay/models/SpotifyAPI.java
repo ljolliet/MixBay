@@ -37,6 +37,7 @@ public class SpotifyAPI implements APIManagerI {
     private final OkHttpClient requestClient = new OkHttpClient();
     private String accessToken;
 
+
     @Override
     public boolean connect(Context context) {
         this.context = context;
@@ -179,6 +180,25 @@ public class SpotifyAPI implements APIManagerI {
 
     @Override
     public void playCurrentTrack() {
+
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .getPlayerState()
+                .setResultCallback(
+                        playerState -> {
+                            if (playerState.isPaused) {
+                                Log.d("Event API" ," Track played");
+                                mSpotifyAppRemote
+                                        .getPlayerApi()
+                                        .resume();
+
+                            } else {
+                                Log.d("Event API" ," Track paused");
+                                mSpotifyAppRemote
+                                        .getPlayerApi()
+                                        .pause();
+                            }
+                        });
 
     }
 
