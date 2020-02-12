@@ -48,6 +48,7 @@ public class SpotifyAPI implements APIManagerI {
         builder.setScopes(SCOPES);
         AuthorizationRequest request = builder.build();
         AuthorizationClient.openLoginActivity((Activity) context, SPOTIFY_REQUEST_CODE, request);
+        //TODO add playback connection
 
         return true;    //TODO return only if connected
     }
@@ -78,7 +79,7 @@ public class SpotifyAPI implements APIManagerI {
 
     @Override
     public boolean disconnect() {
-        //SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+        //SpotifyAppRemote.disconnect(mSpotifyAppRemote);         //TODO add playback disconnection
 
         if (context == null)
             return false;
