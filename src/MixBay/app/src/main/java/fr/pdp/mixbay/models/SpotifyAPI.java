@@ -49,7 +49,7 @@ public class SpotifyAPI implements APIManagerI {
         AuthorizationRequest request = builder.build();
         AuthorizationClient.openLoginActivity((Activity) context, SPOTIFY_REQUEST_CODE, request);
 
-        return true;
+        return true;    //TODO return only if connected
     }
 
     public boolean playbackConnect(){
@@ -179,7 +179,7 @@ public class SpotifyAPI implements APIManagerI {
     }
 
     @Override
-    public void playCurrentTrack() {
+    public void playPauseTrack() {
 
         mSpotifyAppRemote
                 .getPlayerApi()
@@ -202,12 +202,20 @@ public class SpotifyAPI implements APIManagerI {
                                 );
                             }
                         });
+    }
 
+    @Override
+    public void playTrack(String id) {
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .play("spotify:track:"+id)
+                .setResultCallback(
+                        data -> Log.d("Event API" ," play track " + id)
+                );
     }
 
     @Override
     public void skipNextTrack(){
-
         mSpotifyAppRemote
                 .getPlayerApi()
                 .skipNext()
@@ -218,18 +226,12 @@ public class SpotifyAPI implements APIManagerI {
 
     @Override
     public void skipPreviousTrack (){
-
         mSpotifyAppRemote
                 .getPlayerApi()
                 .skipPrevious()
                 .setResultCallback(
-                        data -> Log.d("Event API" ," skip next")
+                        data -> Log.d("Event API" ," skip previous")
                 );
-    }
-
-    @Override
-    public void playTrack(String id) {
-
     }
 
     @Override
@@ -246,7 +248,7 @@ public class SpotifyAPI implements APIManagerI {
     public void toggleShuffle(){
         mSpotifyAppRemote
                 .getPlayerApi()
-                .skipPrevious()
+                .toggleShuffle()
                 .setResultCallback(
                         data -> Log.d("Event API" ," toggle shuffle")
                 );
@@ -258,7 +260,7 @@ public class SpotifyAPI implements APIManagerI {
                 .getPlayerApi()
                 .seekToRelativePosition(15000)
                 .setResultCallback(
-                        data -> Log.d("Event API" ," seek fordward")
+                        data -> Log.d("Event API" ," seek forward")
                 );
     }
 
@@ -268,6 +270,16 @@ public class SpotifyAPI implements APIManagerI {
                 .getPlayerApi()
                 .seekToRelativePosition(-15000)
                 .setResultCallback(data -> Log.d("Event API" ," seek backward")
+                );
+    }
+
+    @Override
+    public void queueTrack(String id) {
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .queue("spotify:track:"+id)
+                .setResultCallback(
+                        data -> Log.d("Event API" ," play track " + id)
                 );
     }
 
