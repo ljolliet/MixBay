@@ -62,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println("Playlist name:" + p.name);
 
                             for (Track t: p.getTracks()) {
-                                System.out.println("\tid: " + t.id + " " + t.title + "\n\t\tacousticness" + t.getFeatures().acousticness);
+                                System.out.println("\t\t " + t.title);
 
                             }
+                            System.out.println("Number of tracks: " + p.getTracks().size());
                         }
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();

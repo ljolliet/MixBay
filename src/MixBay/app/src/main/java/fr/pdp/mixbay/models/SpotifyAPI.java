@@ -150,62 +150,84 @@ public class SpotifyAPI implements APIManagerI {
         });
     }
 
-    private Future<Set<Track>> getTracksFromPlaylist(String playlistId) { // TODO Manage for playlist with 100+ tracks
-        // Create playlist info request
-        final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks")
-                .addHeader("Authorization","Bearer " + this.accessToken)
-                .build();
-
-        Call call = this.requestClient.newCall(request);
+    private Future<Set<Track>> getTracksFromPlaylist(String playlistId) {
         ExecutorService pool = Executors.newFixedThreadPool(1);
 
         // Return a Future
         return pool.submit(() -> {
-            List<Track> tracks = new ArrayList<>();
-            StringBuilder trackIdList = new StringBuilder();
 
-            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
-            JSONArray itemsArray = jsonObject.getJSONArray("items");
+            // Determine if there are more tracks to get
+            boolean next;
+            // First url to request
+            String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?" +
+                    "fields=items(track(id,name,artists,album(name,images))),next"; // Only important fields
 
-            // For each track in playlist
-            for (int i = 0; i < itemsArray.length(); i++) {
-                JSONObject trackObject = itemsArray.getJSONObject(i).getJSONObject("track");
+            // Create total track set to return
+            Set<Track> totalTrack = new HashSet();
 
-                // Get info from JSON
-                String track_id = trackObject.getString("id");
-                String track_title = trackObject.getString("name");
-                String track_album = trackObject.getJSONObject("album").getString("name");
+            do {
+                // Create playlist info request
+                final Request request = new Request.Builder()
+                        .url(url)
+                        .addHeader("Authorization","Bearer " + this.accessToken)
+                        .build();
 
-                // Get all artists for the track
-                Set<String> artists = new HashSet<>();
-                JSONArray artistArray = trackObject.getJSONArray("artists");
-                for (int j = 0; j < artistArray.length(); j++)
-                    artists.add(artistArray.getJSONObject(j).getString("name"));
+                Call call = this.requestClient.newCall(request);
 
-                String cover_url = trackObject.getJSONObject("album").getJSONArray("images").getJSONObject(2).getString("url");
+                List<Track> tracks = new ArrayList<>();
+                StringBuilder trackIdList = new StringBuilder(); // List of track ids
 
-                // Create Track
-                Track track = new Track(track_id, track_title, track_album, artists, cover_url);
+                final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+                JSONArray itemsArray = jsonObject.getJSONArray("items");
 
-                // Append ids for the track features request
-                trackIdList.append(track_id).append(",");
+                // For each track in playlist
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject trackObject = itemsArray.getJSONObject(i).getJSONObject("track");
 
-                tracks.add(track);
-            }
+                    // Get info from JSON
+                    String track_id = trackObject.getString("id");
+                    String track_title = trackObject.getString("name");
+                    String track_album = trackObject.getJSONObject("album").getString("name");
 
-            // Only if there are 1+ tracks
-            if (tracks.size() > 0) {
-                // Request track features
-                List<TrackFeatures> trackFeaturesList = getTracksFeatures(trackIdList.toString()).get();
+                    // Get all artists for the track
+                    Set<String> artists = new HashSet<>();
+                    JSONArray artistArray = trackObject.getJSONArray("artists");
+                    for (int j = 0; j < artistArray.length(); j++)
+                        artists.add(artistArray.getJSONObject(j).getString("name"));
 
-                int i = 0;
-                // Set feature for each track
-                for (Track t : tracks)
-                    t.setFeatures(trackFeaturesList.get(i++));
-            }
+                    String cover_url = trackObject.getJSONObject("album").getJSONArray("images").getJSONObject(2).getString("url");
 
-            return new HashSet<>(tracks);
+                    // Create Track
+                    Track track = new Track(track_id, track_title, track_album, artists, cover_url);
+
+                    // Append ids for the track features request
+                    trackIdList.append(track_id).append(",");
+
+                    tracks.add(track);
+                }
+
+                // Only if there are 1+ tracks
+                if (tracks.size() > 0) {
+                    // Request track features
+                    List<TrackFeatures> trackFeaturesList = getTracksFeatures(trackIdList.toString()).get();
+
+                    int i = 0;
+                    // Set feature for each track
+                    for (Track t : tracks)
+                        t.setFeatures(trackFeaturesList.get(i++));
+                }
+
+                // Add current tracks to total Set
+                totalTrack.addAll(tracks);
+
+                // Check if tracks left
+                next = !jsonObject.isNull("next");
+                if (next)
+                    url = jsonObject.getString("next");
+
+            } while (next);
+
+            return totalTrack;
         });
     }
 
@@ -231,19 +253,19 @@ public class SpotifyAPI implements APIManagerI {
                 JSONObject trackObject = trackArray.getJSONObject(i);
 
                 // Get info from JSON
-                String danceability = trackObject.getString("danceability");
-                String energy = trackObject.getString("energy");
-                String speechiness = trackObject.getString("speechiness");
-                String acousticness = trackObject.getString("acousticness");
-                String instrumentalness = trackObject.getString("instrumentalness");
+                double danceability = trackObject.getDouble("danceability");
+                double energy = trackObject.getDouble("energy");
+                double speechiness = trackObject.getDouble("speechiness");
+                double acousticness = trackObject.getDouble("acousticness");
+                double instrumentalness = trackObject.getDouble("instrumentalness");
 
                 // Create TrackFeatures
                 TrackFeatures playlist = new TrackFeatures(
-                        Double.valueOf(danceability),
-                        Double.valueOf(energy),
-                        Double.valueOf(speechiness),
-                        Double.valueOf(acousticness),
-                        Double.valueOf(instrumentalness)
+                        danceability,
+                        energy,
+                        speechiness,
+                        acousticness,
+                        instrumentalness
                 );
 
                 tracksFeatures.add(playlist);
