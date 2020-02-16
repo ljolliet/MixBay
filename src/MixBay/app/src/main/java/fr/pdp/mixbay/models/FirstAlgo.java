@@ -1,15 +1,21 @@
 package fr.pdp.mixbay.models;
 
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 public class FirstAlgo implements AlgoI {
 
+    private Map<String,TrackFeatures> userProfile = new HashMap<>();
+    private Map<String,Track> tracksList = new HashMap<>();
+    private Set<User> users;
+    private HashMap<String,HashMap<String,Double>> musicScorePerUser = new HashMap<>();
+    private Map<String,Double> leastMiseryComputed = new LinkedHashMap<>();
+
+    private int numberTracks = 0;
+    private double[] trackFeaturesAverage = new double[TrackFeatures.SIZE];
 
     @Override
     public String getName() {
@@ -19,82 +25,105 @@ public class FirstAlgo implements AlgoI {
     @Override
     public Playlist compute(Set<User> users) {
 
-        Map<String,TrackFeatures> userProfile = new HashMap<>();
-        Set<Track> tracksList = new HashSet<>();
-
+        this.users = users;
         for (User u : users) {
-            int numberTracks = 0;
-            double danceabilityAv = 0.;
-            double energyAv = 0.;
-            double speechinessAv = 0.;
-            double acousticnessAv = 0.;
-            double instrumentalnessAv = 0.;
-            for (Playlist p : u.getPlaylist())
-                for (Track t : p.getTracks())
-                {
-                    tracksList.add(t);
-
-                    numberTracks++;
-                    danceabilityAv += t.features.danceability;
-                    energyAv += t.features.energy;
-                    speechinessAv += t.features.speechiness;
-                    acousticnessAv += t.features.acousticness;
-                    instrumentalnessAv += t.features.instrumentalness;
-                }
-
-            danceabilityAv /= numberTracks;
-            energyAv /= numberTracks;
-            speechinessAv /= numberTracks;
-            acousticnessAv /= numberTracks;
-            instrumentalnessAv /= numberTracks;
-
-            TrackFeatures tF = new TrackFeatures(danceabilityAv, energyAv, speechinessAv, acousticnessAv, instrumentalnessAv);
-
-
-            userProfile.put(u.id,tF);
+            for (int i = 0; i < trackFeaturesAverage.length; i++) {
+                trackFeaturesAverage[i] = 0.;
+            }
+             computeUserProfile(u);
         }
+        computeMusicScorePerUser();
+        return computeLocalePlaylist();
+    }
 
-        Map<String,TrackFeatures> trackFeaturesDifferenceMap = new HashMap<>();
+    /**
+     * Compute an "user profile" for the given user. It is the average of the tracks features of each tracks from this user's playlists.
+     * @param u Specific user of the application.
+     */
+    public void computeUserProfile(User u){
 
-        Iterator getUser = userProfile.entrySet().iterator();
-        while (getUser.hasNext()) {
-            Map.Entry currentUser = (Map.Entry) getUser.next();
+        for (Playlist p : u.getPlaylist()) {
+            for (Track t : p.getTracks()) {
+                tracksList.put(t.id, t);
 
-            Iterator getOtherUsers = userProfile.entrySet().iterator();
-            while(getOtherUsers.hasNext()) {
-                Map.Entry otherUser = (Map.Entry) getOtherUsers.next();
-                if (otherUser.getKey() != currentUser.getKey()) {
-                    double danceabilityUserDifference = ((TrackFeatures) currentUser.getValue()).danceability - ((TrackFeatures) otherUser.getValue()).danceability;
-                    double energyUserDifference = ((TrackFeatures) currentUser.getValue()).energy - ((TrackFeatures) otherUser.getValue()).energy;
-                    double speechinessUserDifference = ((TrackFeatures) currentUser.getValue()).speechiness - ((TrackFeatures) otherUser.getValue()).speechiness;
-                    double acousticnessUserDifference = ((TrackFeatures) currentUser.getValue()).acousticness - ((TrackFeatures) otherUser.getValue()).acousticness;
-                    double instrumentalnessUserDifference = ((TrackFeatures) currentUser.getValue()).instrumentalness - ((TrackFeatures) otherUser.getValue()).instrumentalness;
-                    TrackFeatures trackFeaturesDifference = new TrackFeatures(danceabilityUserDifference,energyUserDifference,speechinessUserDifference,acousticnessUserDifference,instrumentalnessUserDifference);
-                    trackFeaturesDifferenceMap.put(currentUser.getKey() + " - " + otherUser.getKey(), trackFeaturesDifference);
+                numberTracks++;
+                for (int i = 0; i < trackFeaturesAverage.length; i++) {
+                     trackFeaturesAverage[i] = ((HashMap<TrackFeatures.Name, Double>)t.features.getAll()).get(TrackFeatures.Name.values()[i]);
                 }
             }
         }
 
-        HashMap<String,HashMap<String,Double>> musicScorePerUser = new HashMap<>();
-        getUser = userProfile.entrySet().iterator();
+        for (int i = 0; i < trackFeaturesAverage.length; i++) {
+            trackFeaturesAverage[i] /= numberTracks;
+        }
+            TrackFeatures tF = new TrackFeatures(trackFeaturesAverage);
+        userProfile.put(u.id,tF);
+    }
+
+    /**
+     * Assign a score to each track for each user
+     */
+    public void computeMusicScorePerUser(){
+        Iterator getUser = userProfile.entrySet().iterator();
         while (getUser.hasNext()) {
             HashMap<String,Double> scorePerTrack = new HashMap<>();
 
             Map.Entry currentUser = (Map.Entry) getUser.next();
 
-            Iterator tracksIt = tracksList.iterator();
+            Iterator tracksIt = tracksList.entrySet().iterator();
             while(tracksIt.hasNext()) {
-                Track t = (Track) tracksIt.next();
-                Double score = (((TrackFeatures) currentUser.getValue()).danceability + ((TrackFeatures) currentUser.getValue()).energy + ((TrackFeatures) currentUser.getValue()).speechiness + ((TrackFeatures) currentUser.getValue()).acousticness + ((TrackFeatures) currentUser.getValue()).instrumentalness) -
-                               (t.features.danceability + t.features.energy + t.features.speechiness + t.features.acousticness + t.features.instrumentalness);
-                scorePerTrack.put(t.id, score);
+                Map.Entry trackEntry = (Map.Entry) tracksIt.next();
+                Track t = (Track) trackEntry.getValue();
+
+                double currentUserScore = 0.;
+                double currentTrackScore = 0.;
+                for (int i = 0; i < trackFeaturesAverage.length; i++) {
+                    currentUserScore += ((TrackFeatures) currentUser.getValue()).getAll().get(TrackFeatures.Name.values()[i]);
+                }
+                currentUserScore /= TrackFeatures.SIZE;
+
+                for (int i = 0; i < trackFeaturesAverage.length; i++) {
+                    currentTrackScore += t.features.getAll().get(TrackFeatures.Name.values()[i]);
+                }
+                currentTrackScore /= TrackFeatures.SIZE;
+
+                scorePerTrack.put(t.id, Math.abs(currentUserScore - currentTrackScore));
             }
             musicScorePerUser.put((String) currentUser.getKey(), scorePerTrack);
         }
-
-        Map<String,Double> leastMiseryComputed = new HashMap<>();
-
-        return null;
     }
 
+    /**
+     * Compute a local playlist of Playlist.SIZE_MAX (25) tracks.
+     * The 25 tracks with the lowest computed score are chosen to be part of the locale playlist (Least Misery Strategy).
+     * @return A playlist of 25 tracks.
+     */
+    public Playlist computeLocalePlaylist(){
+
+        Iterator tracksIt = tracksList.entrySet().iterator();
+        while(tracksIt.hasNext()) {
+            Map.Entry trackEntry = (Map.Entry) tracksIt.next();
+            Track t = (Track) trackEntry.getValue();
+
+            Double leastScore = 100.;
+            for (User u : users) {
+                if ((musicScorePerUser.get(u.id)).get(t.id) < leastScore) {
+                    leastScore = (musicScorePerUser.get(u.id)).get(t.id);
+                }
+            }
+            leastMiseryComputed.put(t.id, leastScore);
+        }
+        leastMiseryComputed = MapUtil.sortByValue(leastMiseryComputed);
+
+
+        Iterator computedTracksIterator = leastMiseryComputed.entrySet().iterator();
+        int index = 0;
+        Playlist p = new Playlist("001","locale playlist");
+        while(computedTracksIterator.hasNext() && index < Playlist.SIZE_MAX) {
+            Map.Entry entryTrack = (Map.Entry) computedTracksIterator.next();
+            p.addTrack(tracksList.get(entryTrack.getKey()));
+            index++;
+        }
+        return p;
+    }
 }

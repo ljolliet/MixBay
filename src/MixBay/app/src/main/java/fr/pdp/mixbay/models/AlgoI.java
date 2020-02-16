@@ -2,6 +2,8 @@ package fr.pdp.mixbay.models;
 
 import java.util.Set;
 
+
+
 public interface AlgoI {
 
     /**

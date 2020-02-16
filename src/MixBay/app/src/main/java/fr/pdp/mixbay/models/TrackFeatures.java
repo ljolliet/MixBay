@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class TrackFeatures {
 
-    public enum Name{
+    public static enum Name{
         DANCEABILITY,
         ENERGY,
         SPEECHINESS,
@@ -16,6 +16,7 @@ public class TrackFeatures {
         INSTRUMENTALNESS
     }
 
+    public static final int SIZE = Name.values().length;
     public final double danceability;
     public final double energy;
     public final double speechiness;
@@ -25,12 +26,26 @@ public class TrackFeatures {
     private Map<Name, Double> allFeatures;
 
 
-    TrackFeatures(double danceability, double energy, double speechiness, double acousticness, double instrumentalness) {
+    public TrackFeatures(double danceability, double energy, double speechiness, double acousticness, double instrumentalness) {
         this.danceability = danceability;
         this.energy = energy;
         this.speechiness = speechiness;
         this.acousticness = acousticness;
         this.instrumentalness = instrumentalness;
+        this.allFeatures = new HashMap<>();
+        allFeatures.put(Name.DANCEABILITY, danceability);
+        allFeatures.put(Name.ENERGY, energy);
+        allFeatures.put(Name.SPEECHINESS, speechiness);
+        allFeatures.put(Name.ACOUSTICNESS, acousticness);
+        allFeatures.put(Name.INSTRUMENTALNESS, instrumentalness);
+    }
+
+    public TrackFeatures(double[] trackFeatures) {
+        this.danceability = trackFeatures[0];
+        this.energy = trackFeatures[1];
+        this.speechiness = trackFeatures[2];
+        this.acousticness = trackFeatures[3];
+        this.instrumentalness = trackFeatures[4];
         this.allFeatures = new HashMap<>();
         allFeatures.put(Name.DANCEABILITY, danceability);
         allFeatures.put(Name.ENERGY, energy);
