@@ -8,6 +8,7 @@ import java.util.Map;
 public class MapUtil {
     /**
      * Sort a given map by it's value.
+     *
      * @param map Map to be sorted by value.
      * @return The sorted map (by value).
      * @author Carter Page from stackoverflow.
@@ -16,7 +17,6 @@ public class MapUtil {
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
         list.sort(Map.Entry.comparingByValue());
-
         Map<K, V> result = new LinkedHashMap<>();
         for (Map.Entry<K, V> entry : list) {
             result.put(entry.getKey(), entry.getValue());
