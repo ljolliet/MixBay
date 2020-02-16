@@ -14,7 +14,9 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,8 +50,9 @@ public class SpotifyAPI implements APIManagerI {
         builder.setScopes(SCOPES);
         AuthorizationRequest request = builder.build();
         AuthorizationClient.openLoginActivity((Activity) context, SPOTIFY_REQUEST_CODE, request);
+        //TODO add playback connection
 
-        return true;
+        return true;    //TODO return only if connected
     }
 
     public boolean playbackConnect(){
@@ -78,7 +81,7 @@ public class SpotifyAPI implements APIManagerI {
 
     @Override
     public boolean disconnect() {
-        //SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+        //SpotifyAppRemote.disconnect(mSpotifyAppRemote);         //TODO add playback disconnection
 
         if (context == null)
             return false;
@@ -88,8 +91,8 @@ public class SpotifyAPI implements APIManagerI {
     }
 
     @Override
-    public Future<User> getUser(String id) {
-        // Create request
+    public Future<User> getUser(String id) { // TODO Do smthg if id doesn't exist
+        // Create User info request
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/users/" + id)
                 .addHeader("Authorization","Bearer " + this.accessToken)
@@ -101,13 +104,16 @@ public class SpotifyAPI implements APIManagerI {
         // Return a Future
         return pool.submit(() -> {
             final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+//            jsonObject.has("display_name");
+
+            // Return new User
             return new User(id, jsonObject.getString("display_name"));
         });
     }
 
     @Override
     public Future<Set<Playlist>> getUserPlaylists(String userId) {
-        // Create request
+        // Create user's playlist info request
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/users/" + userId + "/playlists")
                 .addHeader("Authorization","Bearer " + this.accessToken)
@@ -123,6 +129,7 @@ public class SpotifyAPI implements APIManagerI {
             final JSONObject jsonObject = new JSONObject(call.execute().body().string());
             JSONArray itemsArray = jsonObject.getJSONArray("items");
 
+            // For each user's playlists
             for (int i = 0; i < itemsArray.length(); i++) {
                 JSONObject playlistObject = itemsArray.getJSONObject(i);
 
@@ -130,19 +137,104 @@ public class SpotifyAPI implements APIManagerI {
                 String playlist_id = playlistObject.getString("id");
                 String playlist_name = playlistObject.getString("name");
 
+                // Create Playlist
                 Playlist playlist = new Playlist(playlist_id, playlist_name);
+                // Add to playlist set
                 playlists.add(playlist);
 
+                // Fill playlist with tracks
                 playlist.addTracks(this.getTracksFromPlaylist(playlist_id).get());
             }
+
             return playlists;
         });
     }
 
     private Future<Set<Track>> getTracksFromPlaylist(String playlistId) {
-        // Create request
+        ExecutorService pool = Executors.newFixedThreadPool(1);
+
+        // Return a Future
+        return pool.submit(() -> {
+
+            // Determine if there are more tracks to get
+            boolean next;
+            // First url to request
+            String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?" +
+                    "fields=items(track(id,name,artists,album(name,images))),next"; // Only important fields
+
+            // Create total track set to return
+            Set<Track> totalTrack = new HashSet();
+
+            do {
+                // Create playlist info request
+                final Request request = new Request.Builder()
+                        .url(url)
+                        .addHeader("Authorization","Bearer " + this.accessToken)
+                        .build();
+
+                Call call = this.requestClient.newCall(request);
+
+                List<Track> tracks = new ArrayList<>();
+                StringBuilder trackIdList = new StringBuilder(); // List of track ids
+
+                final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+                JSONArray itemsArray = jsonObject.getJSONArray("items");
+
+                // For each track in playlist
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject trackObject = itemsArray.getJSONObject(i).getJSONObject("track");
+
+                    // Get info from JSON
+                    String track_id = trackObject.getString("id");
+                    String track_title = trackObject.getString("name");
+                    String track_album = trackObject.getJSONObject("album").getString("name");
+
+                    // Get all artists for the track
+                    Set<String> artists = new HashSet<>();
+                    JSONArray artistArray = trackObject.getJSONArray("artists");
+                    for (int j = 0; j < artistArray.length(); j++)
+                        artists.add(artistArray.getJSONObject(j).getString("name"));
+
+                    String cover_url = trackObject.getJSONObject("album").getJSONArray("images").getJSONObject(2).getString("url");
+
+                    // Create Track
+                    Track track = new Track(track_id, track_title, track_album, artists, cover_url);
+
+                    // Append ids for the track features request
+                    trackIdList.append(track_id).append(",");
+
+                    tracks.add(track);
+                }
+
+                // Only if there are 1+ tracks
+                if (tracks.size() > 0) {
+                    // Request track features
+                    List<TrackFeatures> trackFeaturesList = getTracksFeatures(trackIdList.toString()).get();
+
+                    int i = 0;
+                    // Set feature for each track
+                    for (Track t : tracks)
+                        t.setFeatures(trackFeaturesList.get(i++));
+                }
+
+                // Add current tracks to total Set
+                totalTrack.addAll(tracks);
+
+                // Check if tracks left
+                next = !jsonObject.isNull("next");
+                if (next)
+                    url = jsonObject.getString("next");
+
+            } while (next);
+
+            return totalTrack;
+        });
+    }
+
+    private Future<List<TrackFeatures>> getTracksFeatures(String trackIds) {
+        // Create track features request for a list of tracks
         final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks")
+                .url("https://api.spotify.com/v1/audio-features?ids=" + trackIds) // Add GET parameters
                 .addHeader("Authorization","Bearer " + this.accessToken)
                 .build();
 
@@ -151,35 +243,40 @@ public class SpotifyAPI implements APIManagerI {
 
         // Return a Future
         return pool.submit(() -> {
-            Set<Track> tracks = new HashSet<>();
+            List<TrackFeatures> tracksFeatures = new ArrayList<>();
 
             final JSONObject jsonObject = new JSONObject(call.execute().body().string());
-            JSONArray itemsArray = jsonObject.getJSONArray("items");
+            JSONArray trackArray = jsonObject.getJSONArray("audio_features");
 
-            for (int i = 0; i < itemsArray.length(); i++) {
-                JSONObject trackObject = itemsArray.getJSONObject(i).getJSONObject("track");
+            // For each track
+            for (int i = 0; i < trackArray.length(); i++) {
+                JSONObject trackObject = trackArray.getJSONObject(i);
 
                 // Get info from JSON
-                String track_id = trackObject.getString("id");
-                String track_title = trackObject.getString("name");
-                String track_album = trackObject.getJSONObject("album").getString("name");
+                double danceability = trackObject.getDouble("danceability");
+                double energy = trackObject.getDouble("energy");
+                double speechiness = trackObject.getDouble("speechiness");
+                double acousticness = trackObject.getDouble("acousticness");
+                double instrumentalness = trackObject.getDouble("instrumentalness");
 
-                Set<String> artists = new HashSet<>();
-                JSONArray artistArray = trackObject.getJSONArray("artists");
-                for (int j = 0; j < artistArray.length(); j++)
-                    artists.add(artistArray.getJSONObject(j).getString("name"));
+                // Create TrackFeatures
+                TrackFeatures playlist = new TrackFeatures(
+                        danceability,
+                        energy,
+                        speechiness,
+                        acousticness,
+                        instrumentalness
+                );
 
-                String cover_url = trackObject.getJSONObject("album").getJSONArray("images").getJSONObject(2).getString("url");
-
-                Track track = new Track(track_id, track_title, track_album, artists, cover_url, null);
-                tracks.add(track);
+                tracksFeatures.add(playlist);
             }
-            return tracks;
+
+            return tracksFeatures;
         });
     }
 
     @Override
-    public void playCurrentTrack() {
+    public void playPauseTrack() {
 
         mSpotifyAppRemote
                 .getPlayerApi()
@@ -202,12 +299,20 @@ public class SpotifyAPI implements APIManagerI {
                                 );
                             }
                         });
+    }
 
+    @Override
+    public void playTrack(String id) {
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .play("spotify:track:"+id)
+                .setResultCallback(
+                        data -> Log.d("Event API" ," play track " + id)
+                );
     }
 
     @Override
     public void skipNextTrack(){
-
         mSpotifyAppRemote
                 .getPlayerApi()
                 .skipNext()
@@ -218,18 +323,12 @@ public class SpotifyAPI implements APIManagerI {
 
     @Override
     public void skipPreviousTrack (){
-
         mSpotifyAppRemote
                 .getPlayerApi()
                 .skipPrevious()
                 .setResultCallback(
-                        data -> Log.d("Event API" ," skip next")
+                        data -> Log.d("Event API" ," skip previous")
                 );
-    }
-
-    @Override
-    public void playTrack(String id) {
-
     }
 
     @Override
@@ -246,7 +345,7 @@ public class SpotifyAPI implements APIManagerI {
     public void toggleShuffle(){
         mSpotifyAppRemote
                 .getPlayerApi()
-                .skipPrevious()
+                .toggleShuffle()
                 .setResultCallback(
                         data -> Log.d("Event API" ," toggle shuffle")
                 );
@@ -258,7 +357,7 @@ public class SpotifyAPI implements APIManagerI {
                 .getPlayerApi()
                 .seekToRelativePosition(15000)
                 .setResultCallback(
-                        data -> Log.d("Event API" ," seek fordward")
+                        data -> Log.d("Event API" ," seek forward")
                 );
     }
 
@@ -268,6 +367,16 @@ public class SpotifyAPI implements APIManagerI {
                 .getPlayerApi()
                 .seekToRelativePosition(-15000)
                 .setResultCallback(data -> Log.d("Event API" ," seek backward")
+                );
+    }
+
+    @Override
+    public void queueTrack(String id) {
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .queue("spotify:track:"+id)
+                .setResultCallback(
+                        data -> Log.d("Event API" ," play track " + id)
                 );
     }
 

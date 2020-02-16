@@ -52,17 +52,20 @@ public class MainActivity extends AppCompatActivity {
                     this.api.setAccessToken(response.getAccessToken());
 
                     try {
-                        User user = this.api.getUser("vilvilain").get();
+                        //User user = this.api.getUser("vilvilain").get();
+                        User user = this.api.getUser("216n6wqn2dkep6f6hkjw5yocq").get();
                         System.out.println("id: " + user.id + " ; display_name: " + user.username);
 
-                        Set<Playlist> playlists = this.api.getUserPlaylists("vilvilain").get();
+                        Set<Playlist> playlists = this.api.getUserPlaylists("216n6wqn2dkep6f6hkjw5yocq").get();
                         System.out.println(playlists.toString());
                         for (Playlist p: playlists) {
                             System.out.println("Playlist name:" + p.name);
 
                             for (Track t: p.getTracks()) {
-                                System.out.println("\t" + t.title);
+                                System.out.println("\t\t " + t.title);
+
                             }
+                            System.out.println("Number of tracks: " + p.getTracks().size());
                         }
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();

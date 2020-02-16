@@ -26,7 +26,7 @@ public class Session {
 
     public void start(Context context) {
         apiManager.connect(context);
-        randomInit();
+        Services.randomInit(this);
         mix();
     }
 
@@ -34,31 +34,33 @@ public class Session {
         localePlaylist = algo.compute(this.users);
     }
 
-    @Deprecated
-    private void randomInit(){
-        mainUser = new User("123", "tmp");
-        User secondUser = new User("456","tmp2");
-        User thirdUser = new User("789", "tmp3");
-        currentuser = mainUser;
-        users.add(mainUser);
-        users.add(secondUser);
-        users.add(thirdUser);
-        int playlistID = 0;
-        int trackID = 0;
-
-        for(User u : users)
-        {
-            Playlist p = new Playlist(Integer.toString(++playlistID), "Playlist "+ playlistID);
-            for(int i=0; i< 100; i++){
-                TrackFeatures features = new TrackFeatures(Math.random(), Math.random(), Math.random(), Math.random(), Math.random());
-                p.addTrack(new Track(Integer.toString(++trackID), "Track " + trackID, "Random Album", "Random Artist", "Random Cover", features));
-            }
-            u.addPlaylist(p);
-        }
-        System.out.println(users);
-    }
 
     public void end() {
         apiManager.disconnect();
+    }
+
+    public void setMainUser(User mainUser) {
+        this.mainUser = mainUser;
+        this.addUser(mainUser);
+    }
+
+    public void setCurrentUser(User currentuser) {
+        this.currentuser = currentuser;
+    }
+
+    public void setAlgo(AlgoI algo) {
+        this.algo = algo;
+    }
+
+    public void setLogManager(LogManagerI logManager) {
+        this.logManager = logManager;
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+
+    public Set<User> getUsers() {
+        return this.users;
     }
 }
