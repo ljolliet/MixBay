@@ -47,7 +47,7 @@ public class FirstAlgo implements AlgoI {
                 tracksList.put(t.id, t);
                 numberTracks++;
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                    trackFeaturesAverage[i] = ((HashMap<TrackFeatures.Name, Double>) t.features.getAll()).get(TrackFeatures.Name.values()[i]);
+                    trackFeaturesAverage[i] = t.getFeatures().allFeatures.get(TrackFeatures.NAME_VALUES[i]);
                 }
             }
         }
@@ -75,7 +75,7 @@ public class FirstAlgo implements AlgoI {
                 Track t = (Track) trackEntry.getValue();
                 double currentTrackScore = 0.;
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                    scorePerTrackVector[i] = ((TrackFeatures) currentUser.getValue()).getAll().get(TrackFeatures.Name.values()[i]) - t.features.getAll().get(TrackFeatures.Name.values()[i]);
+                    scorePerTrackVector[i] = ((TrackFeatures) currentUser.getValue()).allFeatures.get(TrackFeatures.NAME_VALUES[i]) - t.getFeatures().allFeatures.get(TrackFeatures.NAME_VALUES[i]);
                     currentTrackScore += Math.pow(scorePerTrackVector[i],2);
                 }
                 currentTrackScore = Math.sqrt(currentTrackScore);

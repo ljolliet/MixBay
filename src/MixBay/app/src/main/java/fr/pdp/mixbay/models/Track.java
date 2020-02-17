@@ -12,7 +12,7 @@ public class Track {
         public final String album;
         public final Set<String> artists;
         public final String cover_url;
-        public TrackFeatures features; // TODO Make it private
+        private TrackFeatures features;
 
 
     /**
