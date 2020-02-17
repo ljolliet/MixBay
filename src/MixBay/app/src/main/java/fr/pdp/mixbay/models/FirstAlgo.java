@@ -42,7 +42,6 @@ public class FirstAlgo implements AlgoI {
      * @param u Specific user of the application.
      */
     public void computeUserProfile(User u) {
-
         for (Playlist p : u.getPlaylist()) {
             for (Track t : p.getTracks()) {
                 tracksList.put(t.id, t);
@@ -64,6 +63,8 @@ public class FirstAlgo implements AlgoI {
      * Assign a score to each track for each user
      */
     public void computeMusicScorePerUser() {
+        double[] scorePerTrackVector = new double[TrackFeatures.SIZE];
+
         Iterator getUser = userProfile.entrySet().iterator();
         while (getUser.hasNext()) {
             HashMap<String, Double> scorePerTrack = new HashMap<>();
@@ -72,15 +73,13 @@ public class FirstAlgo implements AlgoI {
             while (tracksIt.hasNext()) {
                 Map.Entry trackEntry = (Map.Entry) tracksIt.next();
                 Track t = (Track) trackEntry.getValue();
-                double currentUserScore = 0.;
                 double currentTrackScore = 0.;
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                    currentUserScore += ((TrackFeatures) currentUser.getValue()).getAll().get(TrackFeatures.Name.values()[i]);
-                    currentTrackScore += t.features.getAll().get(TrackFeatures.Name.values()[i]);
+                    scorePerTrackVector[i] = ((TrackFeatures) currentUser.getValue()).getAll().get(TrackFeatures.Name.values()[i]) - t.features.getAll().get(TrackFeatures.Name.values()[i]);
+                    currentTrackScore += Math.pow(scorePerTrackVector[i],2);
                 }
-                currentUserScore /= TrackFeatures.SIZE;
-                currentTrackScore /= TrackFeatures.SIZE;
-                scorePerTrack.put(t.id, Math.abs(currentUserScore - currentTrackScore));
+                currentTrackScore = Math.sqrt(currentTrackScore);
+                scorePerTrack.put(t.id, currentTrackScore);
             }
             musicScorePerUser.put((String) currentUser.getKey(), scorePerTrack);
         }
