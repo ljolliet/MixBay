@@ -1,8 +1,11 @@
-package fr.pdp.mixbay.models;
+package fr.pdp.mixbay.business.dataAccess;
 
 import android.content.Context;
 import java.util.Set;
 import java.util.concurrent.Future;
+
+import fr.pdp.mixbay.business.models.Playlist;
+import fr.pdp.mixbay.business.models.User;
 
 
 public interface APIManagerI {

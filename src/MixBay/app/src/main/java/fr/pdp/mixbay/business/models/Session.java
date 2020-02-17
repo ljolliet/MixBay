@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.models;
+package fr.pdp.mixbay.business.models;
 
 import android.content.Context;
 
@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import fr.pdp.mixbay.application.Services;
+import fr.pdp.mixbay.business.dataAccess.APIManagerI;
+import fr.pdp.mixbay.business.dataAccess.LogManagerI;
 
 
 public class Session {

@@ -1,10 +1,10 @@
 package fr.pdp.mixbay.application;
 
-import fr.pdp.mixbay.models.Playlist;
-import fr.pdp.mixbay.models.Session;
-import fr.pdp.mixbay.models.Track;
-import fr.pdp.mixbay.models.TrackFeatures;
-import fr.pdp.mixbay.models.User;
+import fr.pdp.mixbay.business.models.Playlist;
+import fr.pdp.mixbay.business.models.Session;
+import fr.pdp.mixbay.business.models.Track;
+import fr.pdp.mixbay.business.models.TrackFeatures;
+import fr.pdp.mixbay.business.models.User;
 
 public class Services {
 

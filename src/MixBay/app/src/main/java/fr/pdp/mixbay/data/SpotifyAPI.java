@@ -22,11 +22,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import fr.pdp.mixbay.models.APIManagerI;
-import fr.pdp.mixbay.models.Playlist;
-import fr.pdp.mixbay.models.Track;
-import fr.pdp.mixbay.models.TrackFeatures;
-import fr.pdp.mixbay.models.User;
+import fr.pdp.mixbay.business.dataAccess.APIManagerI;
+import fr.pdp.mixbay.business.models.Playlist;
+import fr.pdp.mixbay.business.models.Track;
+import fr.pdp.mixbay.business.models.TrackFeatures;
+import fr.pdp.mixbay.business.models.User;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

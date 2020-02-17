@@ -1,14 +1,12 @@
-package fr.pdp.mixbay.models;
+package fr.pdp.mixbay.business.models;
 
-
-//TODO think about a different architecture
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TrackFeatures {
 
-    public static enum Name{
+    public enum Name{
         DANCEABILITY,
         ENERGY,
         SPEECHINESS,

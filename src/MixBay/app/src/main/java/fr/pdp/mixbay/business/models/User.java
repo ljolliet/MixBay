@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.models;
+package fr.pdp.mixbay.business.models;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +8,7 @@ public class User {
     public final String id;
     public final String username;
 
-    private Set<Playlist> personnalPlaylist = new HashSet<>();
+    private Set<Playlist> personalPlaylist = new HashSet<>();
     private boolean mute;
 
     /**
@@ -27,14 +27,14 @@ public class User {
      * @param playlist Playlist loaded from a Streaming service API.
      */
     public void addPlaylist(Playlist playlist){
-        personnalPlaylist.add(playlist);
+        personalPlaylist.add(playlist);
     }
 
     /**
      * @return A copy of the user playlists.
      */
     public Set<Playlist> getPlaylist(){
-        return new HashSet<>(this.personnalPlaylist);
+        return new HashSet<>(this.personalPlaylist);
     }
 
     /**

@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.models;
+package fr.pdp.mixbay.business.models;
 
 import java.util.Collections;
 import java.util.HashSet;

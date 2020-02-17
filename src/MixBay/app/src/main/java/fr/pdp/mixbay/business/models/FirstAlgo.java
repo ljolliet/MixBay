@@ -1,10 +1,12 @@
-package fr.pdp.mixbay.models;
+package fr.pdp.mixbay.business.models;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+
+import fr.pdp.mixbay.business.utils.MapUtil;
 
 public class FirstAlgo implements AlgoI {
 

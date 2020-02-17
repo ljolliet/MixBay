@@ -12,12 +12,12 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import fr.pdp.mixbay.models.APIManagerI;
-import fr.pdp.mixbay.models.Playlist;
-import fr.pdp.mixbay.models.Session;
+import fr.pdp.mixbay.business.dataAccess.APIManagerI;
+import fr.pdp.mixbay.business.models.Playlist;
+import fr.pdp.mixbay.business.models.Session;
 import fr.pdp.mixbay.data.SpotifyAPI;
-import fr.pdp.mixbay.models.Track;
-import fr.pdp.mixbay.models.User;
+import fr.pdp.mixbay.business.models.Track;
+import fr.pdp.mixbay.business.models.User;
 
 
 public class MainActivity extends AppCompatActivity {

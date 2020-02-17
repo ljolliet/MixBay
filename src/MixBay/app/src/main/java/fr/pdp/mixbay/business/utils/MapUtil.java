@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.models;
+package fr.pdp.mixbay.business.utils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
