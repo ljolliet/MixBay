@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 import fr.pdp.mixbay.models.APIManagerI;
 import fr.pdp.mixbay.models.Playlist;
 import fr.pdp.mixbay.models.Session;
-import fr.pdp.mixbay.models.SpotifyAPI;
+import fr.pdp.mixbay.data.SpotifyAPI;
 import fr.pdp.mixbay.models.Track;
 import fr.pdp.mixbay.models.User;
 

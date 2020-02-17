@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.models;
+package fr.pdp.mixbay.data;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +22,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import fr.pdp.mixbay.models.APIManagerI;
+import fr.pdp.mixbay.models.Playlist;
+import fr.pdp.mixbay.models.Track;
+import fr.pdp.mixbay.models.TrackFeatures;
+import fr.pdp.mixbay.models.User;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -5,6 +5,8 @@ import android.content.Context;
 import java.util.HashSet;
 import java.util.Set;
 
+import fr.pdp.mixbay.application.Services;
+
 
 public class Session {
 
