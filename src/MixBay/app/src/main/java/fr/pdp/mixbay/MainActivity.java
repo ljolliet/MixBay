@@ -2,7 +2,6 @@ package fr.pdp.mixbay;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -45,43 +44,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == api.SPOTIFY_REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
 
-            switch (response.getType()) {
-                // Response was successful and contains auth token
-                case TOKEN:
-                    Log.d("MainActivity", "The token is: " + response.getAccessToken());
-                    this.api.setAccessToken(response.getAccessToken());
+            // Manage connection result
+            ((SpotifyAPI) this.api).onConnectionResult(response);
 
-                    try {
-                        //User user = this.api.getUser("vilvilain").get();
-                        User user = this.api.getUser("216n6wqn2dkep6f6hkjw5yocq").get();
-                        System.out.println("id: " + user.id + " ; display_name: " + user.username);
-
-                        Set<Playlist> playlists = this.api.getUserPlaylists("216n6wqn2dkep6f6hkjw5yocq").get();
-                        System.out.println(playlists.toString());
-                        for (Playlist p: playlists) {
-                            System.out.println("Playlist name:" + p.name);
-
-                            for (Track t: p.getTracks()) {
-                                System.out.println("\t\t " + t.title);
-
-                            }
-                            System.out.println("Number of tracks: " + p.getTracks().size());
-                        }
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-
-                // Auth flow returned an error
-                case ERROR:
-                    // TODO Handle error response
-                    Log.d("MainActivity", "The error is: " + response.getError());
-                    break;
-
-                // Most likely auth flow was cancelled
-                default:
-                    // TODO Handle other cases
-            }
+            requestTests();
         }
     }
 
@@ -89,6 +55,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         session.end();
+    }
+
+    private void requestTests() {
+        try {
+            //User user = this.api.getUser("vilvilain").get();
+            User user = this.api.getUser("216n6wqn2dkep6f6hkjw5yocq").get();
+            System.out.println("id: " + user.id + " ; display_name: " + user.username);
+
+            Set<Playlist> playlists = this.api.getUserPlaylists("216n6wqn2dkep6f6hkjw5yocq").get();
+            System.out.println(playlists.toString());
+            for (Playlist p : playlists) {
+                System.out.println("Playlist name:" + p.name);
+
+                for (Track t : p.getTracks()) {
+                    System.out.println("\t\t " + t.title);
+
+                }
+                System.out.println("Number of tracks: " + p.getTracks().size());
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

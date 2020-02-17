@@ -36,7 +36,7 @@ public class SpotifyAPI implements APIManagerI {
 
     private static final String CLIENT_ID = "cb64858e27964a13b85d3e7e5e19b1d3";
     private static final String REDIRECT_URI = "mixbay://callback";
-    private static final String[] SCOPES = new String[]{"app-remote-control", "user-read-email", "user-read-private"};
+    private static final String[] SCOPES = new String[]{"user-read-email", "user-read-private"}; // TODO Add all the scopes the app needs
 
     private SpotifyAppRemote mSpotifyAppRemote;
     private Context context;
@@ -49,6 +49,29 @@ public class SpotifyAPI implements APIManagerI {
     public boolean connect(Context context) {
         this.context = context;
 
+        // Playback connection
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        SpotifyAppRemote.connect(context, connectionParams,
+                new Connector.ConnectionListener() {
+
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote;
+                        Log.d("MainActivity", "Connected");
+                        getPlayerInfo();
+                    }
+
+                    public void onFailure(Throwable throwable) {
+                        Log.e("MainActivity", throwable.getMessage(), throwable);
+                    }
+                });
+
+
+        // Web API connection
         AuthorizationRequest.Builder builder =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
 
@@ -57,9 +80,11 @@ public class SpotifyAPI implements APIManagerI {
         AuthorizationClient.openLoginActivity((Activity) context, SPOTIFY_REQUEST_CODE, request);
         //TODO add playback connection
 
-        return true;    //TODO return only if connected
+        return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
+        //return true;    //TODO return only if connected
     }
 
+    @Deprecated
     public boolean playbackConnect(){
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
@@ -83,10 +108,30 @@ public class SpotifyAPI implements APIManagerI {
         return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
     }
 
+    public void onConnectionResult(AuthorizationResponse response) {
+        switch (response.getType()) {
+            // Response was successful and contains auth token
+            case TOKEN:
+                Log.d("SpotifyAPI", "The token is: " + response.getAccessToken());
+                this.setAccessToken(response.getAccessToken());
+                break;
+
+            // Auth flow returned an error
+            case ERROR:
+                // TODO Handle error response
+                Log.d("SpotifyAPI", "The error is: " + response.getError());
+                break;
+
+            // Most likely auth flow was cancelled
+            default:
+                // TODO Handle other cases
+        }
+    }
+
 
     @Override
     public boolean disconnect() {
-        //SpotifyAppRemote.disconnect(mSpotifyAppRemote);         //TODO add playback disconnection
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
 
         if (context == null)
             return false;
@@ -263,6 +308,8 @@ public class SpotifyAPI implements APIManagerI {
                 double speechiness = trackObject.getDouble("speechiness");
                 double acousticness = trackObject.getDouble("acousticness");
                 double instrumentalness = trackObject.getDouble("instrumentalness");
+                double liveness = trackObject.getDouble("liveness");
+                double valence = trackObject.getDouble("valence");
 
                 // Create TrackFeatures
                 TrackFeatures playlist = new TrackFeatures(
@@ -270,7 +317,9 @@ public class SpotifyAPI implements APIManagerI {
                         energy,
                         speechiness,
                         acousticness,
-                        instrumentalness
+                        instrumentalness,
+                        liveness,
+                        valence
                 );
 
                 tracksFeatures.add(playlist);
