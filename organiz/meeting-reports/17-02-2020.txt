@@ -1,0 +1,23 @@
+PENDANT LA SEANCE:
+*Mentionné le problème des versions disponibles de l'API : seule la version beta (avec une doc approximative) est disponible
+*Explication des algorithmes (least misery strategy)
+
+TODO:
+*Prendre en compte les remarques sur les feuilles données et effectuer les modifications le cahier de besoins
+*Remonter description des algo dans analyse de l'existant
+*Ajouter du contenu sur cette partie : comment on en a discuté, les comparer, les forces et faiblesses de chacun, cas o* ils ne fonctionnent pas bien
+*Clarifier les intentions derrière le fait qu'on ait cité AppleMix : quel algo est utilisé ou est-il privé ? si on souhaite s'inspirer de leur charte graphique le dire
+*Changer la composition de Tracks vers API Manager
+*Ajouter les fonctions dans les classes implémentées
+*Modifier le calcul du score d'une musique : on soustrait chaque track feature du profil utilisateur à celui de la musique puis calcule de la distance/min des valeurs absolues/ somme des valeurs absolues (procédé de comparaison de vecteurs)
+*Ajouter des coefs lors des calculs de l'algorithme (/!\ sommes des coeff = 1)
+*Lorsqu'un user skip une musique les coef se recalculent. Plusieurs options s'ouvrent alors à nous concernant la playlist:
+**Recalculer une playlist quand on skip ?
+**Ajouter un bouton skip and recalculate ?
+**Calculer une playlist de seulement x tracks (afficher ces tracks là puis des petits points ou style pour dire que ça continue mais pas afficher les titres) recalculer une nouvelle playlist de x tracks en prenant en comptes les nouveaux coeff
+*Plus une personne est déçue plus son choix est prioritaire
+*Si une personne skip on baisse sa deception
+
+
+TODO ? 
+*Permettre de s'intéresser en partuclier à une track feature spécifique (ex : je donne beaucoup d'importance à l'energy de la musique)
