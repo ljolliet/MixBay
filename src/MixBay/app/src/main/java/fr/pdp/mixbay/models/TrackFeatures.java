@@ -13,47 +13,48 @@ public class TrackFeatures {
         ENERGY,
         SPEECHINESS,
         ACOUSTICNESS,
-        INSTRUMENTALNESS
+        INSTRUMENTALNESS,
+        LIVENESS,
+        VALENCE
     }
 
-    public static final int SIZE = Name.values().length;
-    public final double danceability;
-    public final double energy;
-    public final double speechiness;
-    public final double acousticness;
-    public final double instrumentalness;
+    public static final Name[] NAME_VALUES = Name.values();
+    public static final int SIZE = NAME_VALUES.length;
 
-    private Map<Name, Double> allFeatures;
+    public final Map<Name, Double> allFeatures;
 
 
+    public TrackFeatures(double danceability, double energy, double speechiness, double acousticness, double instrumentalness, double liveness, double valence) {
+        this.allFeatures = new HashMap<Name, Double>(){{
+            put(Name.DANCEABILITY, danceability);
+            put(Name.ENERGY, energy);
+            put(Name.SPEECHINESS, speechiness);
+            put(Name.ACOUSTICNESS, acousticness);
+            put(Name.INSTRUMENTALNESS, instrumentalness);
+            put(Name.LIVENESS, liveness);
+            put(Name.VALENCE, valence);
+        }};
+    }
+
+    @Deprecated
     public TrackFeatures(double danceability, double energy, double speechiness, double acousticness, double instrumentalness) {
-        this.danceability = danceability;
-        this.energy = energy;
-        this.speechiness = speechiness;
-        this.acousticness = acousticness;
-        this.instrumentalness = instrumentalness;
-        this.allFeatures = new HashMap<>();
-        allFeatures.put(Name.DANCEABILITY, danceability);
-        allFeatures.put(Name.ENERGY, energy);
-        allFeatures.put(Name.SPEECHINESS, speechiness);
-        allFeatures.put(Name.ACOUSTICNESS, acousticness);
-        allFeatures.put(Name.INSTRUMENTALNESS, instrumentalness);
+        this.allFeatures = new HashMap<Name, Double>(){{
+            put(Name.DANCEABILITY, danceability);
+            put(Name.ENERGY, energy);
+            put(Name.SPEECHINESS, speechiness);
+            put(Name.ACOUSTICNESS, acousticness);
+            put(Name.INSTRUMENTALNESS, instrumentalness);
+        }};
     }
 
     public TrackFeatures(double[] trackFeatures) {
-        this.danceability = trackFeatures[0];
-        this.energy = trackFeatures[1];
-        this.speechiness = trackFeatures[2];
-        this.acousticness = trackFeatures[3];
-        this.instrumentalness = trackFeatures[4];
-        this.allFeatures = new HashMap<>();
-        allFeatures.put(Name.DANCEABILITY, danceability);
-        allFeatures.put(Name.ENERGY, energy);
-        allFeatures.put(Name.SPEECHINESS, speechiness);
-        allFeatures.put(Name.ACOUSTICNESS, acousticness);
-        allFeatures.put(Name.INSTRUMENTALNESS, instrumentalness);
+        this.allFeatures = new HashMap<Name, Double>(){{
+            for(int i = 0; i< SIZE; i++)
+                put(NAME_VALUES[i], trackFeatures[i]);
+        }};
     }
 
+    @Deprecated
     public Map<Name, Double> getAll() {
         return this.allFeatures;
     }

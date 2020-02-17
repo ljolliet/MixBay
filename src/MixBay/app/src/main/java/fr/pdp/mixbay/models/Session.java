@@ -27,7 +27,7 @@ public class Session {
     public void start(Context context) {
         apiManager.connect(context);
         Services.randomInit(this);
-        mix();
+        //mix();
     }
 
     public void mix(){
