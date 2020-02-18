@@ -19,22 +19,22 @@ public interface APIManagerI {
     boolean connect(Context context);
 
     /**
-     * TODO Paul
-     * @return
+     * Disconnect the main user to the API.
+     * @return true if disconnected.
      */
     boolean disconnect();
 
     /**
-     * TODO @paul
-     * @param id
-     * @return
+     * Get the User with the given id.
+     * @param id The id of the user.
+     * @return A Future with the User.
      */
     Future<User> getUser(String id);
 
     /**
-     * TODO @aul
-     * @param userId
-     * @return
+     * Get all the Playlists of a user.
+     * @param userId The id of the user.
+     * @return A Future with the set of Playlists.
      */
     Future<Set<Playlist>> getUserPlaylists(String userId);
 
@@ -46,13 +46,13 @@ public interface APIManagerI {
     void playTrack(String id);
 
     /**
-     * Play/Pause the current track : play if paused and pause otherwise
+     * Play/Pause the current track: play if paused and pause otherwise
      */
     void playPauseTrack();
 
     /**
      * Add the given track to the user's queue.
-     * @param id tr'ack's id to queue.
+     * @param id track's id to queue.
      */
     void queueTrack(String id);
 
@@ -75,8 +75,10 @@ public interface APIManagerI {
     void seekFordward();
     void seekBackward();
 
-
-
+    /**
+     * Set the access access token of the main user to allow API requests.
+     * @param token The token.
+     */
     void setAccessToken(String token);
 
 }

@@ -78,7 +78,6 @@ public class SpotifyAPI implements APIManagerI {
         builder.setScopes(SCOPES);
         AuthorizationRequest request = builder.build();
         AuthorizationClient.openLoginActivity((Activity) context, SPOTIFY_REQUEST_CODE, request);
-        //TODO add playback connection
 
         return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
         //return true;    //TODO return only if connected
@@ -108,6 +107,10 @@ public class SpotifyAPI implements APIManagerI {
         return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
     }
 
+    /**
+     * Call this function after getting a AuthorizationResponse from the Spotify LoginActivity.
+     * @param response The AuthorizationResponse.
+     */
     public void onConnectionResult(AuthorizationResponse response) {
         switch (response.getType()) {
             // Response was successful and contains auth token
@@ -200,6 +203,11 @@ public class SpotifyAPI implements APIManagerI {
         });
     }
 
+    /**
+     * Get all the tracks of a playlist.
+     * @param playlistId The id of the playlist.
+     * @return A Future with the set of Tracks.
+     */
     private Future<Set<Track>> getTracksFromPlaylist(String playlistId) {
         ExecutorService pool = Executors.newFixedThreadPool(1);
 
@@ -281,6 +289,12 @@ public class SpotifyAPI implements APIManagerI {
         });
     }
 
+    /**
+     * Get the TrackFeatures of a list of Tracks.<br />
+     * The maximum of Tracks is 100.
+     * @param trackIds The ids of the Tracks separated with a comma.
+     * @return A Future with a list TrackFeatures.
+     */
     private Future<List<TrackFeatures>> getTracksFeatures(String trackIds) {
         // Create track features request for a list of tracks
         final Request request = new Request.Builder()
@@ -331,7 +345,6 @@ public class SpotifyAPI implements APIManagerI {
 
     @Override
     public void playPauseTrack() {
-
         mSpotifyAppRemote
                 .getPlayerApi()
                 .getPlayerState()
@@ -447,6 +460,7 @@ public class SpotifyAPI implements APIManagerI {
                 });
     }
 
+    @Override
     public void setAccessToken(String token) {
         this.accessToken = token;
     }
