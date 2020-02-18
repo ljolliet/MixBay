@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".loginPage"
+    android:background="@color/windowBackground">
+
+    <ImageView
+        android:id="@+id/image"
+        android:src="@drawable/casque"
+        android:layout_width="350px"
+        android:layout_height="350px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/circle_user_blue"
+        />
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/image"
+        android:textColor="@android:color/background_light"
+        android:textSize="25dp"
+        />
+    <Button
+        android:id="@+id/btnSpotifyLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect with Spotify"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btnDeezerLogin"
+        android:layout_marginBottom="10dp"
+        android:padding="15dp"
+        android:background="@drawable/rounded_button_green"
+        />
+    <Button
+        android:id="@+id/btnDeezerLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect with Deezer"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/rounded_button_green"
+        android:padding="15dp"
+        android:enabled="false"
+        />
+
+</RelativeLayout>
+
