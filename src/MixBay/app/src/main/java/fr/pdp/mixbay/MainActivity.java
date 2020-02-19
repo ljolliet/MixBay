@@ -34,22 +34,22 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         // Remove the 2 following lines if LoginActivity is the launcher activity
-//        Services.createSpotifySession();
-//        Services.getSession().start(this);
+        Services.createSpotifySession();
+        Services.getSession().start(this);
 
         session = Services.getSession();
-        requestTests();
+        //requestTests();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         // Spotify authentication response
-        if (requestCode == session.getApi().SPOTIFY_REQUEST_CODE) {
+        if (requestCode == APIManagerI.SPOTIFY_REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
 
             // Manage connection result
-            ((SpotifyAPI) this.session.getApi()).onConnectionResult(response);
+            ((SpotifyAPI) Services.getSession().getApi()).onConnectionResult(response);
 
             requestTests();
         }
@@ -58,9 +58,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        session.end();
+        Services.getSession().end(); // TODO Add a service
     }
 
+    @Deprecated
     private void requestTests() {
         try {
             //User user = this.api.getUser("vilvilain").get();
