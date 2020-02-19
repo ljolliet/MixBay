@@ -1,12 +1,18 @@
 package fr.pdp.mixbay.application;
 
+import fr.pdp.mixbay.business.dataAccess.APIManagerI;
+import fr.pdp.mixbay.business.dataAccess.RepositoryI;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.TrackFeatures;
 import fr.pdp.mixbay.business.models.User;
+import fr.pdp.mixbay.data.InMemoryRepository;
+import fr.pdp.mixbay.data.SpotifyAPI;
 
 public class Services {
+
+    private static RepositoryI repository = new InMemoryRepository();
 
     @Deprecated
     public static void randomInit(Session session){
@@ -30,5 +36,22 @@ public class Services {
             u.addPlaylist(p);
         }
         System.out.println(session.getUsers());
+    }
+
+    public static Session getSession() {
+        return repository.getSession();
+    }
+
+    public static void setSession(Session session) {
+        repository.setSession(session);
+    }
+
+    public static Session createSpotifySession() {
+        APIManagerI api = new SpotifyAPI();
+        Session session = new Session(api);
+
+        setSession(session);
+
+        return session;
     }
 }
