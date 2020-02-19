@@ -11,6 +11,7 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+import fr.pdp.mixbay.application.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
@@ -22,7 +23,6 @@ import fr.pdp.mixbay.business.models.User;
 public class MainActivity extends AppCompatActivity {
 
     private Session session;
-    private APIManagerI api;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,20 +32,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        api = new SpotifyAPI();
-        session = new Session(api);
-        session.start(this);
+
+        // Remove the 2 following lines if LoginActivity is the launcher activity
+//        Services.createSpotifySession();
+//        Services.getSession().start(this);
+
+        session = Services.getSession();
+        requestTests();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         // Spotify authentication response
-        if (requestCode == api.SPOTIFY_REQUEST_CODE) {
+        if (requestCode == session.getApi().SPOTIFY_REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
 
             // Manage connection result
-            ((SpotifyAPI) this.api).onConnectionResult(response);
+            ((SpotifyAPI) this.session.getApi()).onConnectionResult(response);
 
             requestTests();
         }
@@ -60,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
     private void requestTests() {
         try {
             //User user = this.api.getUser("vilvilain").get();
-            User user = this.api.getUser("216n6wqn2dkep6f6hkjw5yocq").get();
+            User user = this.session.getApi().getUser("216n6wqn2dkep6f6hkjw5yocq").get();
             System.out.println("id: " + user.id + " ; display_name: " + user.username);
 
-            Set<Playlist> playlists = this.api.getUserPlaylists("216n6wqn2dkep6f6hkjw5yocq").get();
+            Set<Playlist> playlists = this.session.getApi().getUserPlaylists("216n6wqn2dkep6f6hkjw5yocq").get();
             System.out.println(playlists.toString());
             for (Playlist p : playlists) {
                 System.out.println("Playlist name:" + p.name);

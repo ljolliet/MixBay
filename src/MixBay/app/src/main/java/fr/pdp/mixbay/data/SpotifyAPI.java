@@ -111,13 +111,13 @@ public class SpotifyAPI implements APIManagerI {
      * Call this function after getting a AuthorizationResponse from the Spotify LoginActivity.
      * @param response The AuthorizationResponse.
      */
-    public void onConnectionResult(AuthorizationResponse response) {
+    public boolean onConnectionResult(AuthorizationResponse response) {
         switch (response.getType()) {
             // Response was successful and contains auth token
             case TOKEN:
                 Log.d("SpotifyAPI", "The token is: " + response.getAccessToken());
                 this.setAccessToken(response.getAccessToken());
-                break;
+                return true;
 
             // Auth flow returned an error
             case ERROR:
@@ -129,6 +129,8 @@ public class SpotifyAPI implements APIManagerI {
             default:
                 // TODO Handle other cases
         }
+
+        return false;
     }
 
 

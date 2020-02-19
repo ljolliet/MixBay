@@ -67,4 +67,8 @@ public class Session {
     public Set<User> getUsers() {
         return this.users;
     }
+
+    public APIManagerI getApi() {
+        return apiManager;
+    }
 }
