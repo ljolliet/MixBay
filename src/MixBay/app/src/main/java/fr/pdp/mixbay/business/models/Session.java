@@ -39,8 +39,8 @@ public class Session {
     }
 
 
-    public void end() {
-        apiManager.disconnect();
+    public boolean end() {
+        return apiManager.disconnect();
     }
 
     public void setMainUser(User mainUser) {

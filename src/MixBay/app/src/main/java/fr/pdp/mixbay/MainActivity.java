@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Services.getSession().end(); // TODO Add a service
+        Services.disconnectSession();
     }
 
     @Deprecated

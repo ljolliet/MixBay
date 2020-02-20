@@ -11,7 +11,6 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 import fr.pdp.mixbay.application.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
-import fr.pdp.mixbay.business.models.Session;
 import fr.pdp.mixbay.data.SpotifyAPI;
 
 public class LoginActivity extends AppCompatActivity {

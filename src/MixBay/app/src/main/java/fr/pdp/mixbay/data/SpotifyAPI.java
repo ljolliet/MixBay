@@ -61,7 +61,7 @@ public class SpotifyAPI implements APIManagerI {
 
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected");
+                        Log.d("MainActivity", "Spotify remote Connected");
                         getPlayerInfo();
                     }
 
@@ -79,8 +79,7 @@ public class SpotifyAPI implements APIManagerI {
         AuthorizationRequest request = builder.build();
         AuthorizationClient.openLoginActivity((Activity) context, SPOTIFY_REQUEST_CODE, request);
 
-        return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
-        //return true;    //TODO return only if connected
+        return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected(); // TODO Manage return (now, it always returns false because of async callback)
     }
 
     @Deprecated

@@ -54,4 +54,8 @@ public class Services {
 
         return session;
     }
+
+    public static boolean disconnectSession() {
+        return repository.getSession().end();
+    }
 }
