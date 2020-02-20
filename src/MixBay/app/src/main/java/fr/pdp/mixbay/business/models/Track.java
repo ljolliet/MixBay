@@ -1,7 +1,9 @@
 package fr.pdp.mixbay.business.models;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -97,5 +99,46 @@ public class Track {
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Set<String> getArtists() {
+        return new HashSet<>(this.artists);
+    }
+
+    /*
+     * this function is just for testing the front (printing the track list).
+     * It could be deleted after that
+     */
+
+    public static List<Track> getSampleTracks() {
+        List<Track> trackList = new ArrayList<Track>();
+        Set<String> artistsSet = new HashSet<String>();
+        artistsSet.add("Dr Dre");
+        artistsSet.add("2pac");
+
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+        trackList.add(new Track("id", "kill him", "LifeStyle", artistsSet, "url", new TrackFeatures(0, 0, 0, 0, 0,0, 0)));
+
+        return trackList;
     }
 }

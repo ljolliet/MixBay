@@ -2,6 +2,7 @@ package fr.pdp.mixbay;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import fr.pdp.mixbay.application.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
+import fr.pdp.mixbay.business.utils.TrackAdapter;
 import fr.pdp.mixbay.data.SpotifyAPI;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.User;
@@ -39,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
         session = Services.getSession();
         //requestTests();
+
+        //TODO getting a right list of tracks. the list witch is used is just for test
+        // replacing icons by rights icons in footer.xm
+
+        ListView view = findViewById(R.id.trackList);
+        TrackAdapter adapter = new TrackAdapter(this, Track.getSampleTracks());
+        view.setAdapter(adapter);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
