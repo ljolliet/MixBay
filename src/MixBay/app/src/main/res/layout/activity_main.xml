@@ -23,5 +23,18 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:text="@string/mix_playlist" />
+    <ListView
+        android:id="@+id/trackList"
+        android:layout_below="@id/button"
+        android:layout_above="@id/footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+    />
+
+    <include
+       android:id="@+id/footer"
+        layout="@layout/footer"
+    />
 
 </RelativeLayout>

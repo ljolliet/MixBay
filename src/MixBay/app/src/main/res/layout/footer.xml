@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentBottom="true"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/colorPrimaryDark">
+
+    <ImageView
+        android:id="@+id/pochette"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/smiley_langue"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+    />
+    <ImageView
+        android:id="@+id/prevButton"
+        android:src="@drawable/back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@+id/playButton"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+    />
+    <ImageView
+        android:id="@+id/playButton"
+        android:src="@drawable/play"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="15dp"
+        />
+    <ImageView
+        android:id="@+id/nextButton"
+        android:src="@drawable/next"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/playButton"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        />
+    <ImageView
+        android:id="@+id/likeButton"
+        android:src="@drawable/like"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+    />
+
+</RelativeLayout>
