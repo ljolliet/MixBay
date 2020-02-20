@@ -8,5 +8,6 @@
     <color name="colorPrimaryDark">#2a2a2a</color>
     <color name="windowBackground">#3c3d42</color>
     <color name="colorMixButton">#4791df</color>
-    <color name="colorConnectSpotifyButton">@android:color/holo_green_dark</color>
+    <color name="colorConnectButton">#57b560</color>
+    <color name="colorConnectButtonDisabled">#696a6e</color>
 </resources>

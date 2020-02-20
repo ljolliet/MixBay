@@ -9,13 +9,13 @@
 
     <ImageView
         android:id="@+id/image"
-        android:src="@drawable/casque"
-        android:layout_width="350px"
-        android:layout_height="350px"
+        android:src="@drawable/headphones_640"
+        android:contentDescription="@string/app_name"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/circle_user_blue"
-        />
+        android:layout_marginTop="100dp" />
+
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
@@ -24,31 +24,71 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/image"
         android:textColor="@android:color/background_light"
-        android:textSize="25dp"
-        />
-    <Button
-        android:id="@+id/btnSpotifyLogin"
-        android:layout_width="wrap_content"
+        android:textSize="50sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Connect with Spotify"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/btnDeezerLogin"
-        android:layout_marginBottom="10dp"
-        android:padding="15dp"
-        android:background="@drawable/rounded_button_green"
-        />
-    <Button
-        android:id="@+id/btnDeezerLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connect with Deezer"
-        android:layout_centerHorizontal="true"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/rounded_button_green"
-        android:padding="15dp"
-        android:enabled="false"
-        />
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/btnSpotifyLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connect_with_spotify"
+            android:layout_marginBottom="20dp"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:padding="15dp"
+            android:background="@drawable/rounded_button_green"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/btnDeezerLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connect_with_deezer"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:padding="15dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/rounded_button_grey"
+            android:textColor="@color/windowBackground" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact"
+            android:textColor="#8d9096"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/pipe_char"
+            android:textColor="#8d9096"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about"
+            android:textColor="#8d9096"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
 
