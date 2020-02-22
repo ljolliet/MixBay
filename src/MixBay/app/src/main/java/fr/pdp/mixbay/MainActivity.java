@@ -16,6 +16,7 @@ import fr.pdp.mixbay.application.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
+import fr.pdp.mixbay.business.models.TrackFeatures;
 import fr.pdp.mixbay.business.utils.TrackAdapter;
 import fr.pdp.mixbay.data.SpotifyAPI;
 import fr.pdp.mixbay.business.models.Track;
@@ -74,22 +75,27 @@ public class MainActivity extends AppCompatActivity {
     private void requestTests() {
         try {
             //User user = this.api.getUser("vilvilain").get();
-            User user = this.session.getApi().getUser("216n6wqn2dkep6f6hkjw5yocq").get();
+            String id = "216n6wqn2dkep6f6hkjw5yocq";
+
+            User user = this.session.getApi().getUser(id).get();
+            if (user == null)
+                return;
+
             System.out.println("id: " + user.id + " ; display_name: " + user.username);
 
-            Set<Playlist> playlists = this.session.getApi().getUserPlaylists("216n6wqn2dkep6f6hkjw5yocq").get();
+            Set<Playlist> playlists = this.session.getApi().getUserPlaylists(user.id).get();
             System.out.println(playlists.toString());
             for (Playlist p : playlists) {
                 System.out.println("Playlist name:" + p.name);
 
                 for (Track t : p.getTracks()) {
-                    System.out.println("\t\t " + t.title);
+                    System.out.println("\t\t " + t.title + " ; danceability: " + (t.getFeatures() == null ? "null" : t.getFeatures().allFeatures.get(TrackFeatures.Name.DANCEABILITY)));
 
                 }
                 System.out.println("Number of tracks: " + p.getTracks().size());
             }
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

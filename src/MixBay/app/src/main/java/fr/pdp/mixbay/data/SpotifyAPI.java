@@ -22,7 +22,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
+import fr.pdp.mixbay.business.models.APIRequestException;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.TrackFeatures;
@@ -109,6 +111,7 @@ public class SpotifyAPI implements APIManagerI {
     /**
      * Call this function after getting a AuthorizationResponse from the Spotify LoginActivity.
      * @param response The AuthorizationResponse.
+     * @return True if the connection is allowed TODO
      */
     public boolean onConnectionResult(AuthorizationResponse response) {
         switch (response.getType()) {
@@ -145,7 +148,7 @@ public class SpotifyAPI implements APIManagerI {
     }
 
     @Override
-    public Future<User> getUser(String id) { // TODO Do smthg if id doesn't exist
+    public Future<User> getUser(String id) {
         // Create User info request
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/users/" + id)
@@ -158,10 +161,15 @@ public class SpotifyAPI implements APIManagerI {
         // Return a Future
         return pool.submit(() -> {
             final JSONObject jsonObject = new JSONObject(call.execute().body().string());
-//            jsonObject.has("display_name");
+            Log.d("SpotifyAPI", jsonObject.toString());
+
+            // If user does not exist
+            if (jsonObject.has("error"))
+                throw new APIRequestException(context.getString(R.string.invalid_user_id));
 
             // Return new User
             return new User(id, jsonObject.getString("display_name"));
+
         });
     }
 
@@ -181,6 +189,11 @@ public class SpotifyAPI implements APIManagerI {
             Set<Playlist> playlists = new HashSet<>();
 
             final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+
+            // If user does not exist
+            if (jsonObject.has("error"))
+                throw new APIRequestException(context.getString(R.string.invalid_user_id));
+
             JSONArray itemsArray = jsonObject.getJSONArray("items");
 
             // For each user's playlists
@@ -222,7 +235,7 @@ public class SpotifyAPI implements APIManagerI {
                     "fields=items(track(id,name,artists,album(name,images))),next"; // Only important fields
 
             // Create total track set to return
-            Set<Track> totalTrack = new HashSet();
+            Set<Track> totalTrack = new HashSet<>();
 
             do {
                 // Create playlist info request
@@ -237,6 +250,11 @@ public class SpotifyAPI implements APIManagerI {
                 StringBuilder trackIdList = new StringBuilder(); // List of track ids
 
                 final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+
+                // If user does not exist
+                if (jsonObject.has("error"))
+                    throw new APIRequestException(context.getString(R.string.invalid_playlist_id));
+
                 JSONArray itemsArray = jsonObject.getJSONArray("items");
 
                 // For each track in playlist
@@ -317,6 +335,11 @@ public class SpotifyAPI implements APIManagerI {
             for (int i = 0; i < trackArray.length(); i++) {
                 JSONObject trackObject = trackArray.getJSONObject(i);
 
+                if (trackArray.isNull(i)) {
+                    tracksFeatures.add(null);
+                    continue;
+                }
+
                 // Get info from JSON
                 double danceability = trackObject.getDouble("danceability");
                 double energy = trackObject.getDouble("energy");
@@ -327,7 +350,7 @@ public class SpotifyAPI implements APIManagerI {
                 double valence = trackObject.getDouble("valence");
 
                 // Create TrackFeatures
-                TrackFeatures playlist = new TrackFeatures(
+                TrackFeatures features = new TrackFeatures(
                         danceability,
                         energy,
                         speechiness,
@@ -337,7 +360,7 @@ public class SpotifyAPI implements APIManagerI {
                         valence
                 );
 
-                tracksFeatures.add(playlist);
+                tracksFeatures.add(features);
             }
 
             return tracksFeatures;
