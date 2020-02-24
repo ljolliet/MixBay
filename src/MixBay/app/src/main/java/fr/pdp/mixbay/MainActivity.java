@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 
 import fr.pdp.mixbay.application.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
+import fr.pdp.mixbay.business.models.APIConnectionException;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
 import fr.pdp.mixbay.business.models.TrackFeatures;
@@ -59,9 +60,14 @@ public class MainActivity extends AppCompatActivity {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
 
             // Manage connection result
-            ((SpotifyAPI) Services.getSession().getApi()).onConnectionResult(response);
+            try {
+                ((SpotifyAPI) Services.getSession().getApi()).onConnectionResult(response);
 
-            requestTests();
+                requestTests();
+            } catch (APIConnectionException e) {
+                // TODO Manage exception
+                System.out.println(e.getMessage());
+            }
         }
     }
 

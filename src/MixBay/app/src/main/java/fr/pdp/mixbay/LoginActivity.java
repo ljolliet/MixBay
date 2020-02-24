@@ -11,6 +11,7 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 import fr.pdp.mixbay.application.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
+import fr.pdp.mixbay.business.models.APIConnectionException;
 import fr.pdp.mixbay.data.SpotifyAPI;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,11 +37,14 @@ public class LoginActivity extends AppCompatActivity {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
 
             // Manage connection result
-            boolean result = ((SpotifyAPI) Services.getSession().getApi()).onConnectionResult(response);
+            try {
+                ((SpotifyAPI) Services.getSession().getApi()).onConnectionResult(response);
 
-            if (result) {
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
+            } catch (APIConnectionException e) {
+                // TODO Manage exception
+                System.out.println(e.getMessage());
             }
         }
     }

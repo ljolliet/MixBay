@@ -24,6 +24,7 @@ import java.util.concurrent.Future;
 
 import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
+import fr.pdp.mixbay.business.models.APIConnectionException;
 import fr.pdp.mixbay.business.models.APIRequestException;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Track;
@@ -110,29 +111,25 @@ public class SpotifyAPI implements APIManagerI {
 
     /**
      * Call this function after getting a AuthorizationResponse from the Spotify LoginActivity.
-     * @param response The AuthorizationResponse.
-     * @return True if the connection is allowed TODO
+     * @param response The AuthorizationResponse object.
+     * @throws APIConnectionException If an error happens.
      */
-    public boolean onConnectionResult(AuthorizationResponse response) {
+    public void onConnectionResult(AuthorizationResponse response) throws APIConnectionException {
         switch (response.getType()) {
             // Response was successful and contains auth token
             case TOKEN:
                 Log.d("SpotifyAPI", "The token is: " + response.getAccessToken());
                 this.setAccessToken(response.getAccessToken());
-                return true;
+                break;
 
             // Auth flow returned an error
             case ERROR:
-                // TODO Handle error response
-                Log.d("SpotifyAPI", "The error is: " + response.getError());
-                break;
+                throw new APIConnectionException(response.getError());
 
             // Most likely auth flow was cancelled
             default:
-                // TODO Handle other cases
+                throw new APIConnectionException(context.getString(R.string.api_request_error));
         }
-
-        return false;
     }
 
 
