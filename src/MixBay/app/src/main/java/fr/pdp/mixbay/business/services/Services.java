@@ -19,7 +19,6 @@ public class Services {
         User firstUser = new User("123", "tmp");
         User secondUser = new User("456","tmp2");
         User thirdUser = new User("789", "tmp3");
-        session.setMainUser(firstUser);
         session.setCurrentUser(firstUser);
         session.addUser(secondUser);
         session.addUser(thirdUser);

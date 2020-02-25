@@ -14,8 +14,7 @@ import fr.pdp.mixbay.business.dataAccess.LogManagerI;
 public class Session {
 
     private Playlist localePlaylist;
-    private User mainUser;
-    private User currentuser;
+     private User currentuser;
     private Set<User> users;
     private AlgoI algo;
     private LogManagerI logManager;
@@ -44,10 +43,6 @@ public class Session {
         return apiManager.disconnect();
     }
 
-    public void setMainUser(User mainUser) {
-        this.mainUser = mainUser;
-        this.addUser(mainUser);
-    }
 
     public void setCurrentUser(User currentuser) {
         this.currentuser = currentuser;
