@@ -14,6 +14,8 @@ public class Services {
 
     private static RepositoryI repository = new InMemoryRepository();
 
+    private Services() {} // Private constructor
+
     @Deprecated
     public static void randomInit(Session session){
         User firstUser = new User("123", "tmp");
