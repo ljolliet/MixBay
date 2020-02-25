@@ -1,3 +1,7 @@
+#added by @ljolliet
+./**/.idea
+
+
 #initial
 *.iml
 .gradle
