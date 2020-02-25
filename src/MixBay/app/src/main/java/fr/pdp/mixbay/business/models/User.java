@@ -1,6 +1,9 @@
 package fr.pdp.mixbay.business.models;
 
+import android.graphics.Color;
+
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class User {
@@ -11,6 +14,9 @@ public class User {
     private Set<Playlist> personalPlaylist = new HashSet<>();
     private boolean mute;
 
+    private int color;
+    private char initial;
+
     /**
      * User loaded from a Streaming service API.
      * @param id Streaming service user id.
@@ -20,6 +26,29 @@ public class User {
         this.id = id;
         this.username = username;
         this.mute = false;
+
+        createInitial();
+        generateColor();
+    }
+
+    /**
+     * Generate user's initial
+     */
+    private void createInitial() {
+        this.initial = this.username.charAt(0);
+    }
+
+    /**
+     * Generate user's color
+     */
+    private void generateColor() {
+        Random rand = new Random();
+
+        // Generate pastel colors - from https://stackoverflow.com/a/8739276
+        final float hue = rand.nextFloat();
+        final float saturation = 0.9f; // Brilliant
+        final float luminance = 1.0f;  // Bright
+        color = Color.HSVToColor(new float[]{hue, saturation, luminance});
     }
 
     /**
@@ -50,5 +79,13 @@ public class User {
 
     public void unmute(){
         this.mute = false;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public char getInitial() {
+        return initial;
     }
 }
