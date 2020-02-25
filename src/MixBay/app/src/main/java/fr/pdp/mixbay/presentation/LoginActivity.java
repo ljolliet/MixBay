@@ -1,4 +1,4 @@
-package fr.pdp.mixbay;
+package fr.pdp.mixbay.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
-import fr.pdp.mixbay.application.Services;
+import fr.pdp.mixbay.R;
+import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
-import fr.pdp.mixbay.business.models.APIConnectionException;
+import fr.pdp.mixbay.business.exceptions.APIConnectionException;
 import fr.pdp.mixbay.data.SpotifyAPI;
 
 public class LoginActivity extends AppCompatActivity {

@@ -24,8 +24,8 @@ import java.util.concurrent.Future;
 
 import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
-import fr.pdp.mixbay.business.models.APIConnectionException;
-import fr.pdp.mixbay.business.models.APIRequestException;
+import fr.pdp.mixbay.business.exceptions.APIConnectionException;
+import fr.pdp.mixbay.business.exceptions.APIRequestException;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.TrackFeatures;

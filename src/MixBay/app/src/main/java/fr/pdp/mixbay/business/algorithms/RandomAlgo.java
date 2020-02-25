@@ -1,6 +1,11 @@
-package fr.pdp.mixbay.business.models;
+package fr.pdp.mixbay.business.algorithms;
 
 import java.util.Set;
+
+import fr.pdp.mixbay.business.models.AlgoI;
+import fr.pdp.mixbay.business.models.Playlist;
+import fr.pdp.mixbay.business.models.Track;
+import fr.pdp.mixbay.business.models.User;
 
 public class RandomAlgo implements AlgoI {
 

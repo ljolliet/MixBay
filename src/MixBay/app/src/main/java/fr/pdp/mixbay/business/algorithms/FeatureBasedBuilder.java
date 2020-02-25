@@ -1,9 +1,15 @@
-package fr.pdp.mixbay.business.models;
+package fr.pdp.mixbay.business.algorithms;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import fr.pdp.mixbay.business.models.Playlist;
+import fr.pdp.mixbay.business.models.ScoreBuilderI;
+import fr.pdp.mixbay.business.models.Track;
+import fr.pdp.mixbay.business.models.TrackFeatures;
+import fr.pdp.mixbay.business.models.User;
 
 public class FeatureBasedBuilder implements ScoreBuilderI {
 

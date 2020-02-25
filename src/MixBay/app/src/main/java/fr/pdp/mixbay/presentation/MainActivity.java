@@ -1,4 +1,4 @@
-package fr.pdp.mixbay;
+package fr.pdp.mixbay.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +12,10 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import fr.pdp.mixbay.application.Services;
+import fr.pdp.mixbay.R;
+import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
-import fr.pdp.mixbay.business.models.APIConnectionException;
+import fr.pdp.mixbay.business.exceptions.APIConnectionException;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
 import fr.pdp.mixbay.business.models.TrackFeatures;

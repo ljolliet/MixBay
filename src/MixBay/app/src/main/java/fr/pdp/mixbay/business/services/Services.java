@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.application;
+package fr.pdp.mixbay.business.services;
 
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.RepositoryI;

@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.business.models;
+package fr.pdp.mixbay.business.exceptions;
 
 import java.util.concurrent.ExecutionException;
 

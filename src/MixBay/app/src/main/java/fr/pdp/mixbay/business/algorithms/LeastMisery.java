@@ -1,4 +1,4 @@
-package fr.pdp.mixbay.business.models;
+package fr.pdp.mixbay.business.algorithms;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,6 +6,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import fr.pdp.mixbay.business.models.AlgoI;
+import fr.pdp.mixbay.business.models.Playlist;
+import fr.pdp.mixbay.business.models.ScoreBuilderI;
+import fr.pdp.mixbay.business.models.Track;
+import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.utils.MapUtil;
 
 public class LeastMisery implements AlgoI {
