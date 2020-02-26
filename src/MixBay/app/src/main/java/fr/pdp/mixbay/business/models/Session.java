@@ -9,12 +9,13 @@ import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.algorithms.LeastMisery;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.LogManagerI;
+import fr.pdp.mixbay.data.JSONLogManager;
 
 
 public class Session {
 
     private Playlist localePlaylist;
-     private User currentuser;
+    private User currentuser;
     private Set<User> users;
     private AlgoI algo;
     private LogManagerI logManager;
@@ -25,7 +26,7 @@ public class Session {
         this.localePlaylist = new Playlist("01", "MixBay Playlist");
         this.users = new HashSet<>();
         this.algo = new LeastMisery();
-
+        this.logManager = new JSONLogManager();
     }
 
     public void start(Context context) {
@@ -66,5 +67,23 @@ public class Session {
 
     public APIManagerI getApi() {
         return apiManager;
+    }
+
+    public void previousMusic() {
+        this.apiManager.skipPreviousTrack();
+        this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
+    }
+
+    public void playMusic() {
+        this.apiManager.playPauseTrack();
+        this.logManager.append(this.createItem(LogItem.LogAction.PLAY)); //TODO PAUSE
+    }
+
+    public void nextMusic() {
+        this.apiManager.skipNextTrack();
+        this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
+    }
+    private LogItem createItem(LogItem.LogAction action){
+        return new LogItem(this.currentuser.username, action, "null", "null", this.algo.getName()); //TODO know current track
     }
 }

@@ -61,14 +61,14 @@ public class Services {
     }
 
     public static void previousMusic() {
-        repository.getSession().getApi().skipPreviousTrack();
+        repository.getSession().previousMusic();
     }
 
     public static void playMusic() {
-        repository.getSession().getApi().playPauseTrack();
+        repository.getSession().playMusic();
     }
 
     public static void nextMusic() {
-        repository.getSession().getApi().skipNextTrack();
+        repository.getSession().nextMusic();
     }
 }
