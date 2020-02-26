@@ -59,4 +59,16 @@ public class Services {
     public static boolean disconnectSession() {
         return repository.getSession().end();
     }
+
+    public static void previousMusic() {
+        repository.getSession().getApi().skipPreviousTrack();
+    }
+
+    public static void playMusic() {
+        repository.getSession().getApi().playPauseTrack();
+    }
+
+    public static void nextMusic() {
+        repository.getSession().getApi().skipNextTrack();
+    }
 }

@@ -2,6 +2,7 @@ package fr.pdp.mixbay.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -106,4 +107,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickPrevious(View view) {
+        Services.previousMusic();
+    }
+
+    public void onClickPlay(View view) {
+        Services.playMusic();
+    }
+
+    public void onClickNext(View view) {
+        Services.nextMusic();
+    }
 }
