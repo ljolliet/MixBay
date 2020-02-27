@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Session session;
 
+    private ListView trackListView;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        trackListView = findViewById(R.id.trackList);
 
         // Remove the 2 following lines if LoginActivity is the launcher activity
         Services.createSpotifySession();
@@ -45,13 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         session = Services.getSession();
         //requestTests();
-
-        //TODO getting a right list of tracks. the list witch is used is just for test
-        // replacing icons by rights icons in footer.xm
-
-        ListView view = findViewById(R.id.trackList);
-        TrackAdapter adapter = new TrackAdapter(this, Track.getSampleTracks());
-        view.setAdapter(adapter);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -91,9 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
             System.out.println("id: " + user.id + " ; display_name: " + user.username);
 
-            Set<Playlist> playlists = this.session.getApi().getUserPlaylists(user.id).get();
+            List<Playlist> playlists = new ArrayList<>(this.session.getApi().getUserPlaylists(user.id).get());
             System.out.println(playlists.toString());
             for (Playlist p : playlists) {
+                user.addPlaylist(p);
+
                 System.out.println("Playlist name:" + p.name);
 
                 for (Track t : p.getTracks()) {
@@ -102,6 +102,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 System.out.println("Number of tracks: " + p.getTracks().size());
             }
+
+            // Display the playlist into the ListView
+            TrackAdapter adapter = new TrackAdapter(this, new ArrayList<>(playlists.get(3).getTracks()));
+            trackListView.setAdapter(adapter);
+
         } catch (ExecutionException | InterruptedException e) {
             System.out.println(e.getMessage());
         }

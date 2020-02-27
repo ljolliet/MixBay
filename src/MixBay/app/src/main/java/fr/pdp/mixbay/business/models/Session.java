@@ -14,7 +14,7 @@ import fr.pdp.mixbay.business.dataAccess.LogManagerI;
 public class Session {
 
     private Playlist localePlaylist;
-     private User currentuser;
+    private User currentuser;
     private Set<User> users;
     private AlgoI algo;
     private LogManagerI logManager;
