@@ -2,6 +2,7 @@ package fr.pdp.mixbay.data;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.spotify.android.appremote.api.ConnectionParams;
@@ -109,12 +110,10 @@ public class SpotifyAPI implements APIManagerI {
         return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
     }
 
-    /**
-     * Call this function after getting a AuthorizationResponse from the Spotify LoginActivity.
-     * @param response The AuthorizationResponse object.
-     * @throws APIConnectionException If an error happens.
-     */
-    public void onConnectionResult(AuthorizationResponse response) throws APIConnectionException {
+    @Override
+    public void onConnectionResult(int resultCode, Intent intent) throws APIConnectionException {
+        AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
+
         switch (response.getType()) {
             // Response was successful and contains auth token
             case TOKEN:

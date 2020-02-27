@@ -1,9 +1,12 @@
 package fr.pdp.mixbay.business.dataAccess;
 
 import android.content.Context;
+import android.content.Intent;
+
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import fr.pdp.mixbay.business.exceptions.APIConnectionException;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.User;
 
@@ -23,6 +26,14 @@ public interface APIManagerI {
      * @return true if disconnected.
      */
     boolean disconnect();
+
+    /**
+     * Call this function after getting a Response from the API connection.
+     * @param resultCode The resultCode.
+     * @param intent The intent.
+     * @throws APIConnectionException If an error happens.
+     */
+    void onConnectionResult(int resultCode, Intent intent) throws APIConnectionException;
 
     /**
      * Get the User with the given id.
