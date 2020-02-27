@@ -30,6 +30,8 @@ public class LocalPlaylist implements PlaylistI {
     @Override
     public void addTrack(Track track) {
         this.tracks.add(track);
+        if(this.currentTrack == null)
+            this.currentTrack = track;
     }
 
     @Override

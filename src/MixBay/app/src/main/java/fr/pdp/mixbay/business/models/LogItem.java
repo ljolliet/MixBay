@@ -1,15 +1,20 @@
 package fr.pdp.mixbay.business.models;
 
+import java.util.Date;
+
 public class LogItem {
+
+
 
     public enum LogAction{
         NEXT,
         PREVIOUS,
         PLAY,
         PAUSE,
-        LIKE
+        LIKE;
     }
 
+    public final Date date;
     public final String username;
     public final LogAction action;
     public final String details;
@@ -23,5 +28,6 @@ public class LogItem {
         this.details = details;
         this.trackName = trackName;
         this.algorithm = algorithm;
+        this.date = new Date();
     }
 }

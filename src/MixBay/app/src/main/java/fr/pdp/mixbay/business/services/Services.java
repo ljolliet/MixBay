@@ -1,7 +1,10 @@
 package fr.pdp.mixbay.business.services;
 
+import android.util.Log;
+
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.RepositoryI;
+import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
 import fr.pdp.mixbay.business.models.Track;
@@ -72,7 +75,11 @@ public class Services {
         repository.getSession().nextMusic();
     }
 
-    public static void mix() {
-        repository.getSession().generatePlaylist();
+    public static LocalPlaylist mix() {
+        return repository.getSession().generatePlaylist();
+    }
+
+    public static void CreateLogFile() {
+        repository.getSession().createLogFile();
     }
 }

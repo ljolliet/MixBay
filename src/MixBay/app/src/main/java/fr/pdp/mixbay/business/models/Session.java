@@ -1,6 +1,7 @@
 package fr.pdp.mixbay.business.models;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,9 +37,11 @@ public class Session {
         Services.randomInit(this);
     }
 
-    public void generatePlaylist(){
+    public LocalPlaylist generatePlaylist(){
         localPlaylist = algo.compute(this.users);
         this.mixed = true;
+        Log.d("Session", "Playlist generated");
+        return localPlaylist;
     }
 
 
@@ -76,6 +79,7 @@ public class Session {
             this.apiManager.skipPreviousTrack();
             this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
         }
+        Log.d("Session", "Action 'Previous' impossible : Playlist not generated");
     }
 
     public void playMusic() {
@@ -83,6 +87,8 @@ public class Session {
             this.apiManager.playPauseTrack();
             this.logManager.append(this.createItem(LogItem.LogAction.PLAY)); //TODO PAUSE
         }
+        else
+            Log.d("Session", "Action 'Play' impossible : Playlist not generated");
     }
 
     public void nextMusic() {
@@ -90,8 +96,15 @@ public class Session {
             this.apiManager.skipNextTrack();
             this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
         }
+        else
+            Log.d("Session", "Action 'Next' impossible : Playlist not generated");
     }
+
     private LogItem createItem(LogItem.LogAction action){
-        return new LogItem(this.currentuser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName()); //TODO know current track
+        return new LogItem(this.currentuser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName());
+    }
+
+    public void createLogFile() {
+        this.logManager.create();
     }
 }
