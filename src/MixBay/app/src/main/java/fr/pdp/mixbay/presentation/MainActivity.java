@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         Services.getSession().start(this);
 
         session = Services.getSession();
-        //requestTests();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -61,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
             // Manage connection result
             try {
                 ((SpotifyAPI) Services.getSession().getApi()).onConnectionResult(response);
-
-                requestTests();
             } catch (APIConnectionException e) {
                 // TODO Manage exception
                 System.out.println(e.getMessage());
@@ -74,41 +71,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Services.disconnectSession();
-    }
-
-    @Deprecated
-    private void requestTests() {
-        try {
-            //User user = this.api.getUser("vilvilain").get();
-            String id = "216n6wqn2dkep6f6hkjw5yocq";
-
-            User user = this.session.getApi().getUser(id).get();
-            if (user == null)
-                return;
-
-            System.out.println("id: " + user.id + " ; display_name: " + user.username);
-
-            List<Playlist> playlists = new ArrayList<>(this.session.getApi().getUserPlaylists(user.id).get());
-            System.out.println(playlists.toString());
-            for (Playlist p : playlists) {
-                user.addPlaylist(p);
-
-                System.out.println("Playlist name:" + p.name);
-
-                for (Track t : p.getTracks()) {
-                    System.out.println("\t\t " + t.title + " ; danceability: " + (t.getFeatures() == null ? "null" : t.getFeatures().allFeatures.get(TrackFeatures.Name.DANCEABILITY)));
-
-                }
-                System.out.println("Number of tracks: " + p.getTracks().size());
-            }
-
-            // Display the playlist into the ListView
-            TrackAdapter adapter = new TrackAdapter(this, new ArrayList<>(playlists.get(3).getTracks()));
-            trackListView.setAdapter(adapter);
-
-        } catch (ExecutionException | InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public void onClickPrevious(View view) {
@@ -125,5 +87,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickMix(View view) {
         Services.mix();
+
+        // For tests
+        try {
+            String id = "216n6wqn2dkep6f6hkjw5yocq";
+            User user = this.session.getApi().getUser(id).get();
+            if (user == null)
+                return;
+
+            System.out.println("id: " + user.id + " ; display_name: " + user.username);
+
+            List<Playlist> playlists = new ArrayList<>(this.session.getApi().getUserPlaylists(user.id).get());
+
+            for (Playlist p : playlists)
+                user.addPlaylist(p);
+
+            // Display the playlist into the ListView
+            TrackAdapter adapter = new TrackAdapter(this, new ArrayList<>(playlists.get(3).getTracks()));
+            trackListView.setAdapter(adapter);
+
+        } catch (ExecutionException | InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
