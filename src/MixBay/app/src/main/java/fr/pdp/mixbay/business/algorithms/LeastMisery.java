@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.pdp.mixbay.business.models.AlgoI;
+import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.ScoreBuilderI;
 import fr.pdp.mixbay.business.models.Track;
@@ -21,7 +22,7 @@ public class LeastMisery implements AlgoI {
     }
 
     @Override
-    public Playlist compute(Set<User> users) {
+    public LocalPlaylist compute(Set<User> users) {
         Map<String, Track> tracksList = new HashMap<>();
         ScoreBuilderI score = new FeatureBasedBuilder();
         return computeLocalePlaylist(score.compute(users, tracksList), users, tracksList);
@@ -36,7 +37,7 @@ public class LeastMisery implements AlgoI {
      * @param tracksList A set of all the tracks extracted from all the playlists
      * @return A playlist of 25 tracks
      */
-    public Playlist computeLocalePlaylist(Map<String, Map<String, Double>> musicScorePerUser, Set<User> users, Map<String, Track> tracksList) {
+    public LocalPlaylist computeLocalePlaylist(Map<String, Map<String, Double>> musicScorePerUser, Set<User> users, Map<String, Track> tracksList) {
         Map<String, Double> leastMiseryComputed = new LinkedHashMap<>();
         Iterator tracksIt = tracksList.entrySet().iterator();
         while (tracksIt.hasNext()) {
@@ -53,8 +54,8 @@ public class LeastMisery implements AlgoI {
         leastMiseryComputed = MapUtil.sortByValue(leastMiseryComputed);
         Iterator computedTracksIterator = leastMiseryComputed.entrySet().iterator();
         int index = 0;
-        Playlist p = new Playlist("001", "locale playlist");
-        while (computedTracksIterator.hasNext() && index < Playlist.SIZE_MAX) {
+        LocalPlaylist p = new LocalPlaylist();
+        while (computedTracksIterator.hasNext() && index < LocalPlaylist.SIZE_MAX) {
             Map.Entry entryTrack = (Map.Entry) computedTracksIterator.next();
             p.addTrack(tracksList.get(entryTrack.getKey()));
             index++;

@@ -17,5 +17,5 @@ public interface AlgoI {
      * @param users A set of users with datas loaded from a streaming API
      * @return A playlist that mixes all users's playlists
      * */
-    Playlist compute(Set<User> users);
+    LocalPlaylist compute(Set<User> users);
 }

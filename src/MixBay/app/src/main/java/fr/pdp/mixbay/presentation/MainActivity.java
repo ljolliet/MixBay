@@ -12,7 +12,6 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import fr.pdp.mixbay.R;
@@ -122,5 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickNext(View view) {
         Services.nextMusic();
+    }
+
+    public void onClickMix(View view) {
+        Services.mix();
     }
 }

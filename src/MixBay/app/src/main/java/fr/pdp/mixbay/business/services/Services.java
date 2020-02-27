@@ -71,4 +71,8 @@ public class Services {
     public static void nextMusic() {
         repository.getSession().nextMusic();
     }
+
+    public static void mix() {
+        repository.getSession().generatePlaylist();
+    }
 }

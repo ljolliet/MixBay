@@ -22,7 +22,8 @@
         android:background="@drawable/rounded_button"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:text="@string/mix_playlist" />
+        android:text="@string/mix_playlist"
+        android:onClick="onClickMix"/>
 
     <ListView
         android:id="@+id/trackList"

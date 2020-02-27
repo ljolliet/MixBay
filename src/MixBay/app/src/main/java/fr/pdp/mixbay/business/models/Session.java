@@ -14,29 +14,31 @@ import fr.pdp.mixbay.data.JSONLogManager;
 
 public class Session {
 
-    private Playlist localePlaylist;
+    private LocalPlaylist localPlaylist;
     private User currentuser;
     private Set<User> users;
     private AlgoI algo;
     private LogManagerI logManager;
     private APIManagerI apiManager;
+    private boolean mixed;
 
     public Session(APIManagerI api) {
         this.apiManager = api;
-        this.localePlaylist = new Playlist("01", "MixBay Playlist");
+        this.localPlaylist = new LocalPlaylist();
         this.users = new HashSet<>();
         this.algo = new LeastMisery();
         this.logManager = new JSONLogManager();
+        this.mixed = false;
     }
 
     public void start(Context context) {
         apiManager.connect(context);
         Services.randomInit(this);
-        mix();
     }
 
-    public void mix(){
-        localePlaylist = algo.compute(this.users);
+    public void generatePlaylist(){
+        localPlaylist = algo.compute(this.users);
+        this.mixed = true;
     }
 
 
@@ -70,20 +72,26 @@ public class Session {
     }
 
     public void previousMusic() {
-        this.apiManager.skipPreviousTrack();
-        this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
+        if(this.mixed) {
+            this.apiManager.skipPreviousTrack();
+            this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
+        }
     }
 
     public void playMusic() {
-        this.apiManager.playPauseTrack();
-        this.logManager.append(this.createItem(LogItem.LogAction.PLAY)); //TODO PAUSE
+        if(this.mixed) {
+            this.apiManager.playPauseTrack();
+            this.logManager.append(this.createItem(LogItem.LogAction.PLAY)); //TODO PAUSE
+        }
     }
 
     public void nextMusic() {
-        this.apiManager.skipNextTrack();
-        this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
+        if(this.mixed) {
+            this.apiManager.skipNextTrack();
+            this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
+        }
     }
     private LogItem createItem(LogItem.LogAction action){
-        return new LogItem(this.currentuser.username, action, "null", "null", this.algo.getName()); //TODO know current track
+        return new LogItem(this.currentuser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName()); //TODO know current track
     }
 }

@@ -1,16 +1,16 @@
 package fr.pdp.mixbay.business.models;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Playlist {
+public class Playlist implements PlaylistI{
 
-    public static final int SIZE_MAX = 25;
     public final String id;
     public final String name;
-
     private Set<Track> tracks = new HashSet<>();
+
 
 
     public Playlist(String id, String name) {
@@ -18,15 +18,18 @@ public class Playlist {
         this.name = name;
     }
 
+    @Override
     public void addTrack(Track track){
         this.tracks.add(track);
     }
 
+    @Override
     public void addTracks(Set<Track> tracks){
         this.tracks.addAll(tracks);
     }
 
-    public Set<Track> getTracks() {
+    @Override
+    public Collection<Track> getTracks() {
         return new HashSet<>(tracks);
     }
 
