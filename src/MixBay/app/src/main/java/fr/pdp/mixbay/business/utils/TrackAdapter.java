@@ -5,13 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -51,21 +47,25 @@ public class TrackAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        LinearLayout layoutItem;
+        if(convertView == null)
+            convertView = inflater.inflate(R.layout.list_track_item, parent, false);
 
-        if(convertView == null) {
-            layoutItem = (LinearLayout) inflater.inflate(R.layout.list_track_item, parent, false);
-        } else {
-            layoutItem = (LinearLayout) convertView;
+        TrackViewHolder viewHolder = (TrackViewHolder) convertView.getTag();
+        if(viewHolder == null){
+            viewHolder = new TrackViewHolder();
+            viewHolder.title = (TextView) convertView.findViewById(R.id.trackTitle);
+            viewHolder.artist = (TextView) convertView.findViewById(R.id.artistName);
+            viewHolder.userInitial = (Button) convertView.findViewById(R.id.userInitial);
+            convertView.setTag(viewHolder);
         }
 
-        TextView title = layoutItem.findViewById(R.id.trackTitle);
-        TextView artistName = layoutItem.findViewById(R.id.artistName);
+        Track track = (Track) getItem(position);
 
-        artistName.setText(makeArtistsString(trackList.get(position)));
-        title.setText(trackList.get(position).getTitle());
+        viewHolder.title.setText(track.getTitle());
+        viewHolder.artist.setText(makeArtistsString(track));
+//        viewHolder.userInitial.setText(track.getUser().getInitial());
 
-        return layoutItem;
+        return convertView;
     }
 
     private String makeArtistsString (Track track) {
@@ -78,5 +78,11 @@ public class TrackAdapter extends BaseAdapter {
                 string += " feat ";
         }
         return string;
+    }
+
+    private class TrackViewHolder {
+        public TextView title;
+        public TextView artist;
+        public Button userInitial;
     }
 }

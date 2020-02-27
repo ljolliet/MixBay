@@ -11,7 +11,7 @@ public class User {
     public final String id;
     public final String username;
 
-    private Set<Playlist> personalPlaylist = new HashSet<>();
+    private Set<Playlist> personalPlaylists = new HashSet<>();
     private boolean mute;
 
     private int color;
@@ -56,14 +56,15 @@ public class User {
      * @param playlist Playlist loaded from a Streaming service API.
      */
     public void addPlaylist(Playlist playlist){
-        personalPlaylist.add(playlist);
+        personalPlaylists.add(playlist);
     }
 
     /**
      * @return A copy of the user playlists.
      */
+    // TODO Rename into getAllPlaylists
     public Set<Playlist> getPlaylist(){
-        return new HashSet<>(this.personalPlaylist);
+        return new HashSet<>(this.personalPlaylists);
     }
 
     /**
