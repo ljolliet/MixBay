@@ -12,7 +12,11 @@ public class Playlist implements PlaylistI{
     private Set<Track> tracks = new HashSet<>();
 
 
-
+    /**
+     * Create an empty Playlist with the given information.
+     * @param id playlist's id on the streaming platform.
+     * @param name playlist's name on the streaming platform.
+     */
     public Playlist(String id, String name) {
         this.id = id;
         this.name = name;

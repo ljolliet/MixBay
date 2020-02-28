@@ -16,7 +16,7 @@ public class User {
     private boolean mute;
 
     private int color;
-    private char initial;
+    public final char initial;
 
     /**
      * User loaded from a Streaming service API.
@@ -27,17 +27,10 @@ public class User {
         this.id = id;
         this.username = username;
         this.mute = false;
-
-        createInitial();
+        this.initial = this.username.charAt(0);
         generateColor();
     }
 
-    /**
-     * Generate user's initial
-     */
-    private void createInitial() {
-        this.initial = this.username.charAt(0);
-    }
 
     /**
      * Generate user's color
@@ -95,7 +88,4 @@ public class User {
         return color;
     }
 
-    public char getInitial() {
-        return initial;
-    }
 }
