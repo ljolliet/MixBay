@@ -16,15 +16,17 @@ import fr.pdp.mixbay.business.utils.MapUtil;
 
 public class LeastMisery implements AlgoI {
 
+    ScoreBuilderI score = new FeatureBasedBuilder();
+
+
     @Override
     public String getName() {
-        return this.getClass().toString();
+        return "Least Misery Strategy with " + score.getName();
     }
 
     @Override
     public LocalPlaylist compute(Set<User> users) {
         Map<String, Track> tracksList = new HashMap<>();
-        ScoreBuilderI score = new FeatureBasedBuilder();
         return computeLocalePlaylist(score.compute(users, tracksList), users, tracksList);
     }
 

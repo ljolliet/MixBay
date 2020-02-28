@@ -20,7 +20,7 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
 
     @Override
     public String getName() {
-        return this.getClass().toString();
+        return"a score builder based on Spotify Track Features";
     }
 
     /**
