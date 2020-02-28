@@ -34,7 +34,7 @@ public class Session {
 
     public void start(Context context) {
         apiManager.connect(context);
-        Services.randomInit(this);
+        //Services.randomInit(this);
     }
 
     public LocalPlaylist generatePlaylist(){

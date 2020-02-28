@@ -2,6 +2,7 @@ package fr.pdp.mixbay.business.models;
 
 import android.graphics.Color;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -57,6 +58,14 @@ public class User {
      */
     public void addPlaylist(Playlist playlist){
         personalPlaylists.add(playlist);
+    }
+
+    /**
+     * Add a Collection of playlists to the user.
+     * @param playlists A collection of Playlists
+     */
+    public void addAllPlaylists(Collection<Playlist> playlists) {
+        personalPlaylists.addAll(playlists);
     }
 
     /**

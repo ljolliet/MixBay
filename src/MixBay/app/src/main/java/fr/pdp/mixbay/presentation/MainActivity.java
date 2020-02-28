@@ -76,9 +76,13 @@ public class MainActivity extends AppCompatActivity {
             // Manage connection result
             try {
                 Services.getSession().getApi().onConnectionResult(resultCode, intent);
+                Services.requestMainUser();
             } catch (APIConnectionException e) {
                 // TODO Manage exception
-                System.out.println(e.getMessage());
+                System.out.println("API connection error: " + e.getMessage());
+            } catch (InterruptedException | ExecutionException e) {
+                // TODO Manage exception
+                System.out.println("Requesting main user error: " + e.getMessage());
             }
         }
 
@@ -124,31 +128,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMix(View view) {
-        LocalPlaylist playlist = Services.mix();
         // will works with users set up
 //        TrackAdapter a = new TrackAdapter(this, (List<Track>) playlist.getTracks());
 //        trackListView.setAdapter(a);
 
+        LocalPlaylist playlist = Services.mix();
+
+        // Display the playlist into the ListView
+        TrackAdapter adapter = new TrackAdapter(this, (List<Track>) playlist.getTracks());
+        trackListView.setAdapter(adapter);
+
         // For tests
-        try {
-            String id = "216n6wqn2dkep6f6hkjw5yocq";
-            User user = this.session.getApi().getUser(id).get();
-            if (user == null)
-                return;
-
-            System.out.println("id: " + user.id + " ; display_name: " + user.username);
-
-            List<Playlist> playlists = new ArrayList<>(this.session.getApi().getUserPlaylists(user.id).get());
-
-            for (Playlist p : playlists)
-                user.addPlaylist(p);
-
-            // Display the playlist into the ListView
-            TrackAdapter adapter = new TrackAdapter(this, new ArrayList<>(playlists.get(3).getTracks()));
-            trackListView.setAdapter(adapter);
-
-        } catch (ExecutionException | InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            String id = "216n6wqn2dkep6f6hkjw5yocq";
+//            User user = this.session.getApi().getUser(id).get();
+//            if (user == null)
+//                return;
+//
+//            Services.getSession().addUser(user);
+//
+//            System.out.println("id: " + user.id + " ; display_name: " + user.username);
+//
+//            List<Playlist> playlists = new ArrayList<>(this.session.getApi().getUserPlaylists(user.id).get());
+//
+//            user.addAllPlaylists(playlists);
+//
+//            // Generate the playlist
+//            LocalPlaylist playlist = Services.mix();
+//
+//            // Display the playlist into the ListView
+//            TrackAdapter adapter = new TrackAdapter(this, (List<Track>) playlist.getTracks());
+//            trackListView.setAdapter(adapter);
+//
+//        } catch (ExecutionException | InterruptedException e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 }

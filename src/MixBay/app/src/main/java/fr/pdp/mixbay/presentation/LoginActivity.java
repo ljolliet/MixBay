@@ -35,11 +35,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // Spotify authentication response
         if (requestCode == APIManagerI.SPOTIFY_REQUEST_CODE) {
-            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
-
             // Manage connection result
             try {
-                ((SpotifyAPI) Services.getSession().getApi()).onConnectionResult(response);
+                Services.getSession().getApi().onConnectionResult(resultCode, intent);
 
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);

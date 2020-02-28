@@ -43,6 +43,12 @@ public interface APIManagerI {
     Future<User> getUser(String id);
 
     /**
+     * Get the main user. The one who is connected into the API.
+     * @return A Future with the User.
+     */
+    Future<User> getMainUser();
+
+    /**
      * Get all the Playlists of a user.
      * @param userId The id of the user.
      * @return A Future with the set of Playlists.
@@ -91,5 +97,4 @@ public interface APIManagerI {
      * @param token The token.
      */
     void setAccessToken(String token);
-
 }

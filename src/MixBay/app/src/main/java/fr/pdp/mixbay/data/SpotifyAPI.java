@@ -157,7 +157,6 @@ public class SpotifyAPI implements APIManagerI {
         // Return a Future
         return pool.submit(() -> {
             final JSONObject jsonObject = new JSONObject(call.execute().body().string());
-            Log.d("SpotifyAPI", jsonObject.toString());
 
             // If user does not exist
             if (jsonObject.has("error"))
@@ -165,6 +164,34 @@ public class SpotifyAPI implements APIManagerI {
 
             // Return new User
             return new User(id, jsonObject.getString("display_name"));
+
+        });
+    }
+
+    @Override
+    public Future<User> getMainUser() {
+        // Create main user info request
+        final Request request = new Request.Builder()
+                .url("https://api.spotify.com/v1/me")
+                .addHeader("Authorization","Bearer " + this.accessToken)
+                .build();
+
+        Call call = this.requestClient.newCall(request);
+        ExecutorService pool = Executors.newFixedThreadPool(1);
+
+        // Return a Future
+        return pool.submit(() -> {
+            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+
+            // If user does not exist
+            if (jsonObject.has("error"))
+                throw new APIRequestException(context.getString(R.string.api_request_error));
+
+            String display_name = jsonObject.getString("display_name");
+            String id = jsonObject.getString("id");
+
+            // Return new User
+            return new User(id, display_name);
 
         });
     }

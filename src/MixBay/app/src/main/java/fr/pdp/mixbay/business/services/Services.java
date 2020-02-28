@@ -2,6 +2,9 @@ package fr.pdp.mixbay.business.services;
 
 import android.util.Log;
 
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.RepositoryI;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
@@ -61,6 +64,18 @@ public class Services {
 
     public static boolean disconnectSession() {
         return repository.getSession().end();
+    }
+
+    // TODO Change function name
+    public static void requestMainUser() throws ExecutionException, InterruptedException {
+        APIManagerI api = getSession().getApi();
+        // Get User
+        User user = api.getMainUser().get();
+        System.out.println(user.id);
+        // Get user's playlists
+        Set<Playlist> playlists = api.getUserPlaylists(user.id).get();
+        System.out.println("size = " + playlists.size());
+        user.addAllPlaylists(playlists); // Add them to the User
     }
 
     public static void previousMusic() {
