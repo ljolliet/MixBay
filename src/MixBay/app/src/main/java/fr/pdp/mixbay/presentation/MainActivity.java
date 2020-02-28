@@ -128,9 +128,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMix(View view) {
-        // will works with users set up
-//        TrackAdapter a = new TrackAdapter(this, (List<Track>) playlist.getTracks());
-//        trackListView.setAdapter(a);
 
         LocalPlaylist playlist = Services.mix();
 

@@ -76,6 +76,7 @@ public class Services {
         Set<Playlist> playlists = api.getUserPlaylists(user.id).get();
         System.out.println("size = " + playlists.size());
         user.addAllPlaylists(playlists); // Add them to the User
+        getSession().addUser(user);
     }
 
     public static void previousMusic() {

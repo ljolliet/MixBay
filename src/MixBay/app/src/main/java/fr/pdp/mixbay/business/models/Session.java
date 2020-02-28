@@ -6,7 +6,6 @@ import android.util.Log;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.algorithms.LeastMisery;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.LogManagerI;
@@ -64,6 +63,8 @@ public class Session {
 
     public void addUser(User user) {
         this.users.add(user);
+        if(this.currentuser == null)
+            this.setCurrentUser(user);
     }
 
     public Set<User> getUsers() {

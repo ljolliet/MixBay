@@ -86,30 +86,6 @@ public class SpotifyAPI implements APIManagerI {
         return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected(); // TODO Manage return (now, it always returns false because of async callback)
     }
 
-    @Deprecated
-    public boolean playbackConnect(){
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(context, connectionParams,
-                new Connector.ConnectionListener() {
-
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected");
-                        getPlayerInfo();
-                    }
-
-                    public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
-                    }
-                });
-        return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
-    }
-
     @Override
     public void onConnectionResult(int resultCode, Intent intent) throws APIConnectionException {
         AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
@@ -192,7 +168,6 @@ public class SpotifyAPI implements APIManagerI {
 
             // Return new User
             return new User(id, display_name);
-
         });
     }
 
