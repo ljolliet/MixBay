@@ -13,4 +13,5 @@
     <string name="algorithm">Algorithme</string>
     <string name="users">Utilisateurs</string>
     <string name="descr_more_button">Bouton d\'options</string>
+    <string name="add_user_alert_title">Identifiant de l\'utilisateur</string>
 </resources>

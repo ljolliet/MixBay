@@ -49,6 +49,7 @@ public class Services {
         Set<Playlist> playlists = api.getUserPlaylists(user.id).get();
         System.out.println("size = " + playlists.size());
         user.addAllPlaylists(playlists); // Add them to the User
+
         getSession().addUser(user);
     }
 
@@ -70,5 +71,17 @@ public class Services {
 
     public static void CreateLogFile() {
         repository.getSession().createLogFile();
+    }
+
+    public static void addUserWithId(String id) throws ExecutionException, InterruptedException {
+        APIManagerI api = getSession().getApi();
+        // Request for the user
+        User user = api.getUser(id).get();
+        // Get user's playlists
+        Set<Playlist> playlists = api.getUserPlaylists(id).get();
+        System.out.println("size = " + playlists.size());
+        user.addAllPlaylists(playlists); // Add them to the User
+
+        getSession().addUser(user);
     }
 }

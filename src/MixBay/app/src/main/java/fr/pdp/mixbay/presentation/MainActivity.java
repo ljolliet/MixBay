@@ -4,10 +4,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -112,41 +115,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMix(View view) {
-
         LocalPlaylist playlist = Services.mix();
 
         // Display the playlist into the ListView
         TrackAdapter adapter = new TrackAdapter(this, (List<Track>) playlist.getTracks());
         trackListView.setAdapter(adapter);
-
-        // For tests
-//        try {
-//            String id = "216n6wqn2dkep6f6hkjw5yocq";
-//            User user = Services.getSession().getApi().getUser(id).get();
-//            if (user == null)
-//                return;
-//
-//            Services.getSession().addUser(user);
-//
-//            System.out.println("id: " + user.id + " ; display_name: " + user.username);
-//
-//            Set<Playlist> playlists = Services.getSession().getApi().getUserPlaylists(user.id).get();
-//            user.addAllPlaylists(playlists);
-//
-//            // Generate the playlist
-//            LocalPlaylist playlist = Services.mix();
-//
-//            // Display the playlist into the ListView
-//            TrackAdapter adapter = new TrackAdapter(this, (List<Track>) playlist.getTracks());
-//            trackListView.setAdapter(adapter);
-//
-//        } catch (ExecutionException | InterruptedException e) {
-//            System.out.println(e.getMessage());
-//        }
     }
 
     public void onClickSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    public void onClickAddUser(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle(R.string.add_user_alert_title);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Add OK button with behaviour
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String id = input.getText().toString();
+            try {
+                Services.addUserWithId(id);
+            } catch (ExecutionException | InterruptedException e) {
+                // TODO Manage exception
+                System.out.println("Requesting user error: " + e.getMessage());
+            }
+        });
+
+        // Add Cancel button
+        builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
+
+        // Display the Alert
+        builder.show();
     }
 }
