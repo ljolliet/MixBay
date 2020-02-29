@@ -53,9 +53,9 @@ public class TrackAdapter extends BaseAdapter {
         TrackViewHolder viewHolder = (TrackViewHolder) convertView.getTag();
         if(viewHolder == null){
             viewHolder = new TrackViewHolder();
-            viewHolder.title = (TextView) convertView.findViewById(R.id.trackTitle);
-            viewHolder.artist = (TextView) convertView.findViewById(R.id.artistName);
-            viewHolder.userInitial = (Button) convertView.findViewById(R.id.userInitial);
+            viewHolder.title = convertView.findViewById(R.id.trackTitle);
+            viewHolder.artist = convertView.findViewById(R.id.artistName);
+            viewHolder.userInitial = convertView.findViewById(R.id.userInitial);
             convertView.setTag(viewHolder);
         }
 
@@ -70,19 +70,22 @@ public class TrackAdapter extends BaseAdapter {
 
     private String makeArtistsString (Track track) {
         Set artistList = track.getArtists();
-        String string = new String();
+        StringBuilder string = new StringBuilder();
+
         Iterator it = artistList.iterator();
+
         while (it.hasNext()) {
-            string += it.next();
+            string.append(it.next());
+
             if (it.hasNext())
-                string += " feat ";
+                string.append(", ");
         }
-        return string;
+        return string.toString();
     }
 
     private class TrackViewHolder {
-        public TextView title;
-        public TextView artist;
-        public Button userInitial;
+        TextView title;
+        TextView artist;
+        Button userInitial;
     }
 }

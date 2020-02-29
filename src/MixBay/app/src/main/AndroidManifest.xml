@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity
             android:name=".presentation.LoginActivity"
             android:configChanges="orientation"
@@ -25,6 +26,7 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" /> -->
 <!--             </intent-filter> -->
         </activity>
+
         <activity
             android:name=".presentation.MainActivity"
             android:configChanges="orientation"
@@ -35,6 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".presentation.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -44,6 +47,7 @@
         <activity
             android:name="com.spotify.sdk.android.auth.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
     </application>
 
 </manifest>

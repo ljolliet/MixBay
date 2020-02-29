@@ -19,7 +19,6 @@ import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.exceptions.APIConnectionException;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
-import fr.pdp.mixbay.business.models.Session;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.utils.TrackAdapter;
@@ -28,25 +27,18 @@ import fr.pdp.mixbay.business.utils.TrackAdapter;
 public class MainActivity extends AppCompatActivity {
 
     private static final int MY_STORAGE_WRITE_PERMISSION = 99;
-    private Session session;
 
     private ListView trackListView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         trackListView = findViewById(R.id.trackList);
 
         // Remove the 2 following lines if LoginActivity is the launcher activity
         Services.createSpotifySession();
         Services.getSession().start(this);
-        session = Services.getSession();
 
         //Ask for permission(s)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -78,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Requesting main user error: " + e.getMessage());
             }
         }
-
     }
 
     @Override
@@ -131,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         // For tests
 //        try {
 //            String id = "216n6wqn2dkep6f6hkjw5yocq";
-//            User user = this.session.getApi().getUser(id).get();
+//            User user = Services.getSession().getApi().getUser(id).get();
 //            if (user == null)
 //                return;
 //
@@ -139,8 +130,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //            System.out.println("id: " + user.id + " ; display_name: " + user.username);
 //
-//            List<Playlist> playlists = new ArrayList<>(this.session.getApi().getUserPlaylists(user.id).get());
-//
+//            Set<Playlist> playlists = Services.getSession().getApi().getUserPlaylists(user.id).get();
 //            user.addAllPlaylists(playlists);
 //
 //            // Generate the playlist
