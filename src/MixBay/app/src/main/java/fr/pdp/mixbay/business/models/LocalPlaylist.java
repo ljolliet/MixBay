@@ -13,11 +13,15 @@ public class LocalPlaylist implements PlaylistI {
     private Track currentTrack;
     private List<Track> tracks = new ArrayList<>();
 
-
     public Track getCurrentTrack() {
         return currentTrack;
     }
 
+    /**
+     * Set the given track as currentTrack.
+     * @param id Track's id
+     * @throws PlayerException If the given track is not contained in the playlist tracks.
+     */
     public void setCurrentTrack(String id){
         this.currentTrack = null;
         for(Track t : this.tracks)

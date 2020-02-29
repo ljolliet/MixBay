@@ -22,6 +22,7 @@ public class Session {
     private APIManagerI apiManager;
     private boolean mixed;
 
+
     public Session(APIManagerI api) {
         this.apiManager = api;
         this.localPlaylist = new LocalPlaylist();
@@ -31,11 +32,18 @@ public class Session {
         this.mixed = false;
     }
 
+    /**
+     * Start/Initialise the session.
+     * @return true if the initialisation worked normally
+     */
     public void start(Context context) {
         apiManager.connect(context);
-        //Services.randomInit(this);
     }
 
+    /**
+     * Generates the local playlist with then current algorithm.
+     * @return The playlist generated.
+     */
     public LocalPlaylist generatePlaylist(){
         localPlaylist = algo.compute(this.users);
         this.mixed = true;
@@ -43,11 +51,64 @@ public class Session {
         return localPlaylist;
     }
 
-
-    public boolean end() {
+    /**
+     * Finish properly the session.
+     * @return true if the disconnection worked normally
+     */
+    public boolean finish() {
         return apiManager.disconnect();
     }
 
+    /**
+     * Skip the the beginning of the track (or skip to previous track, depending on the API).
+     */
+    public void previousMusic() {
+        if(this.mixed) {
+            this.apiManager.skipPreviousTrack();
+            this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
+        }
+        Log.d("Session", "Action 'Previous' impossible : Playlist not generated");
+    }
+
+    /**
+     * Play the current track on the local playlist.
+     */
+    public void playMusic() {
+        if(this.mixed) {
+            this.apiManager.playPauseTrack();
+            this.logManager.append(this.createItem(LogItem.LogAction.PLAY)); //TODO PAUSE
+        }
+        else
+            Log.d("Session", "Action 'Play' impossible : Playlist not generated");
+    }
+
+    /**
+     * Skip to the next Track on the local playlist.
+     */
+    public void nextMusic() {
+        if(this.mixed) {
+            this.apiManager.skipNextTrack();
+            this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
+        }
+        else
+            Log.d("Session", "Action 'Next' impossible : Playlist not generated");
+    }
+
+    /**
+     *  Creates a log item with current user, current track, current algorithm and given action.
+     * @param action Tha action performed by the user.
+     * @return The log item created.
+     */
+    private LogItem createItem(LogItem.LogAction action){
+        return new LogItem(this.currentuser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName());
+    }
+
+    /**
+     * Create the logFile with the current implementation.
+     */
+    public void createLogFile() {
+        this.logManager.create();
+    }
 
     public void setCurrentUser(User currentuser) {
         this.currentuser = currentuser;
@@ -73,39 +134,5 @@ public class Session {
 
     public APIManagerI getApi() {
         return apiManager;
-    }
-
-    public void previousMusic() {
-        if(this.mixed) {
-            this.apiManager.skipPreviousTrack();
-            this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
-        }
-        Log.d("Session", "Action 'Previous' impossible : Playlist not generated");
-    }
-
-    public void playMusic() {
-        if(this.mixed) {
-            this.apiManager.playPauseTrack();
-            this.logManager.append(this.createItem(LogItem.LogAction.PLAY)); //TODO PAUSE
-        }
-        else
-            Log.d("Session", "Action 'Play' impossible : Playlist not generated");
-    }
-
-    public void nextMusic() {
-        if(this.mixed) {
-            this.apiManager.skipNextTrack();
-            this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
-        }
-        else
-            Log.d("Session", "Action 'Next' impossible : Playlist not generated");
-    }
-
-    private LogItem createItem(LogItem.LogAction action){
-        return new LogItem(this.currentuser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName());
-    }
-
-    public void createLogFile() {
-        this.logManager.create();
     }
 }

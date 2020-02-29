@@ -14,8 +14,8 @@ public class Playlist implements PlaylistI{
 
     /**
      * Create an empty Playlist with the given information.
-     * @param id playlist's id on the streaming platform.
-     * @param name playlist's name on the streaming platform.
+     * @param id Playlist's id on the streaming platform.
+     * @param name Playlist's name on the streaming platform.
      */
     public Playlist(String id, String name) {
         this.id = id;
