@@ -1,6 +1,5 @@
 package fr.pdp.mixbay.business.models;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,11 +16,11 @@ public class Track {
 
     /**
      * A track is an unchangeable public object. It is based on music streaming API datas.
-     * @param id unique id of the track.
-     * @param title track's title.
-     * @param album track's album.
-     * @param artists track's author(s).
-     * @param cover_url cover's url of the track's album.
+     * @param id Unique id of the track.
+     * @param title Track's title.
+     * @param album Track's album.
+     * @param artists Track's author(s).
+     * @param cover_url Cover's url of the track's album.
      */
     public Track(String id, String title, String album, Set<String> artists, String cover_url) {
         this.id = id;
@@ -29,40 +28,6 @@ public class Track {
         this.album = album;
         this.artists = artists;
         this.cover_url = cover_url;
-    }
-
-    /**
-     * A track is an unchangeable public object. It is based on music streaming API datas.
-     * @param id unique id of the track.
-     * @param title track's title.
-     * @param album track's album.
-     * @param artists track's author(s).
-     * @param cover_url cover's url of the track's album.
-     * @param features  TODO
-     */
-    @Deprecated
-    public Track(String id, String title, String album, Set<String> artists, String cover_url, TrackFeatures features) {
-        this.id = id;
-        this.title = title;
-        this.album = album;
-        this.artists = artists;
-        this.cover_url = cover_url;
-        this.features = features;
-    }
-
-    /**
-     * A track is an unchangeable public object. It is based on music streaming API datas.
-     * To simplify developers job, this constructor takes a unique artist and calls the previous constructor.
-     * @param id unique id of the track.
-     * @param title track's title.
-     * @param album track's album.
-     * @param artist track's author.
-     * @param cover_url cover's url of the track's album.
-     * @param features TODO
-     */
-    @Deprecated
-    public Track(String id, String title, String album, String artist, String cover_url, TrackFeatures features) {
-        this(id,title,album, new HashSet<>(Collections.singletonList( artist )), cover_url, features);
     }
 
     public TrackFeatures getFeatures() {

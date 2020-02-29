@@ -31,7 +31,6 @@ public class User {
         generateColor();
     }
 
-
     /**
      * Generate user's color
      */
