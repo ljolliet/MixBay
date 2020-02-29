@@ -1,0 +1,11 @@
+<resources>
+    <string-array name="algorithm_entries">
+        <item>Random</item>
+        <item>Least Misery Strategy</item>
+    </string-array>
+
+    <string-array name="algorithm_values">
+        <item>random</item>
+        <item>least_misery_strategy</item>
+    </string-array>
+</resources>

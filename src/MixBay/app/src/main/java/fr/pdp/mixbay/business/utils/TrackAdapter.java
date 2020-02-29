@@ -20,11 +20,9 @@ import fr.pdp.mixbay.business.models.Track;
 public class TrackAdapter extends BaseAdapter {
 
     private List<Track> trackList;
-    private Context context;
     private LayoutInflater inflater;
 
     public TrackAdapter(Context context, List<Track> trackList) {
-        this.context = context;
         this.trackList = trackList;
         this.inflater = LayoutInflater.from(context);
     }

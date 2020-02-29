@@ -144,4 +144,9 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println(e.getMessage());
 //        }
     }
+
+    public void onClickSettings(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
 }
