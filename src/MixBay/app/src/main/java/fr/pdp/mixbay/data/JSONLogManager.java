@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -51,37 +52,36 @@ public class JSONLogManager implements LogManagerI {
     @Override
     public void append(LogItem item) {
         this.items.add(item);
-        try {
-            this.save();
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+        this.save();
     }
 
     @Override
-    public boolean save() throws JSONException, IOException {
-        for(LogItem i : this.items)
-        {
-            JSONObject jsonItem = new JSONObject();
-            jsonItem.put(USERNAME, i.username);
-            jsonItem.put(ACTION,i.action);
-            jsonItem.put(DETAILS,i.details);
-            jsonItem.put(TRACKNAME,i.trackName);
-            jsonItem.put(ALGO,i.algorithm);
-            jsonItem.put(DATE,i.date);
-            array.put(jsonItem);
+    public void save() {
+
+        try{
+            for(LogItem i : this.items)
+            {
+                JSONObject jsonItem = new JSONObject();
+                jsonItem.put(USERNAME, i.username);
+                jsonItem.put(ACTION,i.action);
+                jsonItem.put(DETAILS,i.details);
+                jsonItem.put(TRACKNAME,i.trackName);
+                jsonItem.put(ALGO,i.algorithm);
+                jsonItem.put(DATE,i.date);
+                array.put(jsonItem);
+            }
+            root.put(LOG, array);
+            Log.d("JSONLogManager", root.toString());
+            FileOutputStream file= new FileOutputStream(outputFile);
+
+            // get the content in bytes
+            byte[] contentInBytes = root.toString().getBytes();
+
+            file.write(contentInBytes);
+            file.flush();
+            file.close();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
         }
-        root.put(LOG, array);
-        Log.d("JSONLogManager", root.toString());
-        FileOutputStream file= new FileOutputStream(outputFile);
-
-        // get the content in bytes
-        byte[] contentInBytes = root.toString().getBytes();
-
-        file.write(contentInBytes);
-        file.flush();
-        file.close();
-
-        return true;
     }
 }

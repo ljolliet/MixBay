@@ -1,14 +1,22 @@
 package fr.pdp.mixbay.business.dataAccess;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-
 import fr.pdp.mixbay.business.models.LogItem;
 
 public interface LogManagerI {
 
+    /**
+     * Create the log file.
+     */
     void create();
+
+    /**
+     * Append the given item to the Log list
+     * @param item Item to add.
+     */
     void append(LogItem item);
-    boolean save() throws JSONException, IOException;
+
+    /**
+     * Save the list into the log file.
+     */
+    void save();
 }
