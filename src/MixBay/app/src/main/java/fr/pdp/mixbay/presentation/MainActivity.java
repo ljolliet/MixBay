@@ -8,12 +8,15 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -67,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
                 Services.requestMainUser();
             } catch (APIConnectionException e) {
                 // TODO Manage exception
-                System.out.println("API connection error: " + e.getMessage());
+                System.err.println("API connection error: " + e.getMessage());
             } catch (InterruptedException | ExecutionException e) {
                 // TODO Manage exception
-                System.out.println("Requesting main user error: " + e.getMessage());
+                System.err.println("Requesting main user error: " + e.getMessage());
             }
         }
     }
@@ -104,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickPrevious(View view) {
         Services.previousMusic();
+        updateCover();
+
     }
 
     public void onClickPlay(View view) {
@@ -112,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickNext(View view) {
         Services.nextMusic();
+        updateCover();
     }
 
     public void onClickMix(View view) {
@@ -120,6 +126,12 @@ public class MainActivity extends AppCompatActivity {
         // Display the playlist into the ListView
         TrackAdapter adapter = new TrackAdapter(this, (List<Track>) playlist.getTracks());
         trackListView.setAdapter(adapter);
+        updateCover();
+    }
+
+    private void updateCover() {
+        ImageView image = this.findViewById(R.id.albumPicture);
+        Picasso.get().load(Services.getSession().getCurrentTrack().cover_url).into(image);
     }
 
     public void onClickSettings(View view) {

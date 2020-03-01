@@ -17,6 +17,13 @@ public class LocalPlaylist implements PlaylistI {
         return currentTrack;
     }
 
+    public void incTrack(){ //TODO manage link with API
+        int i = tracks.indexOf(currentTrack);
+        this.currentTrack = tracks.get(++i);    //TODO manage issues
+        if (this.currentTrack == null)
+            throw new PlayerException("Current track not found in Local Playlist");
+    }
+
     /**
      * Set the given track as currentTrack.
      * @param id Track's id
