@@ -91,4 +91,8 @@ public class Services {
 
         getSession().addUser(user);
     }
+
+    public static User getCurrentUser() {
+        return repository.getSession().getCurrentUser();
+    }
 }

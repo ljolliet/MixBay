@@ -167,4 +167,8 @@ public class Session {
                 throw new SessionManagementException(context.getString(R.string.user_already_added));
         }
     }
+
+    public User getCurrentUser() {
+        return this.currentUser;
+    }
 }

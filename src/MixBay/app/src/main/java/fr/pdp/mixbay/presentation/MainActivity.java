@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import fr.pdp.mixbay.business.exceptions.APIConnectionException;
 import fr.pdp.mixbay.business.exceptions.SessionManagementException;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Track;
+import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.utils.TrackAdapter;
 
@@ -68,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Services.getSession().getApi().onConnectionResult(resultCode, intent);
                 Services.requestMainUser();
+                updateCurrentUserInitialAndColor();
+
             } catch (APIConnectionException e) {
                 // TODO Manage exception
                 System.err.println("API connection error: " + e.getMessage());
@@ -96,6 +101,13 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    private void updateCurrentUserInitialAndColor() {
+        Button currentUser = this.findViewById(R.id.currentUserButton);
+        User u = Services.getCurrentUser();
+        currentUser.setText(String.valueOf(u.initial));
+        //currentUser.setBackgroundColor(u.getColor()); //TODO set color
     }
 
 
