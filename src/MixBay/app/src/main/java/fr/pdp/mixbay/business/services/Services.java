@@ -66,7 +66,9 @@ public class Services {
     }
 
     public static LocalPlaylist mix() {
-        return repository.getSession().generatePlaylist();
+        LocalPlaylist playlist = repository.getSession().generatePlaylist();
+        repository.getSession().launchPlaylist();
+        return playlist;
     }
 
     public static void CreateLogFile() {

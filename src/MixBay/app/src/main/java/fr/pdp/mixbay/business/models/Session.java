@@ -15,7 +15,7 @@ import fr.pdp.mixbay.data.JSONLogManager;
 public class Session {
 
     private LocalPlaylist localPlaylist;
-    private User currentuser;
+    private User currentUser;
     private Set<User> users;
     private AlgoI algo;
     private LogManagerI logManager;
@@ -45,10 +45,18 @@ public class Session {
      * @return The playlist generated.
      */
     public LocalPlaylist generatePlaylist(){
-        localPlaylist = algo.compute(this.users);
+        this.localPlaylist = algo.compute(this.users);
         this.mixed = true;
         Log.d("Session", "Playlist generated");
         return localPlaylist;
+    }
+
+    public void launchPlaylist() {
+       /* for(Track t : this.localPlaylist.getTracks()){
+            this.apiManager.queueTrack(t.id);
+            Log.d("Session Launch Playlist", t.title);
+        }*/
+        this.apiManager.playTrack(this.localPlaylist.getCurrentTrack().id);
     }
 
     /**
@@ -66,6 +74,7 @@ public class Session {
         if(this.mixed) {
             this.apiManager.skipPreviousTrack();
             this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
+            //TODO dec or not dec
         }
         Log.d("Session", "Action 'Previous' impossible : Playlist not generated");
     }
@@ -87,8 +96,11 @@ public class Session {
      */
     public void nextMusic() {
         if(this.mixed) {
-            this.apiManager.skipNextTrack();
+            //this.apiManager.skipNextTrack();
+
             this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
+            this.localPlaylist.incTrack();
+            this.apiManager.playTrack(localPlaylist.getCurrentTrack().id);
         }
         else
             Log.d("Session", "Action 'Next' impossible : Playlist not generated");
@@ -100,7 +112,7 @@ public class Session {
      * @return The log item created.
      */
     private LogItem createItem(LogItem.LogAction action){
-        return new LogItem(this.currentuser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName());
+        return new LogItem(this.currentUser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName());
     }
 
     /**
@@ -111,7 +123,7 @@ public class Session {
     }
 
     public void setCurrentUser(User currentuser) {
-        this.currentuser = currentuser;
+        this.currentUser = currentuser;
     }
 
     public void setAlgo(AlgoI algo) {
@@ -124,7 +136,7 @@ public class Session {
 
     public void addUser(User user) {
         this.users.add(user);
-        if(this.currentuser == null)
+        if(this.currentUser == null)
             this.setCurrentUser(user);
     }
 
@@ -135,4 +147,10 @@ public class Session {
     public APIManagerI getApi() {
         return apiManager;
     }
+
+    public Track getCurrentTrack() {
+        return this.localPlaylist.getCurrentTrack();
+    }
+
+
 }

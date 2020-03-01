@@ -465,7 +465,7 @@ public class SpotifyAPI implements APIManagerI {
                 .getPlayerApi()
                 .queue("spotify:track:"+id)
                 .setResultCallback(
-                        data -> Log.d("Event API" ," play track " + id)
+                        data -> Log.d("Event API" ," queue track " + id)
                 );
     }
 
