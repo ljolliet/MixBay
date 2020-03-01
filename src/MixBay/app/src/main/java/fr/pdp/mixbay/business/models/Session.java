@@ -59,6 +59,7 @@ public class Session {
             this.apiManager.queueTrack(t.id);
             Log.d("Session Launch Playlist", t.title);
         }*/
+        this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
         this.apiManager.playTrack(this.localPlaylist.getCurrentTrack().id);
     }
 
@@ -75,7 +76,10 @@ public class Session {
      */
     public void previousMusic() {
         if(this.mixed) {
-            this.apiManager.skipPreviousTrack();
+            //this.apiManager.skipPreviousTrack();
+            this.localPlaylist.decTrack();
+            this.apiManager.playTrack(localPlaylist.getCurrentTrack().id);
+            this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
             this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
             //TODO dec or not dec
         }
@@ -100,10 +104,10 @@ public class Session {
     public void nextMusic() {
         if(this.mixed) {
             //this.apiManager.skipNextTrack();
-
-            this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
             this.localPlaylist.incTrack();
-            this.apiManager.playTrack(localPlaylist.getCurrentTrack().id);
+            this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
+            this.apiManager.skipNextTrack();
+            this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
         }
         else
             Log.d("Session", "Action 'Next' impossible : Playlist not generated");

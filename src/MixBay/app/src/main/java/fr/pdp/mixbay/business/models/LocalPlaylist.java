@@ -10,19 +10,38 @@ import fr.pdp.mixbay.business.exceptions.PlayerException;
 public class LocalPlaylist implements PlaylistI {
 
     public static final int SIZE_MAX = 25;
-    private Track currentTrack;
+    private int currentTrackIndex = 0;
     private List<Track> tracks = new ArrayList<>();
 
+    /**
+     * TODO
+     * @return
+     */
     public Track getCurrentTrack() {
-        return currentTrack;
+        return tracks.size() != 0 ? tracks.get(currentTrackIndex) : null;
     }
 
-    public void incTrack(){ //TODO manage link with API
-        int i = tracks.indexOf(currentTrack);
-        this.currentTrack = tracks.get(++i);    //TODO manage issues
-        if (this.currentTrack == null)
+    public void incTrack(){
+        this.currentTrackIndex++;
+        if (this.tracks.size() < currentTrackIndex || this.tracks.get(currentTrackIndex) == null)
             throw new PlayerException("Current track not found in Local Playlist");
     }
+
+    public void decTrack() {
+        if(this.currentTrackIndex > 0)
+            this.currentTrackIndex--;
+        if (this.tracks.get(currentTrackIndex) == null)
+            throw new PlayerException("Current track not found in Local Playlist");
+    }
+
+    /**
+     * TODO
+     * @return
+     */
+    public Track getNextTrack() {
+        return tracks.size() > currentTrackIndex+1 ? tracks.get(currentTrackIndex+1) : null;
+    }
+
 
     /**
      * Set the given track as currentTrack.
@@ -30,19 +49,19 @@ public class LocalPlaylist implements PlaylistI {
      * @throws PlayerException If the given track is not contained in the playlist tracks.
      */
     public void setCurrentTrack(String id){
-        this.currentTrack = null;
+        boolean contained = false;
         for(Track t : this.tracks)
-            if(id.equals(t.id))
-                this.currentTrack = t;
-        if (this.currentTrack == null)
+            if(id.equals(t.id)) {
+                this.currentTrackIndex = tracks.indexOf(t);
+                contained = true;
+            }
+        if (!contained)
             throw new PlayerException("Current track not found in Local Playlist");
     }
 
     @Override
     public void addTrack(Track track) {
         this.tracks.add(track);
-        if(this.currentTrack == null)
-            this.currentTrack = track;
     }
 
     @Override
@@ -54,4 +73,5 @@ public class LocalPlaylist implements PlaylistI {
     public Collection<Track> getTracks() {
         return new ArrayList<>(this.tracks);
     }
+
 }
