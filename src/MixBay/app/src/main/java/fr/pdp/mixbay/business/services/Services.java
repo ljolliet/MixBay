@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.RepositoryI;
+import fr.pdp.mixbay.business.exceptions.SessionManagementException;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
@@ -73,8 +74,12 @@ public class Services {
         repository.getSession().createLogFile();
     }
 
-    public static void addUserWithId(String id) throws ExecutionException, InterruptedException {
+    public static void addUserWithId(String id) throws ExecutionException, InterruptedException, SessionManagementException {
         APIManagerI api = getSession().getApi();
+
+        // Test if the user is already added
+        getSession().testIfUserExists(id);
+
         // Request for the user
         User user = api.getUser(id).get();
         // Get user's playlists

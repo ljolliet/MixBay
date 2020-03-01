@@ -6,9 +6,11 @@ import android.util.Log;
 import java.util.HashSet;
 import java.util.Set;
 
+import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.algorithms.LeastMisery;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.LogManagerI;
+import fr.pdp.mixbay.business.exceptions.SessionManagementException;
 import fr.pdp.mixbay.data.JSONLogManager;
 
 
@@ -21,6 +23,7 @@ public class Session {
     private LogManagerI logManager;
     private APIManagerI apiManager;
     private boolean mixed;
+    private Context context;
 
 
     public Session(APIManagerI api) {
@@ -34,9 +37,9 @@ public class Session {
 
     /**
      * Start/Initialise the session.
-     * @return true if the initialisation worked normally
      */
     public void start(Context context) {
+        this.context = context;
         apiManager.connect(context);
     }
 
@@ -134,5 +137,12 @@ public class Session {
 
     public APIManagerI getApi() {
         return apiManager;
+    }
+
+    public void testIfUserExists(String id) throws SessionManagementException {
+        for (User user : users) {
+            if (user.id.equals(id))
+                throw new SessionManagementException(context.getString(R.string.user_already_added));
+        }
     }
 }

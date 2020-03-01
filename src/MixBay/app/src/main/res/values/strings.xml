@@ -1,17 +1,25 @@
 <resources>
+    <!--  Titles  -->
     <string name="app_name">MixBay</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="algorithm">Algorithme</string>
+    <string name="users">Utilisateurs</string>
+    <string name="add_user_alert_title">Identifiant de l\'utilisateur</string>
+
+    <!--  Buttons  -->
     <string name="mix_playlist">MIX</string>
     <string name="connect_with_spotify">Connect with Spotify</string>
     <string name="connect_with_deezer">Connect with Deezer</string>
     <string name="contact">Contact</string>
     <string name="about">About</string>
-    <string name="pipe_char">|</string>
+
+
+    <!--  Error messages  -->
     <string name="invalid_user_id">L\'utilisateur n\'existe pas.</string>
+    <string name="user_already_added">L\'utilisateur a déjà été ajouté.</string>
     <string name="invalid_playlist_id">La playlist n\'existe pas.</string>
     <string name="api_request_error">Une erreur est survenue, veuillez réessayer ultérieurement.</string>
-    <string name="title_activity_settings">Paramètres</string>
-    <string name="algorithm">Algorithme</string>
-    <string name="users">Utilisateurs</string>
+
+    <string name="pipe_char">|</string>
     <string name="descr_more_button">Bouton d\'options</string>
-    <string name="add_user_alert_title">Identifiant de l\'utilisateur</string>
 </resources>

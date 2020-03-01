@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.exceptions.APIConnectionException;
+import fr.pdp.mixbay.business.exceptions.SessionManagementException;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.services.Services;
@@ -43,14 +44,13 @@ public class MainActivity extends AppCompatActivity {
         Services.createSpotifySession();
         Services.getSession().start(this);
 
-        //Ask for permission(s)
+        // Ask for permission(s)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Log.d("MainActivity", "Permission not granted");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_STORAGE_WRITE_PERMISSION);
             Log.d("MainActivity", "Permission requested");
         }
-        else
-        {
+        else {
             Log.d("MainActivity", "Permission granted");
             Services.CreateLogFile();
         }
@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
             } catch (ExecutionException | InterruptedException e) {
                 // TODO Manage exception
                 System.out.println("Requesting user error: " + e.getMessage());
+            } catch (SessionManagementException e) {
+                // TODO Manage exception
+                System.out.println("Session management error: " + e.getMessage());
             }
         });
 
