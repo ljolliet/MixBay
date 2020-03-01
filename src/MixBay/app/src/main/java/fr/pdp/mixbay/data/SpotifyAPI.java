@@ -133,6 +133,7 @@ public class SpotifyAPI implements APIManagerI {
         // Return a Future
         return pool.submit(() -> {
             final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+            Log.d("SpotifyAPI", jsonObject.toString());
 
             // If user does not exist
             if (jsonObject.has("error"))
@@ -257,7 +258,17 @@ public class SpotifyAPI implements APIManagerI {
 
                 // For each track in playlist
                 for (int i = 0; i < itemsArray.length(); i++) {
+                    // If the track is null, skip it
+                    if (itemsArray.getJSONObject(i).isNull("track"))
+                        continue;
+
+                    // TODO if preview_url is null
+
                     JSONObject trackObject = itemsArray.getJSONObject(i).getJSONObject("track");
+
+                    // If the track does not have id, skip it
+                    if (trackObject.isNull("id"))
+                        continue;
 
                     // Get info from JSON
                     String track_id = trackObject.getString("id");
@@ -330,13 +341,15 @@ public class SpotifyAPI implements APIManagerI {
             JSONArray trackArray = jsonObject.getJSONArray("audio_features");
 
             // For each track
+            System.out.println(trackArray);
             for (int i = 0; i < trackArray.length(); i++) {
-                JSONObject trackObject = trackArray.getJSONObject(i);
-
+                // Some tracks does not have features
                 if (trackArray.isNull(i)) {
                     tracksFeatures.add(null);
                     continue;
                 }
+
+                JSONObject trackObject = trackArray.getJSONObject(i);
 
                 // Get info from JSON
                 double danceability = trackObject.getDouble("danceability");
