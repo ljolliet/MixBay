@@ -106,8 +106,8 @@ public class Session {
             //this.apiManager.skipNextTrack();
             this.localPlaylist.incTrack();
             this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
-            this.apiManager.skipNextTrack();
             this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
+            this.apiManager.skipNextTrack();
         }
         else
             Log.d("Session", "Action 'Next' impossible : Playlist not generated");
@@ -174,9 +174,14 @@ public class Session {
 
     public void syncCurrentTrack(String id) {
         Log.d("Session", "Checking id : "+ id + "| current id : "+localPlaylist.getCurrentTrack().id);
-        if (!id.equals(this.localPlaylist.getCurrentTrack().id)) {
+        if(id.equals(localPlaylist.getNextTrack().id)) {
+            localPlaylist.incTrack();
+            apiManager.queueTrack(localPlaylist.getNextTrack().id);
+            Log.d("Session", "Sync to next track");
+        }
+    /*    if (!id.equals(this.localPlaylist.getCurrentTrack().id)) {
             this.localPlaylist.setCurrentTrack(id);
             Log.d("Session", "Sync done");
-        }
+        }*/
     }
 }

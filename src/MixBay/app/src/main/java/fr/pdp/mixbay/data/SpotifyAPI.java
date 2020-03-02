@@ -485,7 +485,6 @@ public class SpotifyAPI implements APIManagerI {
                 );
     }
 
-
     private void subscribeToPlayerChange() {
         // Subscribe to PlayerState
         mSpotifyAppRemote.getPlayerApi()
