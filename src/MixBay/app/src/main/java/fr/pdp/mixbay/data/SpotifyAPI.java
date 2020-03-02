@@ -1,6 +1,7 @@
 package fr.pdp.mixbay.data;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -31,6 +32,8 @@ import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.TrackFeatures;
 import fr.pdp.mixbay.business.models.User;
+import fr.pdp.mixbay.business.services.Services;
+import fr.pdp.mixbay.presentation.PresentationServices;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -66,7 +69,7 @@ public class SpotifyAPI implements APIManagerI {
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
                         Log.d("MainActivity", "Spotify remote Connected");
-                        getPlayerInfo();
+                        subscribeToPlayerChange();
                     }
 
                     public void onFailure(Throwable throwable) {
@@ -483,7 +486,7 @@ public class SpotifyAPI implements APIManagerI {
     }
 
 
-    private void getPlayerInfo() {
+    private void subscribeToPlayerChange() {
         // Subscribe to PlayerState
         mSpotifyAppRemote.getPlayerApi()
                 .subscribeToPlayerState()
@@ -491,6 +494,8 @@ public class SpotifyAPI implements APIManagerI {
                     final com.spotify.protocol.types.Track track = playerState.track;
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        Services.syncCurrentTrack(track.uri.replaceFirst("spotify:track:",""));
+                        PresentationServices.updateCover();
                     }
                 });
     }

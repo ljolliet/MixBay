@@ -171,4 +171,12 @@ public class Session {
     public User getCurrentUser() {
         return this.currentUser;
     }
+
+    public void syncCurrentTrack(String id) {
+        Log.d("Session", "Checking id : "+ id + "| current id : "+localPlaylist.getCurrentTrack().id);
+        if (!id.equals(this.localPlaylist.getCurrentTrack().id)) {
+            this.localPlaylist.setCurrentTrack(id);
+            Log.d("Session", "Sync done");
+        }
+    }
 }

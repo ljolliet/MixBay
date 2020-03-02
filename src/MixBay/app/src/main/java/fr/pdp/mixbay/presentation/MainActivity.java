@@ -3,6 +3,10 @@ package fr.pdp.mixbay.presentation;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -11,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PresentationServices.setActivity(this);
 
         trackListView = findViewById(R.id.trackList);
 
@@ -103,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateCurrentUserInitialAndColor() {
+    public void updateCurrentUserInitialAndColor() {
         Button currentUser = this.findViewById(R.id.currentUserButton);
         User u = Services.getCurrentUser();
         currentUser.setText(String.valueOf(u.initial));
@@ -141,9 +145,10 @@ public class MainActivity extends AppCompatActivity {
         updateCover();
     }
 
-    private void updateCover() {
+    public void updateCover() {
         ImageView image = this.findViewById(R.id.albumPicture);
-        Picasso.get().load(Services.getSession().getCurrentTrack().cover_url).into(image);
+        if(Services.getSession().getCurrentTrack() != null)
+            Picasso.get().load(Services.getSession().getCurrentTrack().cover_url).into(image);
     }
 
     public void onClickSettings(View view) {

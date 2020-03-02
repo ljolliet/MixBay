@@ -95,4 +95,9 @@ public class Services {
     public static User getCurrentUser() {
         return repository.getSession().getCurrentUser();
     }
+
+    public static void syncCurrentTrack(String id) {
+        getSession().syncCurrentTrack(id);
+
+    }
 }
