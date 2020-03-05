@@ -5,6 +5,7 @@
     <string name="algorithm">Algorithme</string>
     <string name="users">Utilisateurs</string>
     <string name="add_user_alert_title">Identifiant de l\'utilisateur</string>
+    <string name="remove_user_alert_title">Supprimer %1$s ?</string>
 
     <!--  Buttons  -->
     <string name="mix_playlist">MIX</string>
@@ -15,12 +16,17 @@
     <string name="mute">Désactiver</string>
     <string name="unmute">Activer</string>
     <string name="delete">Supprimer</string>
+    <string name="OK">OK</string>
+    <string name="cancel">Annuler</string>
 
     <!--  Error messages  -->
     <string name="invalid_user_id">L\'utilisateur n\'existe pas.</string>
     <string name="user_already_added">L\'utilisateur a déjà été ajouté.</string>
     <string name="invalid_playlist_id">La playlist n\'existe pas.</string>
     <string name="api_request_error">Une erreur est survenue, veuillez réessayer ultérieurement.</string>
+
+    <!-- Alert messages -->
+    <string name="remove_user_message">Voulez vous vraiment supprimer cet utilisateur ?</string>
 
     <string name="pipe_char">|</string>
     <string name="descr_more_button">Bouton d\'options</string>

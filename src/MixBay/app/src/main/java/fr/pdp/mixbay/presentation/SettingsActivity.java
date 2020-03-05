@@ -10,6 +10,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -25,13 +26,15 @@ public class SettingsActivity extends AppCompatActivity {
     private final int MUTE_POSITION = 0;
     private final int DELETE_POSITION = 1;
 
+    private ListView userListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
         Toolbar toolbar = findViewById(R.id.settingsToolbar);
-        ListView userListView = findViewById(R.id.userListView);
+        userListView = findViewById(R.id.userListView);
 
         setActionBar(toolbar);
 
@@ -42,11 +45,15 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(view -> finish());
 
         // Add Users to ListView
-        UserSettingsAdapter adapter = new UserSettingsAdapter(this, new ArrayList<>(Services.getSession().getUsers()));
-        userListView.setAdapter(adapter);
+        this.loadUserList();
 
         // Detect onClick on User
         userListView.setOnItemClickListener(this::onClickUser);
+    }
+
+    private void loadUserList() {
+        UserSettingsAdapter adapter = new UserSettingsAdapter(this, new ArrayList<>(Services.getSession().getUsers()));
+        userListView.setAdapter(adapter);
     }
 
     private void onClickUser(AdapterView<?> adapterView, View view, int i, long l) {
@@ -101,8 +108,22 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void removeUser(User user) {
-        // Create popup to confirm
-        // If OK -> remove
-        // Else -> nothing happens
+        // Create a confirm popup
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle(getString(R.string.remove_user_alert_title, user.username));
+        builder.setMessage(R.string.remove_user_message);
+
+        // OK button
+        builder.setPositiveButton(R.string.OK, (dialog, which) -> {
+            // If OK, remove the user
+            Services.removeUser(user);
+            // Reload userList
+            loadUserList();
+        });
+
+        // Cancel button
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 }
