@@ -3,10 +3,6 @@ package fr.pdp.mixbay.presentation;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -172,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (ExecutionException | InterruptedException e) {
                 // TODO Manage exception
                 System.out.println("Requesting user error: " + e.getMessage());
+                e.printStackTrace();
             } catch (SessionManagementException e) {
                 // TODO Manage exception
                 System.out.println("Session management error: " + e.getMessage());

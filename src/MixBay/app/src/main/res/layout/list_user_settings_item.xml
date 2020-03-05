@@ -16,7 +16,8 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"/>
 
-    <ImageButton
+    <ImageView
+        android:id="@+id/userSettingsMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_more_vert_black_24dp"

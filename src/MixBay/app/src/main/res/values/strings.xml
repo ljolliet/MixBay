@@ -12,7 +12,9 @@
     <string name="connect_with_deezer">Connect with Deezer</string>
     <string name="contact">Contact</string>
     <string name="about">About</string>
-
+    <string name="mute">Désactiver</string>
+    <string name="unmute">Activer</string>
+    <string name="delete">Supprimer</string>
 
     <!--  Error messages  -->
     <string name="invalid_user_id">L\'utilisateur n\'existe pas.</string>
