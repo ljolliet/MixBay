@@ -1,43 +1,30 @@
 package fr.pdp.mixbay.business.algorithms;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-
-import fr.pdp.mixbay.business.models.AlgoI;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
-import fr.pdp.mixbay.business.models.Playlist;
-import fr.pdp.mixbay.business.models.ScoreBuilderI;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.utils.MapUtil;
 
-public class LeastMisery implements AlgoI {
-
-    ScoreBuilderI score = new FeatureBasedBuilder();
-
+public class LeastMisery extends AlgoSuperclass {
 
     @Override
     public String getName() {
-        return "Least Misery Strategy with " + score.getName();
-    }
-
-    @Override
-    public LocalPlaylist compute(Set<User> users) {
-        Map<String, Track> tracksList = new HashMap<>();
-        return computeLocalePlaylist(score.compute(users, tracksList), users, tracksList);
+        return this.getClass().toString() + " with " + score.getClass().toString();
     }
 
     /**
-     * Compute a local playlist of Playlist.SIZE_MAX (25) tracks
-     * The 25 tracks with the lowest computed score are chosen to be part of the locale playlist (Least Misery Strategy)
+     * Compute a local playlist of at most Playlist.SIZE_MAX (25) tracks
+     * The music score of a track for the group is the lowest score of all the users (Least Misery Strategy).
+     * The 25 tracks with the lowest distance are chosen to be part of the locale playlist.
      *
      * @param musicScorePerUser A structure containing the computed personnal score of each track for each user
      * @param users A set of users with datas loaded from a streaming API
      * @param tracksList A set of all the tracks extracted from all the playlists
-     * @return A playlist of 25 tracks
+     * @return A playlist of at most 25 tracks
      */
     public LocalPlaylist computeLocalePlaylist(Map<String, Map<String, Double>> musicScorePerUser, Set<User> users, Map<String, Track> tracksList) {
         Map<String, Double> leastMiseryComputed = new LinkedHashMap<>();
@@ -45,9 +32,9 @@ public class LeastMisery implements AlgoI {
         while (tracksIt.hasNext()) {
             Map.Entry trackEntry = (Map.Entry) tracksIt.next();
             Track t = (Track) trackEntry.getValue();
-            Double leastScore = 100.;
+            Double leastScore = 0.;
             for (User u : users) {
-                if ((musicScorePerUser.get(u.id)).get(t.id) < leastScore) {
+                if ((musicScorePerUser.get(u.id)).get(t.id) > leastScore) {
                     leastScore = (musicScorePerUser.get(u.id)).get(t.id);
                 }
             }
