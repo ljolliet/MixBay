@@ -10,6 +10,7 @@ import fr.pdp.mixbay.business.models.ScoreBuilderI;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.TrackFeatures;
 import fr.pdp.mixbay.business.models.User;
+import fr.pdp.mixbay.business.utils.MapUtil;
 
 public class FeatureBasedBuilder implements ScoreBuilderI {
 
@@ -74,7 +75,7 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
                 currentTrackScore = Math.sqrt(currentTrackScore);
                 scorePerTrack.put(t.id, currentTrackScore);
             }
-            musicScorePerUser.put((String) currentUser.getKey(), scorePerTrack);
+            musicScorePerUser.put((String) currentUser.getKey(), MapUtil.sortByValue(scorePerTrack));
         }
         return musicScorePerUser;
     }
