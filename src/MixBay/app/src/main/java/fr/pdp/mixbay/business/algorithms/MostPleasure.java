@@ -9,7 +9,7 @@ import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.utils.MapUtil;
 
-public class LeastMisery extends AlgoSuperclass {
+public class MostPleasure extends AlgoSuperclass {
 
     @Override
     public String getName() {
@@ -18,7 +18,7 @@ public class LeastMisery extends AlgoSuperclass {
 
     /**
      * Compute a local playlist of at most Playlist.SIZE_MAX (25) tracks
-     * The music score of a track for the group is the lowest score of all the users (Least Misery Strategy).
+     * The music score of a track for the group is the highest score of all the users (Most Pleasure Strategy).
      * The 25 tracks with the lowest distance are chosen to be part of the locale playlist.
      *
      * @param musicScorePerUser A structure containing the computed personnal score of each track for each user
@@ -27,21 +27,21 @@ public class LeastMisery extends AlgoSuperclass {
      * @return A playlist of at most 25 tracks
      */
     public LocalPlaylist computeLocalePlaylist(Map<String, Map<String, Double>> musicScorePerUser, Set<User> users, Map<String, Track> tracksList) {
-        Map<String, Double> leastMiseryComputed = new LinkedHashMap<>();
+        Map<String, Double> MostPleasureComputed = new LinkedHashMap<>();
         Iterator tracksIt = tracksList.entrySet().iterator();
         while (tracksIt.hasNext()) {
             Map.Entry trackEntry = (Map.Entry) tracksIt.next();
             Track t = (Track) trackEntry.getValue();
-            Double leastScore = 0.;
+            Double maxScore = 100.;
             for (User u : users) {
-                if ((musicScorePerUser.get(u.id)).get(t.id) > leastScore) {
-                    leastScore = (musicScorePerUser.get(u.id)).get(t.id);
+                if ((musicScorePerUser.get(u.id)).get(t.id) < maxScore) {
+                    maxScore = (musicScorePerUser.get(u.id)).get(t.id);
                 }
             }
-            leastMiseryComputed.put(t.id, leastScore);
+            MostPleasureComputed.put(t.id, maxScore);
         }
-        leastMiseryComputed = MapUtil.sortByValue(leastMiseryComputed);
-        Iterator computedTracksIterator = leastMiseryComputed.entrySet().iterator();
+        MostPleasureComputed = MapUtil.sortByValue(MostPleasureComputed);
+        Iterator computedTracksIterator = MostPleasureComputed.entrySet().iterator();
         int index = 0;
         LocalPlaylist p = new LocalPlaylist();
         while (computedTracksIterator.hasNext() && index < LocalPlaylist.SIZE_MAX) {
