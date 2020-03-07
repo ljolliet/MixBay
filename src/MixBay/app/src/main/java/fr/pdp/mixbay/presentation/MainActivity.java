@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
     public void onClickPrevious(View view) {
         Services.previousMusic();
         updateCover();
-
     }
 
     public void onClickPlay(View view) {

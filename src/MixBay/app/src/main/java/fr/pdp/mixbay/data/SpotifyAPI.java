@@ -234,7 +234,7 @@ public class SpotifyAPI implements APIManagerI {
             boolean next;
             // First url to request
             String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?" +
-                    "fields=items(track(id,name,artists,album(name,images))),next"; // Only important fields
+                    "fields=items(track(id,name,artists,preview_url,album(name,images))),next"; // Only important fields
 
             // Create total track set to return
             Set<Track> totalTrack = new HashSet<>();
