@@ -265,12 +265,15 @@ public class SpotifyAPI implements APIManagerI {
                     if (itemsArray.getJSONObject(i).isNull("track"))
                         continue;
 
-                    // TODO if preview_url is null
-
                     JSONObject trackObject = itemsArray.getJSONObject(i).getJSONObject("track");
 
                     // If the track does not have id, skip it
                     if (trackObject.isNull("id"))
+                        continue;
+
+                    // TODO if preview_url is null
+                    // If the track is not "playable"
+                    if (trackObject.isNull("preview_url"))
                         continue;
 
                     // Get info from JSON

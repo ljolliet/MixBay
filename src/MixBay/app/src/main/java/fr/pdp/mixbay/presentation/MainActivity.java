@@ -3,10 +3,8 @@ package fr.pdp.mixbay.presentation;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -111,7 +109,10 @@ public class MainActivity extends AppCompatActivity {
         Button currentUser = this.findViewById(R.id.currentUserButton);
         User u = Services.getCurrentUser();
         currentUser.setText(String.valueOf(u.initial));
-        //currentUser.setBackgroundColor(u.getColor()); //TODO set color
+
+        // Set color to Button
+        Drawable background = currentUser.getBackground();
+        ((GradientDrawable) background).setColor(u.getColor());
     }
 
 
@@ -165,13 +166,14 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(input);
 
         // Add OK button with behaviour
-        builder.setPositiveButton("OK", (dialog, which) -> {
+        builder.setPositiveButton(R.string.OK, (dialog, which) -> {
             String id = input.getText().toString();
             try {
                 Services.addUserWithId(id);
             } catch (ExecutionException | InterruptedException e) {
                 // TODO Manage exception
                 System.out.println("Requesting user error: " + e.getMessage());
+                e.printStackTrace();
             } catch (SessionManagementException e) {
                 // TODO Manage exception
                 System.out.println("Session management error: " + e.getMessage());
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Add Cancel button
-        builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
 
         // Display the Alert
         builder.show();

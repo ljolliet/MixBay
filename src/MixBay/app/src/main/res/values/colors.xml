@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <color name="colorPrimary">#008577</color>-->
-<!--    <color name="colorPrimaryDark">#00574B</color>-->
-    <color name="colorAccent">#D81B60</color>
-
     <color name="colorPrimary">#2a2a2a</color>
     <color name="colorPrimaryDark">#2a2a2a</color>
+    <color name="colorAccent">#D81B60</color>
     <color name="windowBackground">#3c3d42</color>
+
     <color name="colorMixButton">#4791df</color>
     <color name="colorConnectButton">#57b560</color>
-    <color name="colorConnectButtonDisabled">#696a6e</color>
+    <color name="colorDisabled">#696a6e</color>
+    <color name="white">@android:color/white</color>
 </resources>

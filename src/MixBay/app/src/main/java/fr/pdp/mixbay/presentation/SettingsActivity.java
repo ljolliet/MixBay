@@ -1,19 +1,32 @@
 package fr.pdp.mixbay.presentation;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 import fr.pdp.mixbay.R;
+import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.utils.UserSettingsAdapter;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private final int MUTE_POSITION = 0;
+    private final int DELETE_POSITION = 1;
+
+    private ListView userListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         Toolbar toolbar = findViewById(R.id.settingsToolbar);
-        ListView userListView = findViewById(R.id.userListView);
+        userListView = findViewById(R.id.userListView);
 
         setActionBar(toolbar);
 
@@ -32,9 +45,85 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(view -> finish());
 
         // Add Users to ListView
+        this.loadUserList();
+
+        // Detect onClick on User
+        userListView.setOnItemClickListener(this::onClickUser);
+    }
+
+    private void loadUserList() {
         UserSettingsAdapter adapter = new UserSettingsAdapter(this, new ArrayList<>(Services.getSession().getUsers()));
         userListView.setAdapter(adapter);
+    }
 
-        // TODO Add on click listener on the "more button"
+    private void onClickUser(AdapterView<?> adapterView, View view, int i, long l) {
+        ImageView moreImageView = view.findViewById(R.id.userSettingsMore);
+        PopupMenu popup = new PopupMenu(this, moreImageView);
+
+        popup.getMenuInflater().inflate(R.menu.popup_user_settings_menu, popup.getMenu());
+
+
+        // Get User
+        User user = (User) adapterView.getItemAtPosition(i);
+
+        // Change title of menu
+        if (user.isMute())
+            popup.getMenu().getItem(MUTE_POSITION).setTitle(R.string.unmute);
+
+        if (Services.getCurrentUser().id.equals(user.id)) // TODO Replace with user.equals()
+            popup.getMenu().getItem(DELETE_POSITION).setVisible(false);
+
+
+        // Detect popup click event
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.mute:
+                    toggleMuteUser(user, view);
+                    break;
+                case R.id.delete:
+                    removeUser(user);
+                    break;
+                default:
+                    Log.d("SettingsActivity", "Default: " + item.getItemId());
+                    break;
+            }
+
+            return true;
+        });
+
+        popup.show();
+    }
+
+    private void toggleMuteUser(User user, View view) {
+        TextView displayName = view.findViewById(R.id.userDisplayName);
+
+        if (user.isMute()) {
+            user.unmute();
+            displayName.setTextColor(getResources().getColor(R.color.white, getTheme()));
+        }
+        else {
+            user.mute();
+            displayName.setTextColor(getResources().getColor(R.color.colorDisabled, getTheme()));
+        }
+    }
+
+    private void removeUser(User user) {
+        // Create a confirm popup
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle(getString(R.string.remove_user_alert_title, user.username));
+        builder.setMessage(R.string.remove_user_message);
+
+        // OK button
+        builder.setPositiveButton(R.string.OK, (dialog, which) -> {
+            // If OK, remove the user
+            Services.removeUser(user);
+            // Reload userList
+            loadUserList();
+        });
+
+        // Cancel button
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 }

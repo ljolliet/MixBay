@@ -92,6 +92,10 @@ public class Services {
         getSession().addUser(user);
     }
 
+    public static void removeUser(User user) {
+        getSession().getUsers().remove(user);
+    }
+
     public static User getCurrentUser() {
         return repository.getSession().getCurrentUser();
     }

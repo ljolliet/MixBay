@@ -14,11 +14,13 @@ import fr.pdp.mixbay.business.models.User;
 
 public class UserSettingsAdapter extends BaseAdapter {
 
-    List<User> userList;
+    private List<User> userList;
     private LayoutInflater inflater;
+    private Context context;
 
     public UserSettingsAdapter(Context context, List<User> userList) {
         this.userList = userList;
+        this.context = context;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -46,8 +48,11 @@ public class UserSettingsAdapter extends BaseAdapter {
         User user = (User) getItem(position);
 
         TextView displayName = convertView.findViewById(R.id.userDisplayName);
-
         displayName.setText(user.username);
+
+        // Change color if user is mute
+        if (user.isMute())
+            displayName.setTextColor(context.getResources().getColor(R.color.colorDisabled, context.getTheme()));
 
         return convertView;
     }
