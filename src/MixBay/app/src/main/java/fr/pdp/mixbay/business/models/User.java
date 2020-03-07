@@ -37,11 +37,11 @@ public class User {
     private void generateColor() {
         Random rand = new Random();
 
-        // Generate pastel colors - from https://stackoverflow.com/a/8739276
-        final float hue = rand.nextFloat();
-        final float saturation = 0.9f; // Brilliant
-        final float luminance = 1.0f;  // Bright
-        color = Color.HSVToColor(new float[]{hue, saturation, luminance});
+        // Generate "light" colors - from https://stackoverflow.com/a/4246418
+        int r = rand.nextInt() / 2 + 128;
+        int g = rand.nextInt() / 2 + 128;
+        int b = rand.nextInt() / 2 + 128;
+        color = Color.rgb(r, g, b);
     }
 
     /**
