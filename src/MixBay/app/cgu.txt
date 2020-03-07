@@ -1,0 +1,88 @@
+﻿Les présentes conditions générales d’utilisation (ci-après dénommées « CGU ») ont pour objet déterminer les règles d’utilisation de l’application mobile « MixBay » (ci-après dénommée l’« Application ») éditée par BAH Elhajd Amadou, DEGUILLAUME Nicolas, JOLLIET Louis, LOISON Jules et VIGNEAU Paul.
+En installant l’Application sur votre terminal et/ou en accédant à l’Application, en tant que visiteur et/ou utilisateur, vous acceptez sans condition ni réserve l’intégralité des CGU définies ci-après. Si vous ne souhaitez pas accepter les présentes CGU, nous vous demandons de ne pas accéder à l’Application.
+Toute visite et/ou utilisation de l’Application doit se faire dans le respect des présentes CGU.
+
+Article 1. DEFINITIONS
+
+ Les termes débutant par une majuscule au sein des présentes CGU, qu’ils soient utilisés indifféremment au singulier ou au pluriel, auront, la signification qui leur est donnée ci-après :
+« Application » désigne l’application logicielle « MixBay » qui est disponible gratuitement dans le « Google Play Store » de Google pour être téléchargée par l’Utilisateur sur son terminal Android.
+« Contenu » désigne sans que cette liste soit limitative, la structure de l’Application, le contenu éditorial, les dessins, les illustrations, les images, les photographies, les chartes graphiques, les marques, les logos, les sigles, les dénominations sociales, les œuvres audiovisuelles, les œuvres multimédia, les contenus visuels, les contenus audio et sonores, ainsi que tout autre contenu présent au sein de l’Application et/ou tout autre élément composant l’Application.
+« Editeurs » désigne BAH Elhajd Amadou, DEGUILLAUME Nicolas, JOLLIET Louis, LOISON Jules et VIGNEAU Paul.
+« Playlist » désigne une liste de musiques.
+« Services » désignent les différentes fonctionnalités et services proposées par l’Application.
+« Utilisateur » ou « Vous » désigne une personne physique majeure ou mineure ayant préalablement obtenu l’autorisation de ses parents ou de la personne investie de l’autorité parentale, et ayant téléchargé l’Application pour ses besoins propres, dans le cadre d’un usage strictement personnel et non commercial, sans but lucratif direct ou indirect.
+
+Article 2. OBJET DE L’APPLICATION
+
+Chaque utilisateur d'un service de streaming (Deezer, Spotify par ex) peut se voir recommander des titres musicaux selon ses propres goûts. Toutefois, lorsque plusieurs utilisateurs veulent écouter de la musique au même endroit, il n'y a pas d'autre choix que d'utiliser le compte d'un seul de ces utilisateurs, et donc d'imposer les goûts de cet utilisateur aux autres personnes présentes.
+L’Application a pour objet de générer une Playlist qui plairait aux utilisateurs.
+
+Article 3. ACCES A L’APPLICATION
+
+Pour accéder et utiliser l’Application, Vous devez posséder un téléphone compatible ou un terminal mobile et un accès au réseau Internet.
+L’Application est téléchargeable gratuitement depuis la plateforme « Google Play Store ».
+
+Article 4. CONDITIONS FINANCIERES
+
+L’Application est proposée gratuitement aux Utilisateurs hors coûts d’abonnement auprès de l’opérateur de téléphonie mobile, hors coûts de connexion et d’accès au réseau Internet, hors surcoût éventuel facturé pour le chargement des données et hors coûts des abonnements aux services de streaming musicaux.
+
+Article 5. APPLICATION DES CGU ET DES CGV 
+Les CGU applicables à tout Utilisateur de l’Application et des Services.
+L’Utilisateur est invité à lire attentivement et à chaque visite les CGU qui sont accessibles sur la page d’accueil de l’Application et susceptibles d’être modifiées à tout moment et sans préavis.
+L’Application pourra faire l’objet d’une mise à jour régulière. A cet égard, toute Application téléchargée par un Utilisateur a une validité limitée dans le temps, compte tenu de ces mises à jour à télécharger impérativement et des éventuelles évolutions techniques, législatives ou réglementaires.
+
+Article 6. PROPRIETE INTELLECTUELLE DE L’APPLICATION
+Les Editeurs sont propriétaires exclusifs de tous les droits de propriété intellectuelle afférents à l’Application et son Contenu.
+ 
+Sans préjudice des dispositions de l’article 7, aucune des dispositions des CGU ne peut être interprétée comme une cession, un transfert, une vente, une concession, une licence, un prêt, une location, une autorisation d’exploitation consentie directement ou indirectement au profit de l’Utilisateur sur l’Application son Contenu et/ou les Services.
+
+Article 7. LICENCE D’UTILISATION 
+
+Les Editeurs concèdent à l’Utilisateur un droit personnel d’utilisation de l’Application, du Contenu et des Services, non exclusif, révocable, non cessible, non transférable, mondial et gratuit uniquement pour ses besoins propres dans le cadre de l’utilisation de l’Application et des Services, à l’exclusion de toute autre finalité.
+Il est strictement interdit à l’Utilisateur d’accéder et/ou d’utiliser les codes source de l’Application et/ou des composants logiciels de l’Application.
+L’Utilisateur n’acquiert aucun droit de propriété intellectuelle sur l’Application, le Contenu et/ou les Services ni aucun autre droit que ceux conférés par les présentes.
+La présente licence ne confère aucun droit d’utilisation à l’Utilisateur sur le Contenu. L’Utilisateur s’interdit donc de reproduire, représenter, adapter et/ou exploiter l’un et l’autre Contenu.
+
+Article 8. OBLIGATIONS DE L’UTILISATEUR
+
+L’Utilisateur s’engage expressément :
+–       à télécharger l’Application sur son équipement exclusivement pour un usage personnel et non marchand;
+–       à ne pas reproduire de façon permanente ou provisoire l’Application, en tout ou partie, par tout moyen et sous toute forme ;
+–       à ne pas procéder à toute adaptation, modification, traduction, transcription, arrangement, compilation, décompilation, assemblage, désassemblage, transcodage, ni appliquer la rétro-ingénierie (ou « Reverse Engineering ») de tout ou partie de l’Application, des Services et/ou du Contenu ;
+–       à ne pas exporter l’Application, de fusionner tout ou partie de l’Application avec d’autres programmes informatiques ;
+–       à ne procéder à des courtes citations, analyses et reproductions destinées à des revues de presse ainsi qu’aux autres utilisations expressément autorisées par la loi dans les limites et conditions fixées par cette dernière et sous réserve notamment de citer le nom des auteurs et la source éditoriale
+–       à ne pas mettre en place des systèmes susceptibles de pirater l’Application et/ou le Contenu en tout ou partie, ou de nature à violer les présentes CGU ;
+–       ne pas vendre, louer, sous-licencier ou distribuer de quelque façon que ce soit l’Application et/ou le Contenu à des tiers.
+
+Article 9. PROTECTION DES DONNEES PERSONNELLES
+
+Aucune donnée personnelle susceptible d’être collectée dans le cadre de l’utilisation de l’Application n'est conservée. Le renseignement de l'identifiant utilisateur (d'une plateforme de streaming musical) est nécessaire au fonctionnement de l'application mais n'est pas conservé. Le refus de fournir certaines données personnelles est susceptible de Vous priver de l’accès à certains Services.
+
+Article 10. LIMITATION DE GARANTIE
+
+L’accès et l’utilisation de l’Application se font aux risques et périls de l’Utilisateur.
+L’Application et le logiciel sont fournis « tel quel » et « comme disponible » sans garantie quelle qu’elle soit.
+Il appartient à tout Utilisateur de prendre toutes les mesures appropriées de façon à protéger ses propres données et/ ou logiciels stockés sur ses équipements informatique et téléphonique contre toute atteinte.
+L’Utilisateur déclare connaître et accepter les caractéristiques et les limites du réseau Internet et, notamment les caractéristiques fonctionnelles et des performances techniques du réseau Internet ; les problèmes liés à connexion et/ou d’accès au réseau Internet et/ou aux sites web ; les problèmes liés à la disponibilité et à l’encombrement des réseaux ; les problèmes liés à la défaillance ou à la saturation des réseaux ; les problèmes liés au temps de transit, à l’accès aux informations mises en ligne, aux temps de réponse pour afficher, consulter, interroger ou autrement transférer des données ; les risques d’interruption ; l’absence de protection de certaines données contre des détournements éventuels ou piratage ; les risques de contamination par d’éventuels virus circulant sur les dits réseaux, etc. pour lesquelles la responsabilité des Editeurs ne saurait être engagée.
+Les Editeurs ne peuvent être tenus pour responsables :
+–       en cas de défaut, de perte, de retard ou d’erreur de transmission de données qui sont indépendants de sa volonté;
+–       de l’envoi de messages et/ou de données et à une adresse fausse, erronée ou incomplète ;
+–       si des données ne lui parvenaient pas, pour quelque raison que ce soit, ou si les données qu’elle reçoit étaient illisibles ou impossibles à traiter ;
+–       au cas où l’Utilisateur ne parvenait à accéder ou à utiliser l’Application et/ou les Services pour quelque raison que ce soit ;
+–       si, pour quelque raison que ce soit, la connexion devait être interrompue.
+Par ailleurs, les Editeurs déclinent toute responsabilité en cas de mauvaise utilisation du terminal et/ou d’incident lié à l’utilisation du terminal lors de l’utilisation de l’Application.
+
+Article 11. EVOLUTION DES CONDITIONS GENERALES D’UTILISATION
+
+Les CGU applicables sont celles en vigueur à la date de la connexion et de l’utilisation de l’Application par l’Utilisateur.
+Mieux Vivre Votre Argent se réserve le droit de modifier, à tout moment, tout ou partie, des dispositions des CGU sans préavis ni information préalable des Utilisateurs afin de les adapter aux évolutions des Services, aux évolutions techniques, légales ou jurisprudentielles ou lors de la mise en place de nouvelles prestations.
+Les modifications éventuellement apportées par Mieux Vivre Votre Argent aux CGU seront portées à la connaissance des Utilisateurs par leur simple mise en ligne. Elles sont réputées acceptées sans réserve par tout Utilisateur qui accède à l’Application postérieurement à ladite mise en ligne. Mieux Vivre Votre Argent invite donc tout Utilisateur à consulter régulièrement les CGU.
+Tout nouveau Service intégrant de nouvelles techniques ou nouvelles caractéristiques améliorant la qualité des Services existants seront aussi soumis aux présentes CGU, sauf disposition expresse contraire.
+
+Article 12. CONTACT
+
+Toute question relative à l’Application et/ou aux Services doit être adressée à : TODO
+
+ARTICLE 13. LOI APPLICABLE 
+
+Les présentes CGU sont soumises à la loi française.
