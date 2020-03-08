@@ -8,11 +8,15 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -185,4 +189,10 @@ public class MainActivity extends AppCompatActivity {
         // Display the Alert
         builder.show();
     }
+
+    public void onClickDisconnect(View view){
+        onStop();
+    }
+
+
 }
