@@ -1,0 +1,229 @@
+\documentclass[10pt]{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage{hyperref}
+\usepackage{fontawesome}
+\usepackage{graphicx}
+\usepackage[english,ngerman]{babel}
+
+% ------------------------------------------------------------------------------
+% Use the beautiful metropolis beamer template
+% ------------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage{fontawesome}
+\usepackage{FiraSans} 
+\mode<presentation>
+{
+  \usetheme[progressbar=foot,numbering=fraction,background=light]{metropolis} 
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+  %\setbeamertemplate{frame footer}{My custom footer}
+} 
+
+% ------------------------------------------------------------------------------
+% beamer doesn't have texttt defined, but I usually want it anyway
+% ------------------------------------------------------------------------------
+\let\textttorig\texttt
+\renewcommand<>{\texttt}[1]{%
+  \only#2{\textttorig{#1}}%
+}
+
+% ------------------------------------------------------------------------------
+% minted
+% ------------------------------------------------------------------------------
+\usepackage{minted}
+
+
+% ------------------------------------------------------------------------------
+% tcolorbox / tcblisting
+% ------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{codecolor}{HTML}{FFC300}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{most,listingsutf8,minted}
+
+\tcbset{tcbox width=auto,left=1mm,top=1mm,bottom=1mm,
+right=1mm,boxsep=1mm,middle=1pt}
+
+\newtcblisting{myr}[1]{colback=codecolor!5,colframe=codecolor!80!black,listing only, 
+minted options={numbers=left, style=tcblatex,fontsize=\tiny,breaklines,autogobble,linenos,numbersep=3mm},
+left=5mm,enhanced,
+title=#1, fonttitle=\bfseries,
+listing engine=minted,minted language=r}
+
+\setbeamercolor{background canvas}{bg=white}
+
+% ------------------------------------------------------------------------------
+% Listings
+% ------------------------------------------------------------------------------
+\definecolor{mygreen}{HTML}{37980D}
+\definecolor{myblue}{HTML}{0D089F}
+\definecolor{myred}{HTML}{98290D}
+
+\usepackage{listings}
+
+% the following is optional to configure custom highlighting
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morecomment=[s]{<!--}{-->},
+  morestring=[s]{>}{<},
+  morekeywords={ref,xmlns,version,type,canonicalRef,metr,real,target}% list your attributes here
+}
+
+\lstdefinestyle{myxml}{
+language=XML,
+showspaces=false,
+showtabs=false,
+basicstyle=\ttfamily,
+columns=fullflexible,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+basicstyle=\color{mygreen}\ttfamily,%\footnotesize,
+stringstyle=\color{myred},
+commentstyle=\color{myblue}\upshape,
+keywordstyle=\color{myblue}\bfseries,
+}
+
+% ------------------------------------------------------------------------------
+% The Document
+% ------------------------------------------------------------------------------
+
+\title{Génération de playlistes musicales pour un groupe d'utilisateurs I}
+\author{\scriptsize	Bah Elhadj Amadou, \and Deguillaume Nicolas, \and Jolliet Louis, \and Loison Jules, \and Vigneau Paul}
+\date{Février 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{frame}[fragile]{Introduction}
+\begin{figure}[H] 
+\centering 
+\includegraphics[width=3.6cm]{ressources/home_page_prototype_projet.jpg}
+\hspace{0.6cm}
+\includegraphics[width=3.6cm]{ressources/manage_user.jpg}
+\end{figure}
+\end{frame}
+
+\section{Choix Techniques}
+
+\begin{frame}[fragile]{Dans un premier temps}
+\begin{itemize}
+    \item[] \textbf{Ionic Framework}
+    \begin{itemize}
+        \item HTML, CSS, TypeScript... + natif
+        \item Android + iOS
+        \item Découverte d'une nouvelle technologie
+    \end{itemize}
+    \item[] \textbf{Problèmes}
+    \begin{itemize}
+        \item Plugins obsolètes
+        \item Changements récents dans l'API
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Technologie actuelle}
+\begin{itemize}
+    \item[] \textbf{Android} (2 SDKs)
+    \begin{itemize}
+        \item Authentification
+        \item App Remote
+        \item \textbf{Problème} : version bêta, documentation pas à jour...
+    \end{itemize}
+    \item[] \textbf{Résultat}
+    \begin{itemize}
+        \item Double connexion
+        \item Majorité des actions : requêtes web
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\section{Besoins fonctionnels réalisés}
+\begin{frame}{Coté serveur (Back)}
+\begin{enumerate}
+    \item Création de l'architecture
+    \item Connexion à l'API
+    \item Gestion du player
+    \item Implémentation de deux algorithmes (Random algo and LeastMisery) 
+    \item Gestion des playlists
+\end{enumerate}
+\end{frame}
+\begin{frame}{Coté client (Front)}
+\begin{enumerate}
+    \item Page de connexion
+    \item Playlist sur la page principale
+\end{enumerate}
+\end{frame}
+
+\section{Architecture de l'application}
+
+\begin{frame}[fragile]{Diagramme de classe}
+\includegraphics[width=\linewidth]{ressources/diag_classes.png}
+\end{frame}
+
+\begin{frame}[fragile]{Diagramme de paquetage}
+\includegraphics[width=\linewidth]{ressources/diag_paquetage.png}
+\end{frame}
+
+\section{Algorithmes}
+
+\begin{frame}[fragile]{Calcul du score}
+\begin{enumerate}
+    \item \textbf{Calcul du profil des utilisateurs}
+    \begin{itemize}
+        \item Moyenne des caractéristiques des musiques de l'utilisateur
+    \end{itemize}
+    \item \textbf{Calcul du score par musique par utilisateur}
+    \begin{itemize}
+        \item Distance euclidienne entre un profil utilisateur et une musique
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Least Misery Strategy}
+\begin{table}[]
+\begin{tabular}{llllllll}
+      & $m_1$ & $m_2$ & $m_3$ & $m_4$ & $m_5$ & $m_6$ & $m_7$ \\ \hline
+$u_1$    & 8  & 10 & 7  & 10 & 9  & 8  & 10 \\
+$u_2$    & 7  & 10 & 6  & 9  & 8  & 10 & 9  \\
+$u_3$    & 5  & 1  & 8  & 6  & 9  & 10 & 3  \\ \hline
+Groupe & 5  & 1  & 6  & 6  & 8  & 8  & 3 
+\end{tabular}
+\end{table}
+\end{frame}
+
+
+\section{La suite}
+\begin{frame}[fragile]{Prochaines étapes \& Difficultés}
+\begin{itemize}
+    \item[] \textbf{État actuel :} 
+    \begin{itemize}
+        \item Implémentations essentielles du Back bien avancées
+        \item Implémentations essentielles du Front commencées
+        \item Modules de tests pas encore implémentés
+    \end{itemize}
+    \item[] \textbf{Difficultés}
+    \begin{itemize}
+        \item Difficultés à utiliser l'API et les SDKs de Spotify
+    \end{itemize}
+    \item[] \textbf{Prochaines étapes}
+    \begin{itemize}
+        \item Tester les algorithmes
+        \item Implémenter les différents modules de tests
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[standout]
+    Merci de votre attention !
+\end{frame}
+\end{document}
