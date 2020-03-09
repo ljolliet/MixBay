@@ -1,6 +1,7 @@
 package fr.pdp.mixbay.business.algorithms;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,8 +16,14 @@ abstract class AlgoSuperclass implements AlgoI {
 
     @Override
     public LocalPlaylist compute(Set<User> users) {
+        Set<User> unmutedUsers = new HashSet<>();
+        for (User u : users) {
+            if (!u.isMute()) {
+                unmutedUsers.add(u);
+            }
+        }
         Map<String, Track> tracksList = new HashMap<>();
-        return computeLocalePlaylist(score.compute(users, tracksList), users, tracksList);
+        return computeLocalePlaylist(score.compute(unmutedUsers, tracksList), unmutedUsers, tracksList);
     }
 
     public abstract LocalPlaylist computeLocalePlaylist(Map<String, Map<String, Double>> musicScorePerUser, Set<User> users, Map<String, Track> tracksList);
