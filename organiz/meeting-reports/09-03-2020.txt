@@ -1,0 +1,16 @@
+TODO : 
+*Mettre des slides/source de l'audit sur le git
+*Mettre à jour l'archi
+*Mettre (bientôt) une capture d'écran des tâches dans /backlog
+*Oeuvrer à la séparation nette des API
+*Effectuer des tests pour estimer à partir de quand la génération de playlist n'est plus pertinente du tout (enlever toute potentielle limite arbitraire)
+*Enlever les magic numbers présents OU les justifier par une limitation technique (dans mémoire)
+*Faire des tests de non-regressions pour les algorithmes
+*Faire des cas "contrôlés" de génération de playlist (ex : tout le monde a les mêmes goûts sauf une personne)
+*Eventuellement lisser les valeurs des TrackFeatures et mettre en place un système pour choisir une piste plutôt qu'une autre (qui ont les mêmes notes)
+*Créer le mémoire et y coller notre cahier des besoins dans les parties correspondantes
+*Modif sur le CDB:
+    **Trop de détails techniques par moment.
+    **Expliciter la visibilité des données qu'on récupère
+    **Expliciter que les identifiants des utilisateurs sont sécurisés car on ne stocke rien dans l'application
+    **Changer la biblio pour bien afficher toutes les infos (page, lien...)
