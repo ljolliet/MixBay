@@ -9,4 +9,5 @@
     <color name="colorConnectButton">#57b560</color>
     <color name="colorDisabled">#696a6e</color>
     <color name="white">@android:color/white</color>
+    <color name="grey">#777777</color>
 </resources>
