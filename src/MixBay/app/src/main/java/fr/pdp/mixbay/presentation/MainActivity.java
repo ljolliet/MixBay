@@ -149,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
         updateCover();
     }
 
+    public void onClickLike(View view) {
+        Services.likeMusic  ();
+
+    }
+
     public void updateCover() {
         ImageView image = this.findViewById(R.id.albumPicture);
         if(Services.getSession().getCurrentTrack() != null)
@@ -193,6 +198,4 @@ public class MainActivity extends AppCompatActivity {
     public void onClickDisconnect(View view){
         onStop();
     }
-
-
 }

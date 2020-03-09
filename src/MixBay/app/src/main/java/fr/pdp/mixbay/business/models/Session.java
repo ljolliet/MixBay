@@ -55,10 +55,6 @@ public class Session {
     }
 
     public void launchPlaylist() {
-       /* for(Track t : this.localPlaylist.getTracks()){
-            this.apiManager.queueTrack(t.id);
-            Log.d("Session Launch Playlist", t.title);
-        }*/
         this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
         this.apiManager.playTrack(this.localPlaylist.getCurrentTrack().id);
     }
@@ -79,7 +75,7 @@ public class Session {
             //this.apiManager.skipPreviousTrack();
             this.localPlaylist.decTrack();
             this.apiManager.playTrack(localPlaylist.getCurrentTrack().id);
-            this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
+            //this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
             this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
             //TODO dec or not dec
         }
@@ -103,14 +99,20 @@ public class Session {
      */
     public void nextMusic() {
         if(this.mixed) {
-            //this.apiManager.skipNextTrack();
             this.localPlaylist.incTrack();
             this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
-            this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
             this.apiManager.skipNextTrack();
+            this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
         }
         else
             Log.d("Session", "Action 'Next' impossible : Playlist not generated");
+    }
+
+    /**
+     * Like the current Track of the local playlist.
+     */
+    public void likeCurrentTrack() {
+        this.logManager.append(this.createItem(LogItem.LogAction.LIKE));
     }
 
     /**
@@ -174,14 +176,11 @@ public class Session {
 
     public void syncCurrentTrack(String id) {
         Log.d("Session", "Checking id : "+ id + "| current id : "+localPlaylist.getCurrentTrack().id);
-        if(id.equals(localPlaylist.getNextTrack().id)) {
+        if(id.equals(localPlaylist.getNextTrack().id) || !id.equals(this.localPlaylist.getCurrentTrack().id)) {
             localPlaylist.incTrack();
             apiManager.queueTrack(localPlaylist.getNextTrack().id);
             Log.d("Session", "Sync to next track");
         }
-    /*    if (!id.equals(this.localPlaylist.getCurrentTrack().id)) {
-            this.localPlaylist.setCurrentTrack(id);
-            Log.d("Session", "Sync done");
-        }*/
     }
+
 }

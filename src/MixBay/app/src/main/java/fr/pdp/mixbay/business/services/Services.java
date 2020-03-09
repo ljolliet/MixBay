@@ -104,4 +104,8 @@ public class Services {
         getSession().syncCurrentTrack(id);
 
     }
+
+    public static void likeMusic() {
+        getSession().likeCurrentTrack();
+    }
 }
