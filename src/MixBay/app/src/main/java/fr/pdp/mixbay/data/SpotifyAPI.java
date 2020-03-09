@@ -33,6 +33,7 @@ import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.TrackFeatures;
 import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.services.Services;
+import fr.pdp.mixbay.business.utils.Factory;
 import fr.pdp.mixbay.presentation.PresentationServices;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -143,7 +144,7 @@ public class SpotifyAPI implements APIManagerI {
                 throw new APIRequestException(context.getString(R.string.invalid_user_id));
 
             // Return new User
-            return new User(id, jsonObject.getString("display_name"));
+            return Factory.getUser(id, jsonObject.getString("display_name"));
 
         });
     }
@@ -171,7 +172,7 @@ public class SpotifyAPI implements APIManagerI {
             String id = jsonObject.getString("id");
 
             // Return new User
-            return new User(id, display_name);
+            return Factory.getUser(id, display_name);
         });
     }
 
@@ -212,7 +213,7 @@ public class SpotifyAPI implements APIManagerI {
                 playlists.add(playlist);
 
                 // Fill playlist with tracks
-                playlist.addTracks(this.getTracksFromPlaylist(playlist_id).get());
+                playlist.addTracks(this.getTracksFromPlaylist(playlist_id, userId).get());
             }
 
             return playlists;
@@ -224,7 +225,7 @@ public class SpotifyAPI implements APIManagerI {
      * @param playlistId The id of the playlist.
      * @return A Future with the set of Tracks.
      */
-    private Future<Set<Track>> getTracksFromPlaylist(String playlistId) {
+    private Future<Set<Track>> getTracksFromPlaylist(String playlistId, String userId) {
         ExecutorService pool = Executors.newFixedThreadPool(1);
 
         // Return a Future
@@ -271,7 +272,6 @@ public class SpotifyAPI implements APIManagerI {
                     if (trackObject.isNull("id"))
                         continue;
 
-                    // TODO if preview_url is null
                     // If the track is not "playable"
                     if (trackObject.isNull("preview_url"))
                         continue;
@@ -290,7 +290,7 @@ public class SpotifyAPI implements APIManagerI {
                     String cover_url = trackObject.getJSONObject("album").getJSONArray("images").getJSONObject(2).getString("url");
 
                     // Create Track
-                    Track track = new Track(track_id, track_title, track_album, artists, cover_url);
+                    Track track = Factory.getTrack(track_id, track_title, track_album, artists, cover_url, userId);
 
                     // Append ids for the track features request
                     trackIdList.append(track_id).append(",");
@@ -347,7 +347,6 @@ public class SpotifyAPI implements APIManagerI {
             JSONArray trackArray = jsonObject.getJSONArray("audio_features");
 
             // For each track
-            System.out.println(trackArray);
             for (int i = 0; i < trackArray.length(); i++) {
                 // Some tracks does not have features
                 if (trackArray.isNull(i)) {
