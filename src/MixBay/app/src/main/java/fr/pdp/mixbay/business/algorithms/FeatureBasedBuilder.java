@@ -34,7 +34,7 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
             for (Track t : p.getTracks()) {
                 tracksList.put(t.id, t);
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                    trackFeaturesAverage[i] = t.getFeatures().allFeatures.get(TrackFeatures.NAME_VALUES[i]);
+                    trackFeaturesAverage[i] += t.getFeatures().allFeatures.get(TrackFeatures.NAME_VALUES[i]);
                 }
             }
         }
