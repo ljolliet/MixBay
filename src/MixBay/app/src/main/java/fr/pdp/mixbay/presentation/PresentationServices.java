@@ -1,7 +1,5 @@
 package fr.pdp.mixbay.presentation;
 
-import android.app.Activity;
-
 public class PresentationServices {
 
         private static MainActivity activity;
@@ -14,5 +12,9 @@ public class PresentationServices {
 
     public static void updateCover() {
         activity.updateCover();
+    }
+
+    public static void updateLikeButton() {
+        activity.updateLikeButton();
     }
 }

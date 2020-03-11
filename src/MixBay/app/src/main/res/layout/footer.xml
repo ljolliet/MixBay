@@ -45,14 +45,13 @@
         android:layout_marginEnd="15dp"
         android:onClick="onClickNext" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/likeButton"
-        android:src="@drawable/like"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:background="@android:color/transparent"
+        android:background="@drawable/like"
         android:onClick="onClickLike" />
 
 

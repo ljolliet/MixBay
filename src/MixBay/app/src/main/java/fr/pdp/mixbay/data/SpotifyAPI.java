@@ -497,6 +497,7 @@ public class SpotifyAPI implements APIManagerI {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         Services.syncCurrentTrack(track.uri.replaceFirst("spotify:track:",""));
                         PresentationServices.updateCover();
+                        PresentationServices.updateLikeButton();
                     }
                 });
     }

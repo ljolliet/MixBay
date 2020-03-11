@@ -9,7 +9,8 @@ public class LogItem {
         PREVIOUS,
         PLAY,
         PAUSE,
-        LIKE;
+        LIKE,
+        UNLIKE
     }
 
     public final Date date;

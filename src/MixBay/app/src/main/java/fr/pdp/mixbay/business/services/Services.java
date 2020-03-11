@@ -105,7 +105,18 @@ public class Services {
 
     }
 
+    public static boolean isCurrentTrackLiked() {
+        return getSession().getCurrentTrack().isLiked();
+    }
     public static void likeMusic() {
         getSession().likeCurrentTrack();
+    }
+
+    public static void unlikeMusic() {
+        getSession().unlikeCurrentTrack();
+    }
+
+    public static boolean isMixed() {
+        return getSession().isMixed();
     }
 }

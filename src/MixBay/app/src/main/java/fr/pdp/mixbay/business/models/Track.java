@@ -12,6 +12,7 @@ public class Track {
         public final Set<String> artists;
         public final String cover_url;
         private TrackFeatures features;
+        private boolean liked;
 
 
     /**
@@ -28,6 +29,7 @@ public class Track {
         this.album = album;
         this.artists = artists;
         this.cover_url = cover_url;
+        this.liked = false;
     }
 
     public TrackFeatures getFeatures() {
@@ -69,5 +71,16 @@ public class Track {
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void like() {
+        this.liked = true;
+    }
+    public void unlike() {
+        this.liked = false;
     }
 }

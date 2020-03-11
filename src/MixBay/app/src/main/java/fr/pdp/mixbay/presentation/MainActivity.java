@@ -8,15 +8,13 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.Toast;
+
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -155,15 +153,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickLike(View view) {
-        Services.likeMusic  ();
-
+        if(Services.isMixed())
+            if (Services.isCurrentTrackLiked()) {
+                view.setBackgroundResource(R.drawable.like);
+                Services.unlikeMusic();
+            } else {
+                view.setBackgroundResource(R.drawable.liked);
+                Services.likeMusic();
+            }
     }
 
-    public void updateCover() {
-        ImageView image = this.findViewById(R.id.albumPicture);
-        if(Services.getSession().getCurrentTrack() != null)
-            Picasso.get().load(Services.getSession().getCurrentTrack().cover_url).into(image);
-    }
+
 
     public void onClickSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
@@ -198,5 +198,20 @@ public class MainActivity extends AppCompatActivity {
 
         // Display the Alert
         builder.show();
+    }
+
+    public void updateCover() {
+        ImageView image = this.findViewById(R.id.albumPicture);
+        if(Services.getSession().getCurrentTrack() != null)
+            Picasso.get().load(Services.getSession().getCurrentTrack().cover_url).into(image);
+    }
+
+    public void updateLikeButton() {
+        ImageButton button = this.findViewById(R.id.likeButton);
+        if (Services.isCurrentTrackLiked()) {
+            button.setBackgroundResource(R.drawable.liked);
+        } else {
+            button.setBackgroundResource(R.drawable.like);
+        }
     }
 }

@@ -112,7 +112,21 @@ public class Session {
      * Like the current Track of the local playlist.
      */
     public void likeCurrentTrack() {
-        this.logManager.append(this.createItem(LogItem.LogAction.LIKE));
+        if(this.mixed) {
+            this.logManager.append(this.createItem(LogItem.LogAction.LIKE));
+            this.getCurrentTrack().like();
+        }
+        else
+            Log.d("Session", "Action 'Like' impossible : Playlist not generated");
+    }
+
+    public void unlikeCurrentTrack() {
+        if(this.mixed) {
+            this.logManager.append(this.createItem(LogItem.LogAction.UNLIKE));
+            this.getCurrentTrack().unlike();
+        }
+        else
+            Log.d("Session", "Action 'Unlike' impossible : Playlist not generated");
     }
 
     /**
@@ -180,7 +194,11 @@ public class Session {
             localPlaylist.incTrack();
             apiManager.queueTrack(localPlaylist.getNextTrack().id);
             Log.d("Session", "Sync to next track");
+
         }
     }
 
+    public boolean isMixed() {
+        return mixed;
+    }
 }
