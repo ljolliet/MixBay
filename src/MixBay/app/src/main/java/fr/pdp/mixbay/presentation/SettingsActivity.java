@@ -1,5 +1,6 @@
 package fr.pdp.mixbay.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -126,4 +127,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         builder.show();
     }
+
+    public void onClickDisconnect(View view){
+        Services.disconnectSession();
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        onStop();
+    }
+
 }

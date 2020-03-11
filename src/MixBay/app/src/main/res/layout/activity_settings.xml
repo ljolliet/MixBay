@@ -93,7 +93,8 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="18sp"
                 android:layout_weight="1"
-                android:textColor="@android:color/holo_red_light"/>
+                android:textColor="@android:color/holo_red_light"
+                android:onClick="onClickDisconnect"/>
 
         </LinearLayout>
 

@@ -199,8 +199,4 @@ public class MainActivity extends AppCompatActivity {
         // Display the Alert
         builder.show();
     }
-
-    public void onClickDisconnect(View view){
-        onStop();
-    }
 }
