@@ -112,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
     public void updateCurrentUserInitialAndColor() {
         Button currentUser = this.findViewById(R.id.currentUserButton);
         User u = Services.getCurrentUser();
+
+        // Set it visible
+        currentUser.setVisibility(View.VISIBLE);
+
+        // Set initial
         currentUser.setText(String.valueOf(u.initial));
 
         // Set color to Button
