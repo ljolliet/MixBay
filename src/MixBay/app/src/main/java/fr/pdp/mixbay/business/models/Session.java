@@ -190,12 +190,11 @@ public class Session {
 
     public void syncCurrentTrack(String id) {
         Log.d("Session", "Checking id : "+ id + "| current id : "+localPlaylist.getCurrentTrack().id);
-        if(id.equals(localPlaylist.getNextTrack().id) || !id.equals(this.localPlaylist.getCurrentTrack().id)) {
+      /*  if(id.equals(localPlaylist.getNextTrack().id) || !id.equals(this.localPlaylist.getCurrentTrack().id)) {
             localPlaylist.incTrack();
             apiManager.queueTrack(localPlaylist.getNextTrack().id);
             Log.d("Session", "Sync to next track");
-
-        }
+        }*/
     }
 
     public boolean isMixed() {

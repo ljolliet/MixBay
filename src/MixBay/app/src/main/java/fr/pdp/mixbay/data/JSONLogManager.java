@@ -35,17 +35,24 @@ public class JSONLogManager implements LogManagerI {
     private JSONArray array= new JSONArray();
     private String filename = "/mixbay_LOG_";
     private String extension = ".json";
+    private String folderName = "/MixBay/";
     private File outputFile;
 
     @Override
     public void create() {
+        //Create folder if does not exist
+        File folder = new File(Environment.getExternalStorageDirectory() + folderName);
+        if (!folder.exists()) {
+            folder.mkdir();
+            Log.d("Folder", "Folder Created");
+        }
+        //Build the log file
         String pattern = "dd-MM-yyyy";
         Locale locale = new Locale("fr", "FR");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, locale);
         filename = filename + simpleDateFormat.format(new Date()) + extension;
-        outputFile = new File(Environment.getExternalStorageDirectory() + filename);
+        outputFile = new File(Environment.getExternalStorageDirectory() + folderName + filename);
         Log.d("JsonLogManager", Environment.getExternalStorageDirectory() + filename);
-
         //TODO manage all possible cases
     }
 
