@@ -17,6 +17,7 @@
     <string name="unmute">Activer</string>
     <string name="delete">Supprimer</string>
     <string name="OK">OK</string>
+    <string name="accept">Accepter</string>
     <string name="cancel">Annuler</string>
 
     <!--  Error messages  -->
