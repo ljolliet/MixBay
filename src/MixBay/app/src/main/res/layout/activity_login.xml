@@ -46,7 +46,7 @@
             android:textSize="18sp"
             android:padding="15dp"
             android:background="@drawable/rounded_button_green"
-            android:textColor="@android:color/white"/>
+            android:onClick="onClickSpotify" />
 
         <Button
             android:id="@+id/btnDeezerLogin"
