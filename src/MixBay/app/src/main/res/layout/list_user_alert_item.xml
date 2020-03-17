@@ -7,22 +7,27 @@
     android:paddingEnd="20dp">
 
     <TextView
+        android:id="@+id/userInitial"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/descr_more_button"
+        android:background="@drawable/circle_user"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:text="P"
+        android:textSize="18sp"
+        android:textAllCaps="true"
+        android:gravity="center"/>
+
+    <TextView
         android:id="@+id/userDisplayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/userInitial"
         android:text="Display name"
         android:textSize="18sp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
-
-    <ImageView
-        android:id="@+id/userSettingsMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_more_vert_black_24dp"
-        android:contentDescription="@string/descr_more_button"
-        android:background="@android:color/transparent"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true" />
+        android:paddingBottom="10dp"
+        android:layout_marginStart="20dp"/>
 
 </RelativeLayout>

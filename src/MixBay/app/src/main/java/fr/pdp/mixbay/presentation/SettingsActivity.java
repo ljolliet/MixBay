@@ -66,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void loadUserList() {
-        UserSettingsAdapter adapter = new UserSettingsAdapter(this, new ArrayList<>(Services.getSession().getUsers()));
+        UserSettingsAdapter adapter = new UserSettingsAdapter(this, Services.getUsers());
         userListView.setAdapter(adapter);
     }
 

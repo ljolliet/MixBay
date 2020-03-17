@@ -35,6 +35,7 @@ import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.utils.TrackAdapter;
+import fr.pdp.mixbay.business.utils.UserAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -197,6 +198,21 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
 
         // Display the Alert
+        builder.show();
+    }
+
+    public void onClickCurrentUser(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        builder.setTitle("Qui est l'utilisateur courant ?"); // TODO Put string in res
+
+        final UserAdapter userAdapter = new UserAdapter(this, Services.getUsers());
+
+        builder.setAdapter(userAdapter, (dialogInterface, i) -> {
+            Services.setCurrentUser(((User) userAdapter.getItem(i)));
+            updateCurrentUserInitialAndColor();
+            dialogInterface.dismiss();
+        });
+
         builder.show();
     }
 

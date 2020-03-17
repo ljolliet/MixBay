@@ -2,6 +2,8 @@ package fr.pdp.mixbay.business.services;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -40,7 +42,7 @@ public class Services {
     }
 
     public static boolean disconnectSession() {
-        return repository.getSession().finish();
+        return getSession().finish();
     }
 
     // TODO Change function name
@@ -58,25 +60,25 @@ public class Services {
     }
 
     public static void previousMusic() {
-        repository.getSession().previousMusic();
+        getSession().previousMusic();
     }
 
     public static void playMusic() {
-        repository.getSession().playMusic();
+        getSession().playMusic();
     }
 
     public static void nextMusic() {
-        repository.getSession().nextMusic();
+        getSession().nextMusic();
     }
 
     public static LocalPlaylist mix() {
-        LocalPlaylist playlist = repository.getSession().generatePlaylist();
-        repository.getSession().launchPlaylist();
+        LocalPlaylist playlist = getSession().generatePlaylist();
+        getSession().launchPlaylist();
         return playlist;
     }
 
     public static void CreateLogFile() {
-        repository.getSession().createLogFile();
+        getSession().createLogFile();
     }
 
     public static void addUserWithId(String id) throws ExecutionException, InterruptedException, SessionManagementException {
@@ -99,18 +101,26 @@ public class Services {
         getSession().getUsers().remove(user);
     }
 
+    public static List<User> getUsers() {
+        return new ArrayList<>(getSession().getUsers());
+    }
+
     public static User getCurrentUser() {
-        return repository.getSession().getCurrentUser();
+        return getSession().getCurrentUser();
+    }
+
+    public static void setCurrentUser(User user) {
+        getSession().setCurrentUser(user);
     }
 
     public static void syncCurrentTrack(String id) {
         getSession().syncCurrentTrack(id);
-
     }
 
     public static boolean isCurrentTrackLiked() {
         return getSession().getCurrentTrack().isLiked();
     }
+
     public static void likeMusic() {
         getSession().likeCurrentTrack();
     }
