@@ -4,9 +4,12 @@
     <string name="title_activity_settings">Paramètres</string>
     <string name="algorithm">Algorithme</string>
     <string name="users">Utilisateurs</string>
+
+    <!-- Alert titles -->
     <string name="add_user_alert_title">Identifiant de l\'utilisateur</string>
     <string name="remove_user_alert_title">Supprimer %1$s ?</string>
     <string name="choose_algo_alert_title">Quel algorithme choisir ?</string>
+    <string name="current_user_alert_title">Qui est l\'utilisateur courant ?</string>
 
     <!-- Buttons -->
     <string name="mix_playlist">MIX</string>

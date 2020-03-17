@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -203,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickCurrentUser(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        builder.setTitle("Qui est l'utilisateur courant ?"); // TODO Put string in res
+        builder.setTitle(R.string.current_user_alert_title);
 
         final UserAdapter userAdapter = new UserAdapter(this, Services.getUsers());
 
