@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (user.isMute())
             popup.getMenu().getItem(MUTE_POSITION).setTitle(R.string.unmute);
 
-        if (Services.getCurrentUser().id.equals(user.id)) // TODO Replace with user.equals()
+        if (Services.isCurrentUser(user))
             popup.getMenu().getItem(DELETE_POSITION).setVisible(false);
 
 

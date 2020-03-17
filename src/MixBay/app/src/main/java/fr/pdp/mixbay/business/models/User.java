@@ -87,4 +87,15 @@ public class User {
         return color;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+
+        if (!(obj instanceof User))
+            return false;
+
+        User user = ((User) obj);
+        return this.id.equals(user.id);
+    }
 }

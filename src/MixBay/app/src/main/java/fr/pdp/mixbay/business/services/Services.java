@@ -140,4 +140,8 @@ public class Services {
     public static String getAlgorithmName(Context context) {
         return getSession().getAlgo().getName(context);
     }
+
+    public static boolean isCurrentUser(User user) {
+        return getCurrentUser().equals(user);
+    }
 }
