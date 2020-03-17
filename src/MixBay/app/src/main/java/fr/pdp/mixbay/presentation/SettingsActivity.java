@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import fr.pdp.mixbay.R;
+import fr.pdp.mixbay.business.algorithms.Fairness;
+import fr.pdp.mixbay.business.algorithms.LeastMisery;
+import fr.pdp.mixbay.business.algorithms.MostPleasure;
+import fr.pdp.mixbay.business.algorithms.RandomAlgo;
+import fr.pdp.mixbay.business.models.AlgoI;
 import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.utils.UserSettingsAdapter;
@@ -50,6 +55,14 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Detect onClick on User
         userListView.setOnItemClickListener(this::onClickUser);
+
+        // Init algorithm View
+        initAlgorithmDisplay();
+    }
+
+    private void initAlgorithmDisplay() {
+        TextView algorithmTextView = findViewById(R.id.chosenAlgorithmTextView);
+        algorithmTextView.setText(Services.getAlgorithmName(this));
     }
 
     private void loadUserList() {
@@ -135,4 +148,34 @@ public class SettingsActivity extends AppCompatActivity {
         onStop();
     }
 
+    public void onClickSelectAlgorithm(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        builder.setTitle("Quel algorithme choisir ?");
+
+        builder.setItems(R.array.algorithms, (dialogInterface, i) -> {
+            AlgoI algorithm;
+            switch (i) {
+                case 1:
+                    algorithm = new Fairness();
+                    break;
+                case 2:
+                    algorithm = new MostPleasure();
+                    break;
+                case 3:
+                    algorithm = new RandomAlgo();
+                    break;
+                default:
+                    algorithm = new LeastMisery();
+                    break;
+            }
+            Services.setAlgorithm(algorithm);
+
+            // Update View
+            initAlgorithmDisplay();
+        });
+
+
+
+        builder.show();
+    }
 }

@@ -32,21 +32,29 @@
                 android:textSize="15sp"
                 android:textColor="@android:color/holo_blue_dark"/>
 
-            <TextView
-                android:text="@string/algorithm"
-                android:id="@+id/algoritmTextView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_weight="1" />
+                android:orientation="vertical"
+                android:onClick="onClickSelectAlgorithm">
 
-            <TextView
-                android:text="Not set"
-                android:id="@+id/chosenAlgorithmTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/secondary_text_dark"
-                android:layout_weight="1" />
+                <TextView
+                    android:text="@string/algorithm"
+                    android:id="@+id/algoritmTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:text="Not set"
+                    android:id="@+id/chosenAlgorithmTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/secondary_text_dark"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

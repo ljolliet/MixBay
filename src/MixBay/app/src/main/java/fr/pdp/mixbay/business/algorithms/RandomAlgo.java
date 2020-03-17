@@ -1,7 +1,10 @@
 package fr.pdp.mixbay.business.algorithms;
 
+import android.content.Context;
+
 import java.util.Set;
 
+import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.models.AlgoI;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Playlist;
@@ -12,8 +15,9 @@ public class RandomAlgo implements AlgoI {
 
 
     @Override
-    public String getName() {
-        return this.getClass().toString();
+    public String getName(Context context) {
+//        return this.getClass().toString() + " with " + score.getClass().toString();
+        return context.getString(R.string.algo_random);
     }
 
     @Override

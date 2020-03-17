@@ -135,7 +135,7 @@ public class Session {
      * @return The log item created.
      */
     private LogItem createItem(LogItem.LogAction action){
-        return new LogItem(this.currentUser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName());
+        return new LogItem(this.currentUser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName(context));
     }
 
     /**
@@ -151,6 +151,10 @@ public class Session {
 
     public void setAlgo(AlgoI algo) {
         this.algo = algo;
+    }
+
+    public AlgoI getAlgo() {
+        return algo;
     }
 
     public void setLogManager(LogManagerI logManager) {
@@ -174,8 +178,6 @@ public class Session {
     public Track getCurrentTrack() {
         return this.localPlaylist.getCurrentTrack();
     }
-
-
 
     public void testIfUserExists(String id) throws SessionManagementException {
         for (User user : users) {

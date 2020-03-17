@@ -1,11 +1,14 @@
 package fr.pdp.mixbay.business.services;
 
+import android.content.Context;
+
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.RepositoryI;
 import fr.pdp.mixbay.business.exceptions.SessionManagementException;
+import fr.pdp.mixbay.business.models.AlgoI;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Session;
@@ -118,5 +121,13 @@ public class Services {
 
     public static boolean isMixed() {
         return getSession().isMixed();
+    }
+
+    public static void setAlgorithm(AlgoI algorithm) {
+        getSession().setAlgo(algorithm);
+    }
+
+    public static String getAlgorithmName(Context context) {
+        return getSession().getAlgo().getName(context);
     }
 }

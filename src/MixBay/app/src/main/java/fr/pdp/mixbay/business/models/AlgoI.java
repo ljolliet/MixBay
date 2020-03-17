@@ -1,13 +1,16 @@
 package fr.pdp.mixbay.business.models;
 
+import android.content.Context;
+
 import java.util.Set;
 
 public interface AlgoI {
 
     /**
+     * @param context The context to access to the resources of the application
      * @return The Algorithm name
      */
-    String getName();
+    String getName(Context context);
 
     /**
      * Compute the mixing algorithm

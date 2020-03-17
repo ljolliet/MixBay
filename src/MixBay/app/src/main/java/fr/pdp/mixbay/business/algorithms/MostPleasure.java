@@ -1,9 +1,13 @@
 package fr.pdp.mixbay.business.algorithms;
 
+import android.content.Context;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+
+import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.User;
@@ -12,8 +16,9 @@ import fr.pdp.mixbay.business.utils.MapUtil;
 public class MostPleasure extends AlgoSuperclass {
 
     @Override
-    public String getName() {
-        return this.getClass().toString() + " with " + score.getClass().toString();
+    public String getName(Context context) {
+//        return this.getClass().toString() + " with " + score.getClass().toString();
+        return context.getString(R.string.algo_most_pleasure);
     }
 
     /**

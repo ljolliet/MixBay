@@ -1,5 +1,5 @@
 <resources>
-    <!--  Titles  -->
+    <!-- Titles -->
     <string name="app_name">MixBay</string>
     <string name="title_activity_settings">Paramètres</string>
     <string name="algorithm">Algorithme</string>
@@ -7,7 +7,7 @@
     <string name="add_user_alert_title">Identifiant de l\'utilisateur</string>
     <string name="remove_user_alert_title">Supprimer %1$s ?</string>
 
-    <!--  Buttons  -->
+    <!-- Buttons -->
     <string name="mix_playlist">MIX</string>
     <string name="connect_with_spotify">Connect with Spotify</string>
     <string name="connect_with_deezer">Connect with Deezer</string>
@@ -20,7 +20,7 @@
     <string name="accept">Accepter</string>
     <string name="cancel">Annuler</string>
 
-    <!--  Error messages  -->
+    <!-- Error messages -->
     <string name="invalid_user_id">L\'utilisateur n\'existe pas.</string>
     <string name="user_already_added">L\'utilisateur a déjà été ajouté.</string>
     <string name="invalid_playlist_id">La playlist n\'existe pas.</string>
@@ -28,6 +28,12 @@
 
     <!-- Alert messages -->
     <string name="remove_user_message">Voulez vous vraiment supprimer cet utilisateur ?</string>
+
+    <!-- Algorithm list -->
+    <string name="algo_least_misery">Least Misery</string>
+    <string name="algo_fairness">Fairness</string>
+    <string name="algo_most_pleasure">Most Pleasure</string>
+    <string name="algo_random">Random</string>
 
     <string name="pipe_char">|</string>
     <string name="descr_more_button">Bouton d\'options</string>
