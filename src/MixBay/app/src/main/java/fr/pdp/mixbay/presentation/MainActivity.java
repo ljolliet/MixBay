@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddUser(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setTitle(R.string.add_user_alert_title);
 
         final EditText input = new EditText(this);

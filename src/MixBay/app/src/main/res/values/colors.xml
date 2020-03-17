@@ -8,6 +8,8 @@
     <color name="colorMixButton">#4791df</color>
     <color name="colorConnectButton">#57b560</color>
     <color name="colorDisabled">#696a6e</color>
-    <color name="white">@android:color/white</color>
+
+    <color name="white">#ffffff</color>
+    <color name="lightGrey">#b3b3b3</color>
     <color name="grey">#777777</color>
 </resources>

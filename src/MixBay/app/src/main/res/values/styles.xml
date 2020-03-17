@@ -11,10 +11,17 @@
         <item name="android:titleTextColor">@android:color/white</item>
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:popupMenuStyle">@style/PopUpMenuStyle</item>
+        <item name="android:alertDialogStyle">@style/AlertDialogStyle</item>
     </style>
 
     <style name="PopUpMenuStyle" parent="@android:style/Widget.Holo.ListPopupWindow">
         <item name="android:popupBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="AlertDialogStyle" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorBackground">@color/windowBackground</item>
+        <item name="android:textColorPrimary">@color/lightGrey</item>
+        <item name="textColorAlertDialogListItem">@color/lightGrey</item>
     </style>
 
 </resources>

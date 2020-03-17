@@ -110,7 +110,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void removeUser(User user) {
         // Create a confirm popup
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setTitle(getString(R.string.remove_user_alert_title, user.username));
         builder.setMessage(R.string.remove_user_message);
 
