@@ -6,6 +6,7 @@
     <string name="users">Utilisateurs</string>
     <string name="add_user_alert_title">Identifiant de l\'utilisateur</string>
     <string name="remove_user_alert_title">Supprimer %1$s ?</string>
+    <string name="choose_algo_alert_title">Quel algorithme choisir ?</string>
 
     <!-- Buttons -->
     <string name="mix_playlist">MIX</string>

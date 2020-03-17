@@ -150,7 +150,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void onClickSelectAlgorithm(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        builder.setTitle("Quel algorithme choisir ?");
+        builder.setTitle(R.string.choose_algo_alert_title);
 
         builder.setItems(R.array.algorithms, (dialogInterface, i) -> {
             AlgoI algorithm;
