@@ -9,8 +9,11 @@ import java.util.Set;
 
 public class User {
 
+    private static int ID_GENERATOR = 0;
+
     public final String id;
     public final String username;
+    public final String anonymousUsername;
 
     private Set<Playlist> personalPlaylists = new HashSet<>();
     private boolean mute;
@@ -28,6 +31,7 @@ public class User {
         this.username = username;
         this.mute = false;
         this.initial = this.username.charAt(0);
+        this.anonymousUsername = "user " + ID_GENERATOR++;
         generateColor();
     }
 

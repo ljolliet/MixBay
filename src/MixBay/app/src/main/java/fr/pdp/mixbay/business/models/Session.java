@@ -135,7 +135,7 @@ public class Session {
      * @return The log item created.
      */
     private LogItem createItem(LogItem.LogAction action){
-        return new LogItem(this.currentUser.username, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName(context));
+        return new LogItem(this.currentUser.anonymousUsername, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName(context));
     }
 
     /**

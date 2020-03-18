@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         // Ask for permission(s)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Log.d("MainActivity", "Permission not granted");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_STORAGE_WRITE_PERMISSION);
+            this.getWriteRights();
             Log.d("MainActivity", "Permission requested");
         }
         else {
@@ -228,5 +228,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             button.setBackgroundResource(R.drawable.like);
         }
+    }
+
+    public void getWriteRights() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_STORAGE_WRITE_PERMISSION);
     }
 }

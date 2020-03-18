@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import fr.pdp.mixbay.business.dataAccess.LogManagerI;
 import fr.pdp.mixbay.business.models.LogItem;
+import fr.pdp.mixbay.presentation.PresentationServices;
 
 public class JSONLogManager implements LogManagerI {
     private static final String USERNAME = "username";
@@ -79,7 +80,7 @@ public class JSONLogManager implements LogManagerI {
             }
             root.put(LOG, array);
             Log.d("JSONLogManager", root.toString());
-            FileOutputStream file= new FileOutputStream(outputFile);
+            FileOutputStream file= new FileOutputStream(outputFile);    //TODO throws uncatchable exception on save unauthorized
 
             // get the content in bytes
             byte[] contentInBytes = root.toString().getBytes();

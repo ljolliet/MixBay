@@ -17,4 +17,8 @@ public class PresentationServices {
     public static void updateLikeButton() {
         activity.updateLikeButton();
     }
+
+    public static void callForWriteRights() {
+            activity.getWriteRights();
+    }
 }
