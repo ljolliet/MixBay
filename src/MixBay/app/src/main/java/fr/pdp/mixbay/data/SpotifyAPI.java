@@ -383,32 +383,39 @@ public class SpotifyAPI implements APIManagerI {
     }
 
     @Override
-    public void playPauseTrack() {
+    public void resumeTrack() {
         mSpotifyAppRemote
                 .getPlayerApi()
                 .getPlayerState()
                 .setResultCallback(
                         playerState -> {
-                            if (playerState.isPaused) {
+                            if (playerState.isPaused)
                                 mSpotifyAppRemote
                                         .getPlayerApi()
-                                        .resume()
-                                        .setResultCallback(
-                                                empty -> Log.d("Event API" ," Track played")
-                                        );
+                                        .resume().setResultCallback(
+                                        empty ->  Log.d("Event API" ," Track resumed")
+                                );
+                        });
+    }
 
-                            } else {
+    @Override
+    public void pauseTrack() {
+        mSpotifyAppRemote
+                .getPlayerApi()
+                .getPlayerState()
+                .setResultCallback(
+                        playerState -> {
+                            if (!playerState.isPaused)
                                 mSpotifyAppRemote
                                         .getPlayerApi()
                                         .pause().setResultCallback(
                                         empty ->  Log.d("Event API" ," Track paused")
                                 );
-                            }
-                        });
+                            });
     }
 
     @Override
-    public void playTrack(String id) {
+    public void resumeTrack(String id) {
         mSpotifyAppRemote
                 .getPlayerApi()
                 .play("spotify:track:"+id)

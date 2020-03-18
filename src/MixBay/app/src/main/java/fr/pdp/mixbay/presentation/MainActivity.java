@@ -135,7 +135,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickPlay(View view) {
-        Services.playMusic();
+        if(Services.isMixed())
+            if (Services.isCurrentTrackPaused()) {
+                view.setBackgroundResource(R.drawable.baseline_pause_white_48dp);
+                Services.playMusic();
+            } else {
+                view.setBackgroundResource(R.drawable.baseline_play_arrow_white_48dp);
+                Services.pauseMusic();
+            }
     }
 
     public void onClickNext(View view) {
@@ -149,7 +156,12 @@ public class MainActivity extends AppCompatActivity {
         // Display the playlist into the ListView
         TrackAdapter adapter = new TrackAdapter(this, (List<Track>) playlist.getTracks());
         trackListView.setAdapter(adapter);
+
+        //Update Cover Image and set the play/pause button to pause
         updateCover();
+        ImageButton playButton = this.findViewById(R.id.playButton);
+        playButton.setBackgroundResource(R.drawable.baseline_pause_white_48dp);
+
     }
 
     public void onClickLike(View view) {

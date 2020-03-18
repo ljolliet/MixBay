@@ -60,12 +60,17 @@ public interface APIManagerI {
      * Play the given track.
      * @param id track's id to play.
      */
-    void playTrack(String id);
+    void resumeTrack(String id);
 
     /**
-     * Play/Pause the current track: play if paused and pause otherwise
+     * Play the current track
      */
-    void playPauseTrack();
+    void resumeTrack();
+
+    /**
+     * Pause the current track
+     */
+    void pauseTrack();
 
     /**
      * Add the given track to the user's queue.
@@ -83,13 +88,13 @@ public interface APIManagerI {
      */
     void skipPreviousTrack();
 
-
     /**
      * TODO
      */
     void toggleRepeat();
     void toggleShuffle();
     void seekFordward();
+
     void seekBackward();
 
     /**

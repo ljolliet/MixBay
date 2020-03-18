@@ -67,6 +67,10 @@ public class Services {
         getSession().playMusic();
     }
 
+    public static void pauseMusic() {
+        getSession().pauseMusic();
+    }
+
     public static void nextMusic() {
         getSession().nextMusic();
     }
@@ -143,5 +147,9 @@ public class Services {
 
     public static boolean isCurrentUser(User user) {
         return getCurrentUser().equals(user);
+    }
+
+    public static boolean isCurrentTrackPaused() {
+        return getSession().isPaused();
     }
 }

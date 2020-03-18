@@ -23,6 +23,7 @@ public class Session {
     private LogManagerI logManager;
     private APIManagerI apiManager;
     private boolean mixed;
+    private boolean paused;
     private Context context;
 
 
@@ -33,6 +34,7 @@ public class Session {
         this.algo = new LeastMisery();
         this.logManager = new JSONLogManager();
         this.mixed = false;
+        this.paused = false;
     }
 
     /**
@@ -56,7 +58,7 @@ public class Session {
 
     public void launchPlaylist() {
         this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
-        this.apiManager.playTrack(this.localPlaylist.getCurrentTrack().id);
+        this.apiManager.resumeTrack(this.localPlaylist.getCurrentTrack().id);
     }
 
     /**
@@ -74,7 +76,7 @@ public class Session {
         if(this.mixed) {
             //this.apiManager.skipPreviousTrack();
             this.localPlaylist.decTrack();
-            this.apiManager.playTrack(localPlaylist.getCurrentTrack().id);
+            this.apiManager.resumeTrack(localPlaylist.getCurrentTrack().id);
             //this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
             this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
             //TODO dec or not dec
@@ -87,11 +89,22 @@ public class Session {
      */
     public void playMusic() {
         if(this.mixed) {
-            this.apiManager.playPauseTrack();
-            this.logManager.append(this.createItem(LogItem.LogAction.PLAY)); //TODO PAUSE
+            this.apiManager.resumeTrack();
+            this.paused = false;
+            this.logManager.append(this.createItem(LogItem.LogAction.PLAY));
         }
         else
             Log.d("Session", "Action 'Play' impossible : Playlist not generated");
+    }
+
+    public void pauseMusic() {
+        if(this.mixed) {
+            this.apiManager.pauseTrack();
+            this.paused = true;
+            this.logManager.append(this.createItem(LogItem.LogAction.PAUSE));
+        }
+        else
+            Log.d("Session", "Action 'PAUSE' impossible : Playlist not generated");
     }
 
     /**
@@ -200,6 +213,11 @@ public class Session {
     }
 
     public boolean isMixed() {
+
         return mixed;
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 }
