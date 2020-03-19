@@ -57,8 +57,9 @@ public class Session {
     }
 
     public void launchPlaylist() {
+        this.apiManager.emptyQueue();
+        this.apiManager.playTrack(this.localPlaylist.getCurrentTrack().id);
         this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
-        this.apiManager.resumeTrack(this.localPlaylist.getCurrentTrack().id);
     }
 
     /**
@@ -74,10 +75,10 @@ public class Session {
      */
     public void previousMusic() {
         if(this.mixed) {
-            //this.apiManager.skipPreviousTrack();
             this.localPlaylist.decTrack();
-            this.apiManager.resumeTrack(localPlaylist.getCurrentTrack().id);
-            //this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
+            this.apiManager.emptyQueue();
+            this.apiManager.playTrack(localPlaylist.getCurrentTrack().id);
+            this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
             this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
             //TODO dec or not dec
         }
@@ -205,11 +206,11 @@ public class Session {
 
     public void syncCurrentTrack(String id) {
         Log.d("Session", "Checking id : "+ id + "| current id : "+localPlaylist.getCurrentTrack().id);
-      /*  if(id.equals(localPlaylist.getNextTrack().id) || !id.equals(this.localPlaylist.getCurrentTrack().id)) {
+        if(id.equals(localPlaylist.getNextTrack().id) /*|| !id.equals(this.localPlaylist.getCurrentTrack().id)*/) {
             localPlaylist.incTrack();
             apiManager.queueTrack(localPlaylist.getNextTrack().id);
             Log.d("Session", "Sync to next track");
-        }*/
+        }
     }
 
     public boolean isMixed() {

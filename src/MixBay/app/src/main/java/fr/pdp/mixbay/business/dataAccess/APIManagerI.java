@@ -60,7 +60,7 @@ public interface APIManagerI {
      * Play the given track.
      * @param id track's id to play.
      */
-    void resumeTrack(String id);
+    void playTrack(String id);
 
     /**
      * Play the current track
@@ -94,7 +94,6 @@ public interface APIManagerI {
     void toggleRepeat();
     void toggleShuffle();
     void seekFordward();
-
     void seekBackward();
 
     /**
@@ -102,4 +101,6 @@ public interface APIManagerI {
      * @param token The token.
      */
     void setAccessToken(String token);
+
+    void emptyQueue();
 }

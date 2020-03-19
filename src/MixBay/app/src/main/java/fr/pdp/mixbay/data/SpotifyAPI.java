@@ -415,7 +415,7 @@ public class SpotifyAPI implements APIManagerI {
     }
 
     @Override
-    public void resumeTrack(String id) {
+    public void playTrack(String id) {
         mSpotifyAppRemote
                 .getPlayerApi()
                 .play("spotify:track:"+id)
@@ -511,5 +511,16 @@ public class SpotifyAPI implements APIManagerI {
     @Override
     public void setAccessToken(String token) {
         this.accessToken = token;
+    }
+
+    @Override
+    public void emptyQueue() {
+        for(int i = 0; i <15 ; i++)
+            this.skipNextTrack();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
