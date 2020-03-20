@@ -10,6 +10,7 @@ import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.algorithms.LeastMisery;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.LogManagerI;
+import fr.pdp.mixbay.business.exceptions.PlayerException;
 import fr.pdp.mixbay.business.exceptions.SessionManagementException;
 import fr.pdp.mixbay.data.JSONLogManager;
 
@@ -58,8 +59,13 @@ public class Session {
 
     public void launchPlaylist() {
         this.apiManager.emptyQueue();
+
+        if(this.localPlaylist.getCurrentTrack() == null)
+            throw new PlayerException("Cannot launch current track because the track is null");
         this.apiManager.playTrack(this.localPlaylist.getCurrentTrack().id);
-        this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
+
+        if(this.localPlaylist.getNextTrack() != null)
+            this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
     }
 
     /**
@@ -107,10 +113,12 @@ public class Session {
      * Skip to the next Track on the local playlist.
      */
     public void nextMusic() {
-        if(this.mixed) {
+        if(this.mixed ) {
             this.localPlaylist.incTrack();
-            this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
-            this.apiManager.skipNextTrack();
+            if(this.localPlaylist.getNextTrack() != null) {
+                this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
+                this.apiManager.skipNextTrack();
+            }
             this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
         }
     }
