@@ -71,6 +71,25 @@ public class Session {
     }
 
     /**
+     * Play the current track on the local playlist.
+     */
+    public void playMusic() {
+        if(this.mixed) {
+            this.apiManager.resumeTrack();
+            this.paused = false;
+            this.logManager.append(this.createItem(LogItem.LogAction.PLAY));
+        }
+    }
+
+    public void pauseMusic() {
+        if(this.mixed) {
+            this.apiManager.pauseTrack();
+            this.paused = true;
+            this.logManager.append(this.createItem(LogItem.LogAction.PAUSE));
+        }
+    }
+
+    /**
      * Skip the the beginning of the track (or skip to previous track, depending on the API).
      */
     public void previousMusic() {
@@ -82,30 +101,6 @@ public class Session {
             this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
             //TODO dec or not dec
         }
-        Log.d("Session", "Action 'Previous' impossible : Playlist not generated");
-    }
-
-    /**
-     * Play the current track on the local playlist.
-     */
-    public void playMusic() {
-        if(this.mixed) {
-            this.apiManager.resumeTrack();
-            this.paused = false;
-            this.logManager.append(this.createItem(LogItem.LogAction.PLAY));
-        }
-        else
-            Log.d("Session", "Action 'Play' impossible : Playlist not generated");
-    }
-
-    public void pauseMusic() {
-        if(this.mixed) {
-            this.apiManager.pauseTrack();
-            this.paused = true;
-            this.logManager.append(this.createItem(LogItem.LogAction.PAUSE));
-        }
-        else
-            Log.d("Session", "Action 'PAUSE' impossible : Playlist not generated");
     }
 
     /**
@@ -118,8 +113,6 @@ public class Session {
             this.apiManager.skipNextTrack();
             this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
         }
-        else
-            Log.d("Session", "Action 'Next' impossible : Playlist not generated");
     }
 
     /**
@@ -130,8 +123,6 @@ public class Session {
             this.logManager.append(this.createItem(LogItem.LogAction.LIKE));
             this.getCurrentTrack().like();
         }
-        else
-            Log.d("Session", "Action 'Like' impossible : Playlist not generated");
     }
 
     public void unlikeCurrentTrack() {
@@ -139,8 +130,6 @@ public class Session {
             this.logManager.append(this.createItem(LogItem.LogAction.UNLIKE));
             this.getCurrentTrack().unlike();
         }
-        else
-            Log.d("Session", "Action 'Unlike' impossible : Playlist not generated");
     }
 
     /**
@@ -205,11 +194,23 @@ public class Session {
     }
 
     public void syncCurrentTrack(String id) {
-        Log.d("Session", "Checking id : "+ id + "| current id : "+localPlaylist.getCurrentTrack().id);
-        if(id.equals(localPlaylist.getNextTrack().id) /*|| !id.equals(this.localPlaylist.getCurrentTrack().id)*/) {
-            localPlaylist.incTrack();
-            apiManager.queueTrack(localPlaylist.getNextTrack().id);
-            Log.d("Session", "Sync to next track");
+        if(isMixed()) {
+            Log.d("Session", "Checking id : " + id + "| current id : " + localPlaylist.getCurrentTrack().id);
+            // if player not synchronized to the API
+            if (!id.equals(localPlaylist.getCurrentTrack().id))
+                if (id.equals(localPlaylist.getNextTrack().id)) {
+                    localPlaylist.incTrack();
+                    apiManager.queueTrack(localPlaylist.getNextTrack().id);
+                    Log.d("Session", "Sync to next track");
+                } /*else
+                    for (Track t : localPlaylist.getTracks())
+                        if (id.equals(t.id)) {
+                            localPlaylist.setCurrentTrack(t.id);
+                            apiManager.emptyQueue();
+                            apiManager.queueTrack(localPlaylist.getNextTrack().id);
+                            Log.d("Session", "Sync to a track in current Playlist");
+                            break;
+                        }*/
         }
     }
 

@@ -67,8 +67,7 @@ public class User {
     /**
      * @return A copy of the user playlists.
      */
-    // TODO Rename into getAllPlaylists
-    public Set<Playlist> getPlaylist(){
+    public Set<Playlist> getAllPlaylists(){
         return new HashSet<>(this.personalPlaylists);
     }
 

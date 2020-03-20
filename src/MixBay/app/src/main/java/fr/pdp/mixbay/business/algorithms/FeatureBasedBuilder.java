@@ -30,7 +30,7 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
      * @param u Specific user of the application
      */
     public TrackFeatures computeUserProfile(User u, Map<String, Track> tracksList) {
-        for (Playlist p : u.getPlaylist()) {
+        for (Playlist p : u.getAllPlaylists()) {
             for (Track t : p.getTracks()) {
                 tracksList.put(t.id, t);
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {

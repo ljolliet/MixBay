@@ -33,7 +33,7 @@ public class RandomAlgo implements AlgoI {
 
         for(User u : users)
             if (!u.isMute())
-                for(Playlist p : u.getPlaylist()) {
+                for(Playlist p : u.getAllPlaylists()) {
                     for (int i = 0; i < tracksPerUser; i++)
                         newPlaylist.addTrack((Track) p.getTracks().toArray()[i]);
                     break;

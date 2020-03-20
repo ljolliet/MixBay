@@ -43,7 +43,7 @@ public class SpotifyAPI implements APIManagerI {
 
     private static final String CLIENT_ID = "cb64858e27964a13b85d3e7e5e19b1d3";
     private static final String REDIRECT_URI = "mixbay://callback";
-    private static final String[] SCOPES = new String[]{"user-read-email", "user-read-private"}; // TODO Add all the scopes the app needs
+    private static final String[] SCOPES = new String[]{"user-read-email", "user-read-private"};
 
     private SpotifyAppRemote mSpotifyAppRemote;
     private Context context;
