@@ -78,8 +78,7 @@ public class SpotifyAPI implements APIManagerI {
 
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Spotify remote " +
-                                "Connected");
+                        Log.d("MainActivity", "Spotify remote Connected");
                         subscribeToPlayerChange();
                     }
 
@@ -540,8 +539,7 @@ public class SpotifyAPI implements APIManagerI {
                 .getPlayerApi()
                 .queue("spotify:track:"+id)
                 .setResultCallback(
-                        data -> Log.d("Event API" ," queue track "
-                                + id)
+                        data -> Log.d("Event API" ," queue track " + id)
                 );
     }
 
@@ -553,10 +551,8 @@ public class SpotifyAPI implements APIManagerI {
                     final com.spotify.protocol.types.Track track =
                             playerState.track;
                     if (track != null) {
-                        Log.d("MainActivity", track.name + " by "
-                                + track.artist.name);
-                        Services.syncCurrentTrack(track.uri
-                                .replaceFirst("spotify:track:",""));
+                        Log.d("SpotifyAPI", track.name + " by " + track.artist.name);
+                        Services.syncCurrentTrack(track.uri.replaceFirst("spotify:track:",""));
                         PresentationServices.updateCover();
                         PresentationServices.updateLikeButton();
                     }
