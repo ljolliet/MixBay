@@ -68,12 +68,12 @@ public class SpotifyAPI implements APIManagerI {
 
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Spotify remote Connected");
+                        Log.d("SpotifyAPI", "Spotify remote Connected");
                         subscribeToPlayerChange();
                     }
 
                     public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
+                        Log.e("SpotifyAPI", throwable.getMessage(), throwable);
                     }
                 });
 
@@ -500,7 +500,7 @@ public class SpotifyAPI implements APIManagerI {
                 .setEventCallback(playerState -> {
                     final com.spotify.protocol.types.Track track = playerState.track;
                     if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        Log.d("SpotifyAPI", track.name + " by " + track.artist.name);
                         Services.syncCurrentTrack(track.uri.replaceFirst("spotify:track:",""));
                         PresentationServices.updateCover();
                         PresentationServices.updateLikeButton();

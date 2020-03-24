@@ -41,10 +41,12 @@ public class User {
     private void generateColor() {
         Random rand = new Random();
 
+        final int threshold = 128; // Half of the color range [0, 255]
+
         // Generate "light" colors - from https://stackoverflow.com/a/4246418
-        int r = rand.nextInt() / 2 + 128;
-        int g = rand.nextInt() / 2 + 128;
-        int b = rand.nextInt() / 2 + 128;
+        int r = rand.nextInt() / 2 + threshold;
+        int g = rand.nextInt() / 2 + threshold;
+        int b = rand.nextInt() / 2 + threshold;
         color = Color.rgb(r, g, b);
     }
 
