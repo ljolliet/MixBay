@@ -551,8 +551,10 @@ public class SpotifyAPI implements APIManagerI {
                     final com.spotify.protocol.types.Track track =
                             playerState.track;
                     if (track != null) {
-                        Log.d("SpotifyAPI", track.name + " by " + track.artist.name);
-                        Services.syncCurrentTrack(track.uri.replaceFirst("spotify:track:",""));
+                        Log.d("SpotifyAPI", track.name +
+                                " by " + track.artist.name);
+                        Services.syncCurrentTrack(track.uri
+                                .replaceFirst("spotify:track:",""));
                         PresentationServices.updateCover();
                         PresentationServices.updateLikeButton();
                     }
