@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.algorithms;
 
 import java.util.HashMap;
@@ -21,20 +30,24 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
 
     @Override
     public String getName() {
-        return"a score builder based on Spotify Track Features";
+        return "a score builder based on Spotify Track Features";
     }
 
     /**
-     * Compute an "user profile" for the given user. It is the average of the tracks features of each tracks from this user's playlists
+     * Compute an "user profile" for the given user. It is the average of the
+     * tracks features of each tracks from this user's playlists
      *
      * @param u Specific user of the application
      */
-    public TrackFeatures computeUserProfile(User u, Map<String, Track> tracksList) {
+    public TrackFeatures computeUserProfile(User u, Map<String,
+            Track> tracksList) {
         for (Playlist p : u.getAllPlaylists()) {
             for (Track t : p.getTracks()) {
                 tracksList.put(t.id, t);
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                    trackFeaturesAverage[i] += t.getFeatures().allFeatures.get(TrackFeatures.NAME_VALUES[i]);
+                    trackFeaturesAverage[i] += t.getFeatures()
+                            .allFeatures
+                            .get(TrackFeatures.NAME_VALUES[i]);
                 }
             }
         }
@@ -51,11 +64,15 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
     /**
      * Assign a score to each track for each user
      *
-     * @param userProfile A Map containing a computed profile for each user. The keys are the user's ID and the values are TrackFeatures objects
-     * @return A structure containing the computed personnal score of each track for each user
+     * @param userProfile A Map containing a computed profile for each user.
+     *                    The keys are the user's ID and the values
+     *                    are TrackFeatures objects
+     * @return A structure containing the computed personnal score of each track
+     * for each user
      */
 
-    public HashMap<String, Map<String, Double>> computeMusicScorePerUser(Map<String, TrackFeatures> userProfile) {
+    public HashMap<String, Map<String, Double>>
+    computeMusicScorePerUser(Map<String, TrackFeatures> userProfile) {
         HashMap<String, Map<String, Double>> musicScorePerUser = new HashMap<>();
         double[] scorePerTrackVector = new double[TrackFeatures.SIZE];
 
@@ -69,26 +86,33 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
                 Track t = (Track) trackEntry.getValue();
                 double currentTrackScore = 0.;
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                    scorePerTrackVector[i] = ((TrackFeatures) currentUser.getValue()).allFeatures.get(TrackFeatures.NAME_VALUES[i]) - t.getFeatures().allFeatures.get(TrackFeatures.NAME_VALUES[i]);
-                    currentTrackScore += Math.pow(scorePerTrackVector[i],2);
+                    scorePerTrackVector[i] =
+                            ((TrackFeatures) currentUser.getValue())
+                                    .allFeatures.get(TrackFeatures.NAME_VALUES[i])
+                                    - t.getFeatures()
+                                    .allFeatures.get(TrackFeatures.NAME_VALUES[i]);
+                    currentTrackScore += Math.pow(scorePerTrackVector[i], 2);
                 }
                 currentTrackScore = Math.sqrt(currentTrackScore);
                 scorePerTrack.put(t.id, currentTrackScore);
             }
-            musicScorePerUser.put((String) currentUser.getKey(), MapUtil.sortByValue(scorePerTrack));
+            musicScorePerUser.put((String) currentUser.getKey(),
+                    MapUtil.sortByValue(scorePerTrack));
         }
         return musicScorePerUser;
     }
 
 
     @Override
-    public Map<String, Map<String, Double>> compute(Set<User> users, Map<String, Track> tracksList) {
+    public Map<String, Map<String, Double>> compute(Set<User> users,
+                                                    Map<String,
+                                                            Track> tracksList) {
         Map<String, TrackFeatures> userProfile = new HashMap<>();
         for (User u : users) {
             for (int i = 0; i < trackFeaturesAverage.length; i++) {
                 trackFeaturesAverage[i] = 0.;
             }
-            userProfile.put(u.id,computeUserProfile(u, tracksList));
+            userProfile.put(u.id, computeUserProfile(u, tracksList));
         }
 
         return computeMusicScorePerUser(userProfile);

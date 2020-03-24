@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.utils;
 
 import java.util.ArrayList;
@@ -6,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MapUtil {
+
     /**
      * Sort a given map by it's value.
      *
@@ -14,7 +24,8 @@ public class MapUtil {
      * @author Carter Page from stackoverflow.
      */
 
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+    public static <K, V extends Comparable<? super
+            V>> Map<K, V> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
         list.sort(Map.Entry.comparingByValue());
         Map<K, V> result = new LinkedHashMap<>();

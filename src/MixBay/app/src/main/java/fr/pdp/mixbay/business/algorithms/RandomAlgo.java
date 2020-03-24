@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.algorithms;
 
 import android.content.Context;
@@ -16,7 +25,6 @@ public class RandomAlgo implements AlgoI {
 
     @Override
     public String getName(Context context) {
-//        return this.getClass().toString() + " with " + score.getClass().toString();
         return context.getString(R.string.algo_random);
     }
 
@@ -24,16 +32,16 @@ public class RandomAlgo implements AlgoI {
     public LocalPlaylist compute(Set<User> users) {
         int nbUser = 0;
 
-        for(User u : users)
+        for (User u : users)
             if (!u.isMute())
                 nbUser++;
 
         int tracksPerUser = LocalPlaylist.SIZE_MAX / nbUser; // cast
         LocalPlaylist newPlaylist = new LocalPlaylist();
 
-        for(User u : users)
+        for (User u : users)
             if (!u.isMute())
-                for(Playlist p : u.getAllPlaylists()) {
+                for (Playlist p : u.getAllPlaylists()) {
                     for (int i = 0; i < tracksPerUser; i++)
                         newPlaylist.addTrack((Track) p.getTracks().toArray()[i]);
                     break;

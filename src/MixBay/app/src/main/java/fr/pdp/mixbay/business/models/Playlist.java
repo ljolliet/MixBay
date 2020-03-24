@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.models;
 
 import java.util.Collection;
@@ -5,7 +14,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Playlist implements PlaylistI{
+public class Playlist implements PlaylistI {
 
     public final String id;
     public final String name;
@@ -14,7 +23,8 @@ public class Playlist implements PlaylistI{
 
     /**
      * Create an empty Playlist with the given information.
-     * @param id Playlist's id on the streaming platform.
+     *
+     * @param id   Playlist's id on the streaming platform.
      * @param name Playlist's name on the streaming platform.
      */
     public Playlist(String id, String name) {
@@ -23,12 +33,12 @@ public class Playlist implements PlaylistI{
     }
 
     @Override
-    public void addTrack(Track track){
+    public void addTrack(Track track) {
         this.tracks.add(track);
     }
 
     @Override
-    public void addTracks(Set<Track> tracks){
+    public void addTracks(Set<Track> tracks) {
         this.tracks.addAll(tracks);
     }
 
@@ -43,7 +53,7 @@ public class Playlist implements PlaylistI{
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
-        if(o instanceof Playlist) {
+        if (o instanceof Playlist) {
             Playlist playlist = (Playlist) o;
             return this.id.equals(playlist.id);
         }
@@ -63,6 +73,6 @@ public class Playlist implements PlaylistI{
         return "Playlist{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", nbTracks='" + tracks.size()+ '\'' +'}';
+                ", nbTracks='" + tracks.size() + '\'' + '}';
     }
 }

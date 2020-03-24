@@ -1,10 +1,22 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.data;
 
 import android.os.Environment;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -13,14 +25,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import fr.pdp.mixbay.business.dataAccess.LogManagerI;
 import fr.pdp.mixbay.business.models.LogItem;
-import fr.pdp.mixbay.presentation.PresentationServices;
 
 public class JSONLogManager implements LogManagerI {
     private static final String USERNAME = "username";
@@ -33,7 +39,7 @@ public class JSONLogManager implements LogManagerI {
     private List<LogItem> items = new ArrayList<>();
 
     private JSONObject root = new JSONObject();
-    private JSONArray array= new JSONArray();
+    private JSONArray array = new JSONArray();
     private String filename = "/mixbay_LOG_";
     private String extension = ".json";
     private String folderName = "/MixBay/";
@@ -42,7 +48,8 @@ public class JSONLogManager implements LogManagerI {
     @Override
     public void create() {
         //Create folder if does not exist
-        File folder = new File(Environment.getExternalStorageDirectory() + folderName);
+        File folder = new File(Environment.getExternalStorageDirectory()
+                + folderName);
         if (!folder.exists()) {
             folder.mkdir();
             Log.d("Folder", "Folder Created");
@@ -50,10 +57,13 @@ public class JSONLogManager implements LogManagerI {
         //Build the log file
         String pattern = "dd-MM-yyyy";
         Locale locale = new Locale("fr", "FR");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, locale);
+        SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat(pattern, locale);
         filename = filename + simpleDateFormat.format(new Date()) + extension;
-        outputFile = new File(Environment.getExternalStorageDirectory() + folderName + filename);
-        Log.d("JsonLogManager", Environment.getExternalStorageDirectory() + filename);
+        outputFile = new File(Environment.getExternalStorageDirectory()
+                + folderName + filename);
+        Log.d("JsonLogManager", Environment.getExternalStorageDirectory()
+                + filename);
         //TODO manage all possible cases
     }
 
@@ -66,21 +76,21 @@ public class JSONLogManager implements LogManagerI {
     @Override
     public void save() {
 
-        try{
-            for(LogItem i : this.items)
-            {
+        try {
+            for (LogItem i : this.items) {
                 JSONObject jsonItem = new JSONObject();
                 jsonItem.put(USERNAME, i.username);
-                jsonItem.put(ACTION,i.action);
-                jsonItem.put(DETAILS,i.details);
-                jsonItem.put(TRACKNAME,i.trackName);
-                jsonItem.put(ALGO,i.algorithm);
-                jsonItem.put(DATE,i.date);
+                jsonItem.put(ACTION, i.action);
+                jsonItem.put(DETAILS, i.details);
+                jsonItem.put(TRACKNAME, i.trackName);
+                jsonItem.put(ALGO, i.algorithm);
+                jsonItem.put(DATE, i.date);
                 array.put(jsonItem);
             }
             root.put(LOG, array);
             Log.d("JSONLogManager", root.toString());
-            FileOutputStream file= new FileOutputStream(outputFile);    //TODO throws uncatchable exception on save unauthorized
+            FileOutputStream file = new FileOutputStream(outputFile);
+            //TODO throws uncatchable exception on save unauthorized
 
             // get the content in bytes
             byte[] contentInBytes = root.toString().getBytes();

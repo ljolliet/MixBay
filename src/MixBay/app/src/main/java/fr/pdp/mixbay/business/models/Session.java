@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.models;
 
 import android.content.Context;
@@ -48,9 +57,10 @@ public class Session {
 
     /**
      * Generates the local playlist with then current algorithm.
+     *
      * @return The playlist generated.
      */
-    public LocalPlaylist generatePlaylist(){
+    public LocalPlaylist generatePlaylist() {
         this.localPlaylist = algo.compute(this.users);
         this.mixed = true;
         Log.d("Session", "Playlist generated");
@@ -60,16 +70,18 @@ public class Session {
     public void launchPlaylist() {
         this.apiManager.emptyQueue();
 
-        if(this.localPlaylist.getCurrentTrack() == null)
-            throw new PlayerException("Cannot launch current track because the track is null");
+        if (this.localPlaylist.getCurrentTrack() == null)
+            throw new PlayerException("Cannot launch current track because " +
+                    "the track is null");
         this.apiManager.playTrack(this.localPlaylist.getCurrentTrack().id);
 
-        if(this.localPlaylist.getNextTrack() != null)
+        if (this.localPlaylist.getNextTrack() != null)
             this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
     }
 
     /**
      * Finish properly the session.
+     *
      * @return true if the disconnection worked normally
      */
     public boolean finish() {
@@ -80,7 +92,7 @@ public class Session {
      * Play the current track on the local playlist.
      */
     public void playMusic() {
-        if(this.mixed) {
+        if (this.mixed) {
             this.apiManager.resumeTrack();
             this.paused = false;
             this.logManager.append(this.createItem(LogItem.LogAction.PLAY));
@@ -88,7 +100,7 @@ public class Session {
     }
 
     public void pauseMusic() {
-        if(this.mixed) {
+        if (this.mixed) {
             this.apiManager.pauseTrack();
             this.paused = true;
             this.logManager.append(this.createItem(LogItem.LogAction.PAUSE));
@@ -96,10 +108,11 @@ public class Session {
     }
 
     /**
-     * Skip the the beginning of the track (or skip to previous track, depending on the API).
+     * Skip the the beginning of the track (or skip to previous track,
+     * depending on the API).
      */
     public void previousMusic() {
-        if(this.mixed) {
+        if (this.mixed) {
             this.localPlaylist.decTrack();
             this.apiManager.emptyQueue();
             this.apiManager.playTrack(localPlaylist.getCurrentTrack().id);
@@ -113,9 +126,9 @@ public class Session {
      * Skip to the next Track on the local playlist.
      */
     public void nextMusic() {
-        if(this.mixed ) {
+        if (this.mixed) {
             this.localPlaylist.incTrack();
-            if(this.localPlaylist.getNextTrack() != null) {
+            if (this.localPlaylist.getNextTrack() != null) {
                 this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
                 this.apiManager.skipNextTrack();
             }
@@ -127,26 +140,30 @@ public class Session {
      * Like the current Track of the local playlist.
      */
     public void likeCurrentTrack() {
-        if(this.mixed) {
+        if (this.mixed) {
             this.logManager.append(this.createItem(LogItem.LogAction.LIKE));
             this.getCurrentTrack().like();
         }
     }
 
     public void unlikeCurrentTrack() {
-        if(this.mixed) {
+        if (this.mixed) {
             this.logManager.append(this.createItem(LogItem.LogAction.UNLIKE));
             this.getCurrentTrack().unlike();
         }
     }
 
     /**
-     *  Creates a log item with current user, current track, current algorithm and given action.
+     * Creates a log item with current user, current track, current algorithm
+     * and given action.
+     *
      * @param action Tha action performed by the user.
      * @return The log item created.
      */
-    private LogItem createItem(LogItem.LogAction action){
-        return new LogItem(this.currentUser.anonymousUsername, action, "null", this.localPlaylist.getCurrentTrack().title, this.algo.getName(context));
+    private LogItem createItem(LogItem.LogAction action) {
+        return new LogItem(this.currentUser.anonymousUsername, action,
+                "null", this.localPlaylist.getCurrentTrack().title,
+                this.algo.getName(context));
     }
 
     /**
@@ -156,16 +173,12 @@ public class Session {
         this.logManager.create();
     }
 
-    public void setCurrentUser(User currentuser) {
-        this.currentUser = currentuser;
+    public AlgoI getAlgo() {
+        return algo;
     }
 
     public void setAlgo(AlgoI algo) {
         this.algo = algo;
-    }
-
-    public AlgoI getAlgo() {
-        return algo;
     }
 
     public void setLogManager(LogManagerI logManager) {
@@ -174,7 +187,7 @@ public class Session {
 
     public void addUser(User user) {
         this.users.add(user);
-        if(this.currentUser == null)
+        if (this.currentUser == null)
             this.setCurrentUser(user);
     }
 
@@ -193,7 +206,8 @@ public class Session {
     public void testIfUserExists(String id) throws SessionManagementException {
         for (User user : users) {
             if (user.id.equals(id))
-                throw new SessionManagementException(context.getString(R.string.user_already_added));
+                throw new SessionManagementException(context
+                        .getString(R.string.user_already_added));
         }
     }
 
@@ -201,9 +215,14 @@ public class Session {
         return this.currentUser;
     }
 
+    public void setCurrentUser(User currentuser) {
+        this.currentUser = currentuser;
+    }
+
     public void syncCurrentTrack(String id) {
-        if(isMixed()) {
-            Log.d("Session", "Checking id : " + id + "| current id : " + localPlaylist.getCurrentTrack().id);
+        if (isMixed()) {
+            Log.d("Session", "Checking id : " + id + "| current id : "
+                    + localPlaylist.getCurrentTrack().id);
             // if player not synchronized to the API
             if (!id.equals(localPlaylist.getCurrentTrack().id))
                 if (id.equals(localPlaylist.getNextTrack().id)) {

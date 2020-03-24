@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.utils;
 
 import android.content.Context;
@@ -49,7 +58,8 @@ public class TrackAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null)
-            convertView = inflater.inflate(R.layout.list_track_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_track_item, parent,
+                    false);
 
         Track track = (Track) getItem(position);
         List<User> userList = new ArrayList<>(Factory.getUsersForTrack(track));
@@ -59,8 +69,10 @@ public class TrackAdapter extends BaseAdapter {
             viewHolder = new TrackViewHolder();
             viewHolder.title = convertView.findViewById(R.id.trackTitle);
             viewHolder.artist = convertView.findViewById(R.id.artistName);
-            viewHolder.initialTextView = convertView.findViewById(R.id.userInitial);
-            viewHolder.otherUsersTextView = convertView.findViewById(R.id.otherUsers);
+            viewHolder.initialTextView = convertView
+                    .findViewById(R.id.userInitial);
+            viewHolder.otherUsersTextView = convertView
+                    .findViewById(R.id.otherUsers);
 
             convertView.setTag(viewHolder);
         }
@@ -68,7 +80,8 @@ public class TrackAdapter extends BaseAdapter {
         viewHolder.title.setText(track.getTitle());
         viewHolder.artist.setText(makeArtistsString(track));
         // Set initial of 1 user
-        viewHolder.initialTextView.setText(String.valueOf(userList.get(0).initial));
+        viewHolder.initialTextView.setText(
+                String.valueOf(userList.get(0).initial));
         // Set color of the View
         Drawable background = viewHolder.initialTextView.getBackground();
         ((GradientDrawable) background).setColor(userList.get(0).getColor());
@@ -81,7 +94,8 @@ public class TrackAdapter extends BaseAdapter {
 
             // Set color of the View
             Drawable background1 = viewHolder.otherUsersTextView.getBackground();
-            ((GradientDrawable) background1).setColor(context.getResources().getColor(R.color.grey, context.getTheme()));
+            ((GradientDrawable) background1).setColor(context.getResources()
+                    .getColor(R.color.grey, context.getTheme()));
         }
         // Else, set visibility to false
         else

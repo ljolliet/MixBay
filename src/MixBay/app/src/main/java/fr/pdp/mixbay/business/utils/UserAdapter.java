@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.utils;
 
 import android.content.Context;
@@ -45,7 +54,8 @@ public class UserAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null)
-            convertView = inflater.inflate(R.layout.list_user_alert_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_user_alert_item, parent,
+                    false);
 
         User user = (User) getItem(position);
 

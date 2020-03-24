@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.data;
 
 import android.app.Activity;
@@ -43,7 +52,8 @@ public class SpotifyAPI implements APIManagerI {
 
     private static final String CLIENT_ID = "cb64858e27964a13b85d3e7e5e19b1d3";
     private static final String REDIRECT_URI = "mixbay://callback";
-    private static final String[] SCOPES = new String[]{"user-read-email", "user-read-private"};
+    private static final String[] SCOPES = new String[]{"user-read-email",
+            "user-read-private"};
 
     private SpotifyAppRemote mSpotifyAppRemote;
     private Context context;
@@ -68,35 +78,43 @@ public class SpotifyAPI implements APIManagerI {
 
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Spotify remote Connected");
+                        Log.d("MainActivity", "Spotify remote " +
+                                "Connected");
                         subscribeToPlayerChange();
                     }
 
                     public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
+                        Log.e("MainActivity", throwable.getMessage(),
+                                throwable);
                     }
                 });
 
 
         // Web API connection
         AuthorizationRequest.Builder builder =
-                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
+                new AuthorizationRequest.Builder(CLIENT_ID,
+                        AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
 
         builder.setScopes(SCOPES);
         AuthorizationRequest request = builder.build();
-        AuthorizationClient.openLoginActivity((Activity) context, SPOTIFY_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity((Activity) context,
+                SPOTIFY_REQUEST_CODE, request);
 
-        return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected(); // TODO Manage return (now, it always returns false because of async callback)
+        return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
+        // TODO Manage return (now, it always returns false because of async callback)
     }
 
     @Override
-    public void onConnectionResult(int resultCode, Intent intent) throws APIConnectionException {
-        AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
+    public void onConnectionResult(int resultCode, Intent intent)
+            throws APIConnectionException {
+        AuthorizationResponse response = AuthorizationClient
+                .getResponse(resultCode, intent);
 
         switch (response.getType()) {
             // Response was successful and contains auth token
             case TOKEN:
-                Log.d("SpotifyAPI", "The token is: " + response.getAccessToken());
+                Log.d("SpotifyAPI", "The token is: "
+                        + response.getAccessToken());
                 this.setAccessToken(response.getAccessToken());
                 break;
 
@@ -106,7 +124,8 @@ public class SpotifyAPI implements APIManagerI {
 
             // Most likely auth flow was cancelled
             default:
-                throw new APIConnectionException(context.getString(R.string.api_request_error));
+                throw new APIConnectionException(context
+                        .getString(R.string.api_request_error));
         }
     }
 
@@ -127,7 +146,8 @@ public class SpotifyAPI implements APIManagerI {
         // Create User info request
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/users/" + id)
-                .addHeader("Authorization","Bearer " + this.accessToken)
+                .addHeader("Authorization","Bearer "
+                        + this.accessToken)
                 .build();
 
         Call call = this.requestClient.newCall(request);
@@ -135,15 +155,18 @@ public class SpotifyAPI implements APIManagerI {
 
         // Return a Future
         return pool.submit(() -> {
-            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+            final JSONObject jsonObject = new JSONObject(call.execute()
+                    .body().string());
             Log.d("SpotifyAPI", jsonObject.toString());
 
             // If user does not exist
             if (jsonObject.has("error"))
-                throw new APIRequestException(context.getString(R.string.invalid_user_id));
+                throw new APIRequestException(context
+                        .getString(R.string.invalid_user_id));
 
             // Return new User
-            return Factory.getUser(id, jsonObject.getString("display_name"));
+            return Factory.getUser(id,
+                    jsonObject.getString("display_name"));
 
         });
     }
@@ -153,7 +176,8 @@ public class SpotifyAPI implements APIManagerI {
         // Create main user info request
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/me")
-                .addHeader("Authorization","Bearer " + this.accessToken)
+                .addHeader("Authorization","Bearer "
+                        + this.accessToken)
                 .build();
 
         Call call = this.requestClient.newCall(request);
@@ -161,11 +185,13 @@ public class SpotifyAPI implements APIManagerI {
 
         // Return a Future
         return pool.submit(() -> {
-            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+            final JSONObject jsonObject = new JSONObject(call.execute()
+                    .body().string());
 
             // If user does not exist
             if (jsonObject.has("error"))
-                throw new APIRequestException(context.getString(R.string.api_request_error));
+                throw new APIRequestException(context
+                        .getString(R.string.api_request_error));
 
             String display_name = jsonObject.getString("display_name");
             String id = jsonObject.getString("id");
@@ -179,8 +205,10 @@ public class SpotifyAPI implements APIManagerI {
     public Future<Set<Playlist>> getUserPlaylists(String userId) {
         // Create user's playlist info request
         final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/users/" + userId + "/playlists")
-                .addHeader("Authorization","Bearer " + this.accessToken)
+                .url("https://api.spotify.com/v1/users/" + userId
+                        + "/playlists")
+                .addHeader("Authorization","Bearer "
+                        + this.accessToken)
                 .build();
 
         Call call = this.requestClient.newCall(request);
@@ -190,7 +218,8 @@ public class SpotifyAPI implements APIManagerI {
         return pool.submit(() -> {
             Set<Playlist> playlists = new HashSet<>();
 
-            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+            final JSONObject jsonObject = new JSONObject(call.execute()
+                    .body().string());
 
             // If user does not exist
             if (jsonObject.has("error"))
@@ -212,7 +241,8 @@ public class SpotifyAPI implements APIManagerI {
                 playlists.add(playlist);
 
                 // Fill playlist with tracks
-                playlist.addTracks(this.getTracksFromPlaylist(playlist_id, userId).get());
+                playlist.addTracks(this.getTracksFromPlaylist(playlist_id,
+                        userId).get());
             }
 
             return playlists;
@@ -224,7 +254,8 @@ public class SpotifyAPI implements APIManagerI {
      * @param playlistId The id of the playlist.
      * @return A Future with the set of Tracks.
      */
-    private Future<Set<Track>> getTracksFromPlaylist(String playlistId, String userId) {
+    private Future<Set<Track>> getTracksFromPlaylist(String playlistId,
+                                                     String userId) {
         ExecutorService pool = Executors.newFixedThreadPool(1);
 
         // Return a Future
@@ -233,8 +264,10 @@ public class SpotifyAPI implements APIManagerI {
             // Determine if there are more tracks to get
             boolean next;
             // First url to request
-            String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?" +
-                    "fields=items(track(id,name,artists,preview_url,album(name,images))),next"; // Only important fields
+            String url = "https://api.spotify.com/v1/playlists/"
+                    + playlistId + "/tracks?" +
+                    "fields=items(track(id,name,artists,preview_url," +
+                    "album(name,images))),next"; // Only important fields
 
             // Create total track set to return
             Set<Track> totalTrack = new HashSet<>();
@@ -243,7 +276,8 @@ public class SpotifyAPI implements APIManagerI {
                 // Create playlist info request
                 final Request request = new Request.Builder()
                         .url(url)
-                        .addHeader("Authorization","Bearer " + this.accessToken)
+                        .addHeader("Authorization","Bearer "
+                                + this.accessToken)
                         .build();
 
                 Call call = this.requestClient.newCall(request);
@@ -251,7 +285,8 @@ public class SpotifyAPI implements APIManagerI {
                 List<Track> tracks = new ArrayList<>();
                 StringBuilder trackIdList = new StringBuilder(); // List of track ids
 
-                final JSONObject jsonObject = new JSONObject(call.execute().body().string());
+                final JSONObject jsonObject = new JSONObject(call.execute()
+                        .body().string());
 
                 // If user does not exist
                 if (jsonObject.has("error"))
@@ -265,7 +300,8 @@ public class SpotifyAPI implements APIManagerI {
                     if (itemsArray.getJSONObject(i).isNull("track"))
                         continue;
 
-                    JSONObject trackObject = itemsArray.getJSONObject(i).getJSONObject("track");
+                    JSONObject trackObject = itemsArray.getJSONObject(i)
+                            .getJSONObject("track");
 
                     // If the track does not have id, skip it
                     if (trackObject.isNull("id"))
@@ -278,18 +314,24 @@ public class SpotifyAPI implements APIManagerI {
                     // Get info from JSON
                     String track_id = trackObject.getString("id");
                     String track_title = trackObject.getString("name");
-                    String track_album = trackObject.getJSONObject("album").getString("name");
+                    String track_album = trackObject.getJSONObject("album")
+                            .getString("name");
 
                     // Get all artists for the track
                     Set<String> artists = new HashSet<>();
-                    JSONArray artistArray = trackObject.getJSONArray("artists");
+                    JSONArray artistArray = trackObject
+                            .getJSONArray("artists");
                     for (int j = 0; j < artistArray.length(); j++)
-                        artists.add(artistArray.getJSONObject(j).getString("name"));
+                        artists.add(artistArray.getJSONObject(j)
+                                .getString("name"));
 
-                    String cover_url = trackObject.getJSONObject("album").getJSONArray("images").getJSONObject(2).getString("url");
+                    String cover_url = trackObject.getJSONObject("album")
+                            .getJSONArray("images").getJSONObject(2)
+                            .getString("url");
 
                     // Create Track
-                    Track track = Factory.getTrack(track_id, track_title, track_album, artists, cover_url, userId);
+                    Track track = Factory.getTrack(track_id, track_title,
+                            track_album, artists, cover_url, userId);
 
                     // Append ids for the track features request
                     trackIdList.append(track_id).append(",");
@@ -300,7 +342,8 @@ public class SpotifyAPI implements APIManagerI {
                 // Only if there are 1+ tracks
                 if (tracks.size() > 0) {
                     // Request track features
-                    List<TrackFeatures> trackFeaturesList = getTracksFeatures(trackIdList.toString()).get();
+                    List<TrackFeatures> trackFeaturesList =
+                            getTracksFeatures(trackIdList.toString()).get();
 
                     int i = 0;
                     // Set feature for each track
@@ -331,8 +374,10 @@ public class SpotifyAPI implements APIManagerI {
     private Future<List<TrackFeatures>> getTracksFeatures(String trackIds) {
         // Create track features request for a list of tracks
         final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/audio-features?ids=" + trackIds) // Add GET parameters
-                .addHeader("Authorization","Bearer " + this.accessToken)
+                .url("https://api.spotify.com/v1/audio-features?ids="
+                        + trackIds) // Add GET parameters
+                .addHeader("Authorization","Bearer "
+                        + this.accessToken)
                 .build();
 
         Call call = this.requestClient.newCall(request);
@@ -342,8 +387,10 @@ public class SpotifyAPI implements APIManagerI {
         return pool.submit(() -> {
             List<TrackFeatures> tracksFeatures = new ArrayList<>();
 
-            final JSONObject jsonObject = new JSONObject(call.execute().body().string());
-            JSONArray trackArray = jsonObject.getJSONArray("audio_features");
+            final JSONObject jsonObject = new JSONObject(call.execute()
+                    .body().string());
+            JSONArray trackArray = jsonObject
+                    .getJSONArray("audio_features");
 
             // For each track
             for (int i = 0; i < trackArray.length(); i++) {
@@ -360,7 +407,8 @@ public class SpotifyAPI implements APIManagerI {
                 double energy = trackObject.getDouble("energy");
                 double speechiness = trackObject.getDouble("speechiness");
                 double acousticness = trackObject.getDouble("acousticness");
-                double instrumentalness = trackObject.getDouble("instrumentalness");
+                double instrumentalness = trackObject
+                        .getDouble("instrumentalness");
                 double liveness = trackObject.getDouble("liveness");
                 double valence = trackObject.getDouble("valence");
 
@@ -393,7 +441,8 @@ public class SpotifyAPI implements APIManagerI {
                                 mSpotifyAppRemote
                                         .getPlayerApi()
                                         .resume().setResultCallback(
-                                        empty ->  Log.d("Event API" ," Track resumed")
+                                        empty ->  Log.d("Event API" ,
+                                                " Track resumed")
                                 );
                         });
     }
@@ -409,7 +458,8 @@ public class SpotifyAPI implements APIManagerI {
                                 mSpotifyAppRemote
                                         .getPlayerApi()
                                         .pause().setResultCallback(
-                                        empty ->  Log.d("Event API" ," Track paused")
+                                        empty ->  Log.d("Event API" ,
+                                                " Track paused")
                                 );
                             });
     }
@@ -479,7 +529,8 @@ public class SpotifyAPI implements APIManagerI {
         mSpotifyAppRemote
                 .getPlayerApi()
                 .seekToRelativePosition(-15000)
-                .setResultCallback(data -> Log.d("Event API" ," seek backward")
+                .setResultCallback(data -> Log.d("Event API" ,
+                        " seek backward")
                 );
     }
 
@@ -489,7 +540,8 @@ public class SpotifyAPI implements APIManagerI {
                 .getPlayerApi()
                 .queue("spotify:track:"+id)
                 .setResultCallback(
-                        data -> Log.d("Event API" ," queue track " + id)
+                        data -> Log.d("Event API" ," queue track "
+                                + id)
                 );
     }
 
@@ -498,10 +550,13 @@ public class SpotifyAPI implements APIManagerI {
         mSpotifyAppRemote.getPlayerApi()
                 .subscribeToPlayerState()
                 .setEventCallback(playerState -> {
-                    final com.spotify.protocol.types.Track track = playerState.track;
+                    final com.spotify.protocol.types.Track track =
+                            playerState.track;
                     if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                        Services.syncCurrentTrack(track.uri.replaceFirst("spotify:track:",""));
+                        Log.d("MainActivity", track.name + " by "
+                                + track.artist.name);
+                        Services.syncCurrentTrack(track.uri
+                                .replaceFirst("spotify:track:",""));
                         PresentationServices.updateCover();
                         PresentationServices.updateLikeButton();
                     }

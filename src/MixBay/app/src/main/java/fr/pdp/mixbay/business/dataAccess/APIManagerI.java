@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.dataAccess;
 
 import android.content.Context;
@@ -17,26 +26,31 @@ public interface APIManagerI {
 
     /**
      * Authenticate the main user to the API.
+     *
      * @return true if the user is connected after authentication.
      */
     boolean connect(Context context);
 
     /**
      * Disconnect the main user to the API.
+     *
      * @return true if disconnected.
      */
     boolean disconnect();
 
     /**
      * Call this function after getting a Response from the API connection.
+     *
      * @param resultCode The resultCode.
-     * @param intent The intent.
+     * @param intent     The intent.
      * @throws APIConnectionException If an error happens.
      */
-    void onConnectionResult(int resultCode, Intent intent) throws APIConnectionException;
+    void onConnectionResult(int resultCode, Intent intent)
+            throws APIConnectionException;
 
     /**
      * Get the User with the given id.
+     *
      * @param id The id of the user.
      * @return A Future with the User.
      */
@@ -44,12 +58,14 @@ public interface APIManagerI {
 
     /**
      * Get the main user. The one who is connected into the API.
+     *
      * @return A Future with the User.
      */
     Future<User> getMainUser();
 
     /**
      * Get all the Playlists of a user.
+     *
      * @param userId The id of the user.
      * @return A Future with the set of Playlists.
      */
@@ -58,6 +74,7 @@ public interface APIManagerI {
 
     /**
      * Play the given track.
+     *
      * @param id track's id to play.
      */
     void playTrack(String id);
@@ -74,6 +91,7 @@ public interface APIManagerI {
 
     /**
      * Add the given track to the user's queue.
+     *
      * @param id track's id to queue.
      */
     void queueTrack(String id);
@@ -92,12 +110,16 @@ public interface APIManagerI {
      * TODO
      */
     void toggleRepeat();
+
     void toggleShuffle();
+
     void seekFordward();
+
     void seekBackward();
 
     /**
      * Set the access access token of the main user to allow API requests.
+     *
      * @param token The token.
      */
     void setAccessToken(String token);

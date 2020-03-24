@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.services;
 
 import android.content.Context;
@@ -46,7 +55,8 @@ public class Services {
     }
 
     // TODO Change function name
-    public static void requestMainUser() throws ExecutionException, InterruptedException {
+    public static void requestMainUser() throws ExecutionException,
+            InterruptedException {
         APIManagerI api = getSession().getApi();
         // Get User
         User user = api.getMainUser().get();
@@ -85,7 +95,8 @@ public class Services {
         getSession().createLogFile();
     }
 
-    public static void addUserWithId(String id) throws ExecutionException, InterruptedException, SessionManagementException {
+    public static void addUserWithId(String id) throws ExecutionException,
+            InterruptedException, SessionManagementException {
         APIManagerI api = getSession().getApi();
 
         // Test if the user is already added

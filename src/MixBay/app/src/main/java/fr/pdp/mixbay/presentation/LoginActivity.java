@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.presentation;
 
 import android.app.Activity;
@@ -5,18 +14,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
-
 import fr.pdp.mixbay.R;
-import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.exceptions.APIConnectionException;
-import fr.pdp.mixbay.data.SpotifyAPI;
+import fr.pdp.mixbay.business.services.Services;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,14 +34,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         // Spotify authentication response
         if (requestCode == APIManagerI.SPOTIFY_REQUEST_CODE) {
             // Manage connection result
             try {
-                Services.getSession().getApi().onConnectionResult(resultCode, intent);
+                Services.getSession().getApi().onConnectionResult(resultCode,
+                        intent);
 
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);

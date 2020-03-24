@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.presentation;
 
 import android.Manifest;
@@ -55,25 +64,28 @@ public class MainActivity extends AppCompatActivity {
         Services.getSession().start(this);
 
         // Ask for permission(s)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
             Log.d("MainActivity", "Permission not granted");
             this.getWriteRights();
             Log.d("MainActivity", "Permission requested");
-        }
-        else {
+        } else {
             Log.d("MainActivity", "Permission granted");
             Services.CreateLogFile();
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         // Spotify authentication response
         if (requestCode == APIManagerI.SPOTIFY_REQUEST_CODE) {
             // Manage connection result
             try {
-                Services.getSession().getApi().onConnectionResult(resultCode, intent);
+                Services.getSession().getApi().onConnectionResult(resultCode,
+                        intent);
                 Services.requestMainUser();
                 updateCurrentUserInitialAndColor();
 
@@ -82,14 +94,16 @@ public class MainActivity extends AppCompatActivity {
                 System.err.println("API connection error: " + e.getMessage());
             } catch (InterruptedException | ExecutionException e) {
                 // TODO Manage exception
-                System.err.println("Requesting main user error: " + e.getMessage());
+                System.err.println("Requesting main user error: " +
+                        e.getMessage());
             }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+                                           String[] permissions,
+                                           int[] grantResults) {
         switch (requestCode) {
             case MY_STORAGE_WRITE_PERMISSION: {
                 // If request is cancelled, the result arrays are empty.
@@ -98,7 +112,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("MainActivity", "Permission granted");
                     Services.CreateLogFile();
                 } else {
-                    Log.d("MainActivity", "Permission denied by the user"); //TODO manage this case in LogManager
+                    Log.d("MainActivity",
+                            "Permission denied by the user");
+                    //TODO manage this case in LogManager
                 }
                 return;
             }
@@ -135,12 +151,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickPlay(View view) {
-        if(Services.isMixed())
+        if (Services.isMixed())
             if (Services.isCurrentTrackPaused()) {
-                view.setBackgroundResource(R.drawable.baseline_pause_white_48dp);
+                view.setBackgroundResource(R.drawable
+                        .baseline_pause_white_48dp);
                 Services.playMusic();
             } else {
-                view.setBackgroundResource(R.drawable.baseline_play_arrow_white_48dp);
+                view.setBackgroundResource(R.drawable
+                        .baseline_play_arrow_white_48dp);
                 Services.pauseMusic();
             }
     }
@@ -154,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
         LocalPlaylist playlist = Services.mix();
 
         // Display the playlist into the ListView
-        TrackAdapter adapter = new TrackAdapter(this, (List<Track>) playlist.getTracks());
+        TrackAdapter adapter = new TrackAdapter(this,
+                (List<Track>) playlist.getTracks());
         trackListView.setAdapter(adapter);
 
         //Update Cover Image and set the play/pause button to pause
@@ -165,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickLike(View view) {
-        if(Services.isMixed())
+        if (Services.isMixed())
             if (Services.isCurrentTrackLiked()) {
                 view.setBackgroundResource(R.drawable.like);
                 Services.unlikeMusic();
@@ -176,14 +195,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public void onClickSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
     public void onClickAddUser(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                R.style.AlertDialogStyle);
         builder.setTitle(R.string.add_user_alert_title);
 
         final EditText input = new EditText(this);
@@ -201,7 +220,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             } catch (SessionManagementException e) {
                 // TODO Manage exception
-                System.out.println("Session management error: " + e.getMessage());
+                System.out.println("Session management error: " +
+                        e.getMessage());
             }
         });
 
@@ -213,10 +233,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickCurrentUser(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                R.style.AlertDialogStyle);
         builder.setTitle(R.string.current_user_alert_title);
 
-        final UserAdapter userAdapter = new UserAdapter(this, Services.getUsers());
+        final UserAdapter userAdapter = new UserAdapter(this,
+                Services.getUsers());
 
         builder.setAdapter(userAdapter, (dialogInterface, i) -> {
             Services.setCurrentUser(((User) userAdapter.getItem(i)));
@@ -229,8 +251,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateCover() {
         ImageView image = this.findViewById(R.id.albumPicture);
-        if(Services.getSession().getCurrentTrack() != null)
-            Picasso.get().load(Services.getSession().getCurrentTrack().cover_url).into(image);
+        if (Services.getSession().getCurrentTrack() != null)
+            Picasso.get().load(Services.getSession().getCurrentTrack().cover_url)
+                    .into(image);
     }
 
     public void updateLikeButton() {
@@ -243,6 +266,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getWriteRights() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_STORAGE_WRITE_PERMISSION);
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                MY_STORAGE_WRITE_PERMISSION);
     }
 }

@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.utils;
 
 import java.util.HashMap;
@@ -23,13 +32,15 @@ public class Factory {
         return user;
     }
 
-    public static Track getTrack(String id, String title, String album, Set<String> artists, String cover_url, String userId) {
+    public static Track getTrack(String id, String title, String album,
+                                 Set<String> artists, String cover_url,
+                                 String userId) {
         if (tracks.containsKey(id)) {
             addUserForTracks(tracks.get(id), users.get(userId));
             return tracks.get(id);
         }
 
-        Track track = new Track(id, title, album,  artists, cover_url);
+        Track track = new Track(id, title, album, artists, cover_url);
         tracks.put(id, track);
 
         addUserForTracks(track, users.get(userId));

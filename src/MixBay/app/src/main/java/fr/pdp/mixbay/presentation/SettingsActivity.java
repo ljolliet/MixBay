@@ -1,4 +1,15 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.presentation;
+
+import java.util.Objects;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +21,8 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toolbar;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.algorithms.Fairness;
@@ -66,15 +73,18 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void loadUserList() {
-        UserSettingsAdapter adapter = new UserSettingsAdapter(this, Services.getUsers());
+        UserSettingsAdapter adapter = new UserSettingsAdapter(this,
+                Services.getUsers());
         userListView.setAdapter(adapter);
     }
 
-    private void onClickUser(AdapterView<?> adapterView, View view, int i, long l) {
+    private void onClickUser(AdapterView<?> adapterView, View view, int i,
+                             long l) {
         ImageView moreImageView = view.findViewById(R.id.userSettingsMore);
         PopupMenu popup = new PopupMenu(this, moreImageView);
 
-        popup.getMenuInflater().inflate(R.menu.popup_user_settings_menu, popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.popup_user_settings_menu,
+                popup.getMenu());
 
 
         // Get User
@@ -98,7 +108,8 @@ public class SettingsActivity extends AppCompatActivity {
                     removeUser(user);
                     break;
                 default:
-                    Log.d("SettingsActivity", "Default: " + item.getItemId());
+                    Log.d("SettingsActivity", "Default: "
+                            + item.getItemId());
                     break;
             }
 
@@ -113,18 +124,22 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (user.isMute()) {
             user.unmute();
-            displayName.setTextColor(getResources().getColor(R.color.white, getTheme()));
+            displayName.setTextColor(getResources().getColor(R.color.white,
+                    getTheme()));
         }
         else {
             user.mute();
-            displayName.setTextColor(getResources().getColor(R.color.colorDisabled, getTheme()));
+            displayName.setTextColor(getResources()
+                    .getColor(R.color.colorDisabled, getTheme()));
         }
     }
 
     private void removeUser(User user) {
         // Create a confirm popup
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        builder.setTitle(getString(R.string.remove_user_alert_title, user.username));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                R.style.AlertDialogStyle);
+        builder.setTitle(getString(R.string.remove_user_alert_title,
+                user.username));
         builder.setMessage(R.string.remove_user_message);
 
         // OK button
@@ -149,7 +164,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void onClickSelectAlgorithm(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog
+                .Builder(this, R.style.AlertDialogStyle);
         builder.setTitle(R.string.choose_algo_alert_title);
 
         builder.setItems(R.array.algorithms, (dialogInterface, i) -> {

@@ -1,3 +1,12 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay.business.algorithms;
 
 import java.util.HashMap;
@@ -12,19 +21,22 @@ import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.User;
 
 abstract class AlgoSuperclass implements AlgoI {
-    ScoreBuilderI score = new FeatureBasedBuilder();
+    private ScoreBuilderI score = new FeatureBasedBuilder();
 
     @Override
     public LocalPlaylist compute(Set<User> users) {
-        Set<User> unmutedUsers = new HashSet<>();
+        Set<User> unMutedUsers = new HashSet<>();
         for (User u : users) {
             if (!u.isMute()) {
-                unmutedUsers.add(u);
+                unMutedUsers.add(u);
             }
         }
         Map<String, Track> tracksList = new HashMap<>();
-        return computeLocalePlaylist(score.compute(unmutedUsers, tracksList), unmutedUsers, tracksList);
+        return computeLocalePlaylist(score.compute(unMutedUsers, tracksList),
+                unMutedUsers, tracksList);
     }
 
-    public abstract LocalPlaylist computeLocalePlaylist(Map<String, Map<String, Double>> musicScorePerUser, Set<User> users, Map<String, Track> tracksList);
+    public abstract LocalPlaylist computeLocalePlaylist(Map<String, Map<String,
+            Double>> musicScorePerUser, Set<User> users, Map<String,
+            Track> tracksList);
 }
