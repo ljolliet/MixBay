@@ -127,11 +127,13 @@ public class Session {
      */
     public void nextMusic() {
         if (this.mixed) {
-            this.localPlaylist.incTrack();
+            if(!this.localPlaylist.incTrack())  //end of the playlist
+                this.localPlaylist.restartPlaylist();
+
             if (this.localPlaylist.getNextTrack() != null) {
                 this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
-                this.apiManager.skipNextTrack();
             }
+            this.apiManager.skipNextTrack();
             this.logManager.append(this.createItem(LogItem.LogAction.NEXT));
         }
     }

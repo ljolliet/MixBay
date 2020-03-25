@@ -59,13 +59,16 @@ public class LocalPlaylist implements PlaylistI {
     /**
      * Set the current Track as the next Track unless there is no more track
      * after this one.
+     * @return true if the incrementation is a success, false otherwise
      */
-    public void incTrack() {
-        this.currentTrackIndex++;
-        if (this.tracks.size() < currentTrackIndex
-                || this.tracks.get(currentTrackIndex) == null)
+    public boolean incTrack() {
+        if (this.currentTrackIndex < this.tracks.size() - 1)
+            this.currentTrackIndex++;
+        else return false;
+        if (this.tracks.get(currentTrackIndex) == null)
             throw new PlayerException("Current track not found in Local " +
                     "Playlist");
+        return true;
     }
 
     /**
@@ -95,4 +98,7 @@ public class LocalPlaylist implements PlaylistI {
         return new ArrayList<>(this.tracks);
     }
 
+    public void restartPlaylist() {
+        this.currentTrackIndex = 0;
+    }
 }
