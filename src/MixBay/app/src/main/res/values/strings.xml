@@ -41,4 +41,6 @@
 
     <string name="pipe_char">|</string>
     <string name="descr_more_button">Bouton d\'options</string>
+    <string name="title">Title</string>
+    <string name="artist">Artist</string>
 </resources>
