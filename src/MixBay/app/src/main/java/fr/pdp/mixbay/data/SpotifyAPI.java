@@ -131,6 +131,7 @@ public class SpotifyAPI implements APIManagerI {
 
     @Override
     public boolean disconnect() {
+        this.emptyQueue();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
 
         if (context == null)
