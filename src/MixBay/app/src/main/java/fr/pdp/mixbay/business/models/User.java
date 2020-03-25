@@ -48,8 +48,6 @@ public class User {
      */
     private void generateColor() {
         Random rand = new Random();
-        //TODO remove Magic values
-
         final int threshold = 128; // Half of the color range [0, 255]
 
         // Generate "light" colors - from https://stackoverflow.com/a/4246418

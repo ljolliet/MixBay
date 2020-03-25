@@ -120,8 +120,7 @@ public class Session {
             this.apiManager.playTrack(localPlaylist.getCurrentTrack().id);
             this.apiManager.queueTrack(localPlaylist.getNextTrack().id);
             this.logManager.append(this.createItem(LogItem.LogAction.PREVIOUS));
-            //TODO dec or not dec
-        }
+            }
     }
 
     /**

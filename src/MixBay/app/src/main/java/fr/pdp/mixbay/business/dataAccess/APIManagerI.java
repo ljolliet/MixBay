@@ -115,17 +115,6 @@ public interface APIManagerI {
     void skipPreviousTrack();
 
     /**
-     * TODO
-     */
-    void toggleRepeat();
-
-    void toggleShuffle();
-
-    void seekFordward();
-
-    void seekBackward();
-
-    /**
      * Set the access access token of the main user to allow API requests.
      *
      * @param token The token.

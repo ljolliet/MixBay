@@ -53,6 +53,7 @@ import fr.pdp.mixbay.business.models.User;
 import fr.pdp.mixbay.business.services.Services;
 import fr.pdp.mixbay.business.utils.Factory;
 import fr.pdp.mixbay.presentation.PresentationServices;
+
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -541,46 +542,6 @@ public class SpotifyAPI implements APIManagerI {
                 .skipPrevious()
                 .setResultCallback(
                         data -> Log.d("Event API" ," skip previous")
-                );
-    }
-
-    @Override
-    public void toggleRepeat(){
-        mSpotifyAppRemote
-                .getPlayerApi()
-                .toggleRepeat()
-                .setResultCallback(
-                        data -> Log.d("Event API" ," toggle repeat")
-                );
-    }
-
-    @Override
-    public void toggleShuffle(){
-        mSpotifyAppRemote
-                .getPlayerApi()
-                .toggleShuffle()
-                .setResultCallback(
-                        data -> Log.d("Event API" ," toggle shuffle")
-                );
-    }
-
-    @Override
-    public void seekFordward(){
-        mSpotifyAppRemote
-                .getPlayerApi()
-                .seekToRelativePosition(15000)
-                .setResultCallback(
-                        data -> Log.d("Event API" ," seek forward")
-                );
-    }
-
-    @Override
-    public void seekBackward(){
-        mSpotifyAppRemote
-                .getPlayerApi()
-                .seekToRelativePosition(-15000)
-                .setResultCallback(data -> Log.d("Event API" ,
-                        " seek backward")
                 );
     }
 

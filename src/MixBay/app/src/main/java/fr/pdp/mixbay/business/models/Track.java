@@ -97,4 +97,15 @@ public class Track {
     public void unlike() {
         this.liked = false;
     }
+
+    /**
+     * Get a particular feature
+     * @param name The name of the feature to get
+     * @return the dfeature value if there is feature, -1 otherwise
+     */
+    public double getFeature(TrackFeatures.Name name) {
+        if(this.features != null && name != null)
+            return this.features.allFeatures.get(name);
+        return -1.;
+    }
 }
