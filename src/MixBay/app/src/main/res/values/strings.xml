@@ -6,6 +6,7 @@
     <string name="users">Utilisateurs</string>
 
     <!-- Alert titles -->
+    <string name="error_title">Erreur</string>
     <string name="add_user_alert_title">Identifiant de l\'utilisateur</string>
     <string name="remove_user_alert_title">Supprimer %1$s ?</string>
     <string name="choose_algo_alert_title">Quel algorithme choisir ?</string>
@@ -38,6 +39,15 @@
     <string name="algo_fairness">Fairness</string>
     <string name="algo_most_pleasure">Most Pleasure</string>
     <string name="algo_random">Random</string>
+
+    <!-- Spotify exception messages -->
+    <string name="spotify_not_installed">Veuillez installer Spotify pour pouvoir utiliser l\'application.</string>
+    <string name="spotify_not_updated">Veuillez mettre à jour l’application Spotify.</string>
+    <string name="spotify_app_not_authorized">Vous n’avez pas autorisé l’application à contrôler votre musique à distance.\n
+        Veuillez relancer l’application et accepter pour que celle-ci fonctionne.</string>
+    <string name="spotify_not_connected">Veuillez vous connecter à Spotify.</string>
+    <string name="spotify_offline">Spotify est en offline, veuillez passer l’application en ligne.</string>
+    <string name="spotify_closed">Il semblerait que l\'application Spotify soit fermée, veuillez la rouvrir.</string>
 
     <string name="pipe_char">|</string>
     <string name="descr_more_button">Bouton d\'options</string>

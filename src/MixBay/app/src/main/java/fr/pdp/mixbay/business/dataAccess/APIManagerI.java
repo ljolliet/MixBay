@@ -26,10 +26,8 @@ public interface APIManagerI {
 
     /**
      * Authenticate the main user to the API.
-     *
-     * @return true if the user is connected after authentication.
      */
-    boolean connect(Context context);
+    void connect(Context context);
 
     /**
      * Disconnect the main user to the API.
@@ -37,6 +35,16 @@ public interface APIManagerI {
      * @return true if disconnected.
      */
     boolean disconnect();
+
+    /**
+     * Manage connection if API needs it when app is resumed
+     */
+    void onResume();
+
+    /**
+     * Manage connection if API needs it when app is paused
+     */
+    void onPause();
 
     /**
      * Call this function after getting a Response from the API connection.

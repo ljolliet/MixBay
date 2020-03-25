@@ -14,9 +14,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.android.appremote.api.error.AuthenticationFailedException;
+import com.spotify.android.appremote.api.error.CouldNotFindSpotifyApp;
+import com.spotify.android.appremote.api.error.LoggedOutException;
+import com.spotify.android.appremote.api.error.NotLoggedInException;
+import com.spotify.android.appremote.api.error.OfflineModeException;
+import com.spotify.android.appremote.api.error.SpotifyConnectionTerminatedException;
+import com.spotify.android.appremote.api.error.SpotifyDisconnectedException;
+import com.spotify.android.appremote.api.error.UnsupportedFeatureVersionException;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -55,39 +65,71 @@ public class SpotifyAPI implements APIManagerI {
     private static final String[] SCOPES = new String[]{"user-read-email",
             "user-read-private"};
 
-    private SpotifyAppRemote mSpotifyAppRemote;
     private Context context;
 
     private final OkHttpClient requestClient = new OkHttpClient();
     private String accessToken;
 
+    private SpotifyAppRemote mSpotifyAppRemote;
+    private ConnectionParams connectionParams =
+            new ConnectionParams.Builder(CLIENT_ID)
+                    .setRedirectUri(REDIRECT_URI)
+                    .showAuthView(true)
+                    .build();
+
+    private Connector.ConnectionListener connectionListener =
+            new Connector.ConnectionListener() {
+                @Override
+                public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                    mSpotifyAppRemote = spotifyAppRemote;
+                    Log.d("SpotifyAPI", "Spotify remote Connected");
+                    subscribeToPlayerChange();
+                }
+
+                @Override
+                public void onFailure(Throwable error) {
+                    Log.e("SpotifyAPI", error.getMessage(), error);
+
+                    AlertDialog.Builder builder = new AlertDialog
+                            .Builder(context, R.style.AlertDialogStyle);
+
+                    builder.setTitle(R.string.error_title);
+                    builder.setCancelable(false);
+
+                    if (error instanceof CouldNotFindSpotifyApp) {
+                        builder.setMessage(R.string.spotify_not_installed);
+                    }
+                    else if (error instanceof UnsupportedFeatureVersionException) {
+                        builder.setMessage(R.string.spotify_not_updated);
+                    }
+                    else if (error instanceof AuthenticationFailedException) {
+                        builder.setMessage(R.string.spotify_app_not_authorized);
+                    }
+                    else if (error instanceof NotLoggedInException ||
+                            error instanceof LoggedOutException) {
+                        builder.setMessage(R.string.spotify_not_connected);
+                    }
+                    else if (error instanceof OfflineModeException) {
+                        builder.setMessage(R.string.spotify_offline);
+                    }
+                    else if (error instanceof SpotifyDisconnectedException ||
+                            error instanceof SpotifyConnectionTerminatedException) {
+                        builder.setMessage(R.string.spotify_closed);
+                    }
+                    else {
+                        // error instanceof SpotifyRemoteServiceException
+                        // error instanceof UserNotAuthorizedException
+                        builder.setMessage(R.string.api_request_error);
+                    }
+
+                    builder.show();
+                }
+
+            };
 
     @Override
-    public boolean connect(Context context) {
+    public void connect(Context context) {
         this.context = context;
-
-        // Playback connection
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(context, connectionParams,
-                new Connector.ConnectionListener() {
-
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Spotify remote Connected");
-                        subscribeToPlayerChange();
-                    }
-
-                    public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(),
-                                throwable);
-                    }
-                });
-
 
         // Web API connection
         AuthorizationRequest.Builder builder =
@@ -98,9 +140,6 @@ public class SpotifyAPI implements APIManagerI {
         AuthorizationRequest request = builder.build();
         AuthorizationClient.openLoginActivity((Activity) context,
                 SPOTIFY_REQUEST_CODE, request);
-
-        return mSpotifyAppRemote!= null && mSpotifyAppRemote.isConnected();
-        // TODO Manage return (now, it always returns false because of async callback)
     }
 
     @Override
@@ -128,7 +167,6 @@ public class SpotifyAPI implements APIManagerI {
         }
     }
 
-
     @Override
     public boolean disconnect() {
         this.emptyQueue();
@@ -139,6 +177,18 @@ public class SpotifyAPI implements APIManagerI {
 
         AuthorizationClient.clearCookies(context);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        // Connect Spotify remote only when app is in foreground
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+        SpotifyAppRemote.connect(context, connectionParams, connectionListener);
+    }
+
+    @Override
+    public void onPause() {
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 
     @Override

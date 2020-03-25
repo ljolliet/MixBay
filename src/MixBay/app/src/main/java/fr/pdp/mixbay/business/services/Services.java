@@ -163,4 +163,12 @@ public class Services {
     public static boolean isCurrentTrackPaused() {
         return getSession().isPaused();
     }
+
+    public static void onResumeApi() {
+        getSession().getApi().onResume();
+    }
+
+    public static void onPauseApi() {
+        getSession().getApi().onPause();
+    }
 }

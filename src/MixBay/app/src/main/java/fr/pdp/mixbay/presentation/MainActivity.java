@@ -76,6 +76,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Services.onResumeApi();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Services.onPauseApi();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Services.disconnectSession();
+    }
+
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -136,13 +154,6 @@ public class MainActivity extends AppCompatActivity {
         // Set color to Button
         Drawable background = currentUser.getBackground();
         ((GradientDrawable) background).setColor(u.getColor());
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Services.disconnectSession();
     }
 
     public void onClickPrevious(View view) {
