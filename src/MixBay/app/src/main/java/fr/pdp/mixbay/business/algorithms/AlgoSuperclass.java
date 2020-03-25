@@ -32,8 +32,9 @@ abstract class AlgoSuperclass implements AlgoI {
             }
         }
         Map<String, Track> tracksList = new HashMap<>();
-        return computeLocalePlaylist(score.compute(unMutedUsers, tracksList),
-                unMutedUsers, tracksList);
+        Map<String, Map<String, Double>> scoreComputed =
+                score.compute(unMutedUsers, tracksList);
+        return computeLocalePlaylist(scoreComputed, unMutedUsers, tracksList);
     }
 
     public abstract LocalPlaylist computeLocalePlaylist(Map<String, Map<String,

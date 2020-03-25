@@ -24,6 +24,10 @@ import fr.pdp.mixbay.business.utils.MapUtil;
 public class FeatureBasedBuilder implements ScoreBuilderI {
 
 
+    private static final double RANDOM_RATIO = 0.15;
+    private static final double MAX_RANDOM = RANDOM_RATIO;
+    private static final double MIN_RANDOM = -MAX_RANDOM;
+
     private Map<String, Track> tracksList = new HashMap<>();
     private double[] trackFeaturesAverage = new double[TrackFeatures.SIZE];
 
@@ -45,9 +49,9 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
             for (Track t : p.getTracks()) {
                 tracksList.put(t.id, t);
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                    trackFeaturesAverage[i] += t.getFeatures()
-                            .allFeatures
-                            .get(TrackFeatures.NAME_VALUES[i]);
+                    double feature = t.getFeature(TrackFeatures.NAME_VALUES[i]);
+                    if(feature != -1.)
+                        trackFeaturesAverage[i] += feature;
                 }
             }
         }
@@ -86,11 +90,16 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
                 Track t = (Track) trackEntry.getValue();
                 double currentTrackScore = 0.;
                 for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                    scorePerTrackVector[i] =
+                    double userFeature =
                             ((TrackFeatures) currentUser.getValue())
-                                    .allFeatures.get(TrackFeatures.NAME_VALUES[i])
-                                    - t.getFeatures()
                                     .allFeatures.get(TrackFeatures.NAME_VALUES[i]);
+                    double trackFeature =
+                            t.getFeature(TrackFeatures.NAME_VALUES[i]);
+                    double randomShift =
+                            MIN_RANDOM + (Math.random()*(MAX_RANDOM- MIN_RANDOM));
+                    if (trackFeature != -1.)
+                        scorePerTrackVector[i] =
+                                userFeature - ( trackFeature + randomShift);
                     currentTrackScore += Math.pow(scorePerTrackVector[i], 2);
                 }
                 currentTrackScore = Math.sqrt(currentTrackScore);
@@ -109,9 +118,6 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
                                                             Track> tracksList) {
         Map<String, TrackFeatures> userProfile = new HashMap<>();
         for (User u : users) {
-            for (int i = 0; i < trackFeaturesAverage.length; i++) {
-                trackFeaturesAverage[i] = 0.;
-            }
             userProfile.put(u.id, computeUserProfile(u, tracksList));
         }
 
