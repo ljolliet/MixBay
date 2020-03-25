@@ -36,7 +36,6 @@ import java.util.concurrent.ExecutionException;
 
 import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
-import fr.pdp.mixbay.business.exceptions.APIConnectionException;
 import fr.pdp.mixbay.business.exceptions.PlayerException;
 import fr.pdp.mixbay.business.exceptions.SessionManagementException;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
@@ -60,9 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         trackListView = findViewById(R.id.trackList);
 
-        // Remove the 2 following lines if LoginActivity is the launcher activity
-        Services.createSpotifySession();
-        Services.getSession().start(this);
+        initMainUser();
 
         // Ask for permission(s)
         if (ContextCompat.checkSelfPermission(this,
@@ -102,20 +99,16 @@ public class MainActivity extends AppCompatActivity {
         // Spotify authentication response
         if (requestCode == APIManagerI.SPOTIFY_REQUEST_CODE) {
             // Manage connection result
-            try {
-                Services.getSession().getApi().onConnectionResult(resultCode,
-                        intent);
-                Services.requestMainUser();
-                updateCurrentUserInitialAndColor();
 
-            } catch (APIConnectionException e) {
-                // TODO Manage exception
-                System.err.println("API connection error: " + e.getMessage());
-            } catch (InterruptedException | ExecutionException e) {
-                // TODO Manage exception
-                System.err.println("Requesting main user error: " +
-                        e.getMessage());
-            }
+        }
+    }
+
+    public void initMainUser() {
+        try {
+            Services.requestMainUser();
+            updateCurrentUserInitialAndColor();
+        } catch (InterruptedException | ExecutionException e) {
+            createSimpleAlertDialog(e.getMessage());
         }
     }
 
@@ -195,14 +188,7 @@ public class MainActivity extends AppCompatActivity {
             playButton.setBackgroundResource(R.drawable.baseline_pause_white_48dp);
 
         } catch (PlayerException e) {
-            AlertDialog.Builder builder = new AlertDialog
-                    .Builder(this, R.style.AlertDialogStyle);
-
-            builder.setTitle(R.string.error_title);
-            builder.setMessage(e.getMessage());
-            builder.setPositiveButton(R.string.OK, null);
-
-            builder.show();
+            createSimpleAlertDialog(e.getMessage());
         }
     }
 
@@ -237,14 +223,8 @@ public class MainActivity extends AppCompatActivity {
             String id = input.getText().toString();
             try {
                 Services.addUserWithId(id);
-            } catch (ExecutionException | InterruptedException e) {
-                // TODO Manage exception
-                System.out.println("Requesting user error: " + e.getMessage());
-                e.printStackTrace();
-            } catch (SessionManagementException e) {
-                // TODO Manage exception
-                System.out.println("Session management error: " +
-                        e.getMessage());
+            } catch (ExecutionException | InterruptedException | SessionManagementException e) {
+                createSimpleAlertDialog(e.getMessage());
             }
         });
 
@@ -253,6 +233,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Display the Alert
         builder.show();
+    }
+
+    private void createSimpleAlertDialog(String message) {
+        AlertDialog.Builder alert = new AlertDialog
+                .Builder(this, R.style.AlertDialogStyle);
+
+        alert.setTitle(R.string.error_title);
+        alert.setMessage(message);
+        alert.setPositiveButton(R.string.OK, null);
+
+        alert.show();
     }
 
     public void onClickCurrentUser(View view) {
