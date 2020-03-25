@@ -30,6 +30,7 @@
     <string name="user_already_added">L\'utilisateur a déjà été ajouté.</string>
     <string name="invalid_playlist_id">La playlist n\'existe pas.</string>
     <string name="api_request_error">Une erreur est survenue, veuillez réessayer ultérieurement.</string>
+    <string name="playlist_empty_error">La playlist générée est vide. Les utilisateurs connectés n\'ont pas de playlist publique.</string>
 
     <!-- Alert messages -->
     <string name="remove_user_message">Voulez vous vraiment supprimer cet utilisateur ?</string>

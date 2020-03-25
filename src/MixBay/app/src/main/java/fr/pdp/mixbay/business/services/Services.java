@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.dataAccess.RepositoryI;
+import fr.pdp.mixbay.business.exceptions.PlayerException;
 import fr.pdp.mixbay.business.exceptions.SessionManagementException;
 import fr.pdp.mixbay.business.models.AlgoI;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
@@ -54,7 +55,6 @@ public class Services {
         return getSession().finish();
     }
 
-    // TODO Change function name
     public static void requestMainUser() throws ExecutionException,
             InterruptedException {
         APIManagerI api = getSession().getApi();
@@ -85,7 +85,7 @@ public class Services {
         getSession().nextMusic();
     }
 
-    public static LocalPlaylist mix() {
+    public static LocalPlaylist mix() throws PlayerException {
         LocalPlaylist playlist = getSession().generatePlaylist();
         getSession().launchPlaylist();
         return playlist;

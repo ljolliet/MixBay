@@ -62,7 +62,8 @@ public class Session {
      */
     public LocalPlaylist generatePlaylist() {
         this.localPlaylist = algo.compute(this.users);
-        this.mixed = true;
+        if (this.localPlaylist.getTracks().size() > 0)
+            this.mixed = true;
         Log.d("Session", "Playlist generated");
         return localPlaylist;
     }
@@ -71,8 +72,9 @@ public class Session {
         this.apiManager.emptyQueue();
 
         if (this.localPlaylist.getCurrentTrack() == null)
-            throw new PlayerException("Cannot launch current track because " +
-                    "the track is null");
+            throw new PlayerException(
+                    context.getString(R.string.playlist_empty_error));
+
         this.apiManager.playTrack(this.localPlaylist.getCurrentTrack().id);
 
         if (this.localPlaylist.getNextTrack() != null)
@@ -244,7 +246,6 @@ public class Session {
     }
 
     public boolean isMixed() {
-
         return mixed;
     }
 

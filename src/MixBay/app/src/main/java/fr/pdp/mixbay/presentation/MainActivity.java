@@ -37,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.dataAccess.APIManagerI;
 import fr.pdp.mixbay.business.exceptions.APIConnectionException;
+import fr.pdp.mixbay.business.exceptions.PlayerException;
 import fr.pdp.mixbay.business.exceptions.SessionManagementException;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Track;
@@ -180,18 +181,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMix(View view) {
-        LocalPlaylist playlist = Services.mix();
+        try {
+            LocalPlaylist playlist = Services.mix();
 
-        // Display the playlist into the ListView
-        TrackAdapter adapter = new TrackAdapter(this,
-                (List<Track>) playlist.getTracks());
-        trackListView.setAdapter(adapter);
+            // Display the playlist into the ListView
+            TrackAdapter adapter = new TrackAdapter(this,
+                    (List<Track>) playlist.getTracks());
+            trackListView.setAdapter(adapter);
 
-        //Update Cover Image and set the play/pause button to pause
-        updateCover();
-        ImageButton playButton = this.findViewById(R.id.playButton);
-        playButton.setBackgroundResource(R.drawable.baseline_pause_white_48dp);
+            // Update Cover Image and set the play/pause button to pause
+            updateCover();
+            ImageButton playButton = this.findViewById(R.id.playButton);
+            playButton.setBackgroundResource(R.drawable.baseline_pause_white_48dp);
 
+        } catch (PlayerException e) {
+            AlertDialog.Builder builder = new AlertDialog
+                    .Builder(this, R.style.AlertDialogStyle);
+
+            builder.setTitle(R.string.error_title);
+            builder.setMessage(e.getMessage());
+            builder.setPositiveButton(R.string.OK, null);
+
+            builder.show();
+        }
     }
 
     public void onClickLike(View view) {
