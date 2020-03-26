@@ -24,7 +24,7 @@ import fr.pdp.mixbay.business.utils.MapUtil;
 public class FeatureBasedBuilder implements ScoreBuilderI {
 
 
-    private static final double RANDOM_RATIO = 0.15;
+    public static final double RANDOM_RATIO = 0.15;
     private static final double MAX_RANDOM = RANDOM_RATIO;
     private static final double MIN_RANDOM = -MAX_RANDOM;
 
@@ -60,7 +60,11 @@ public class FeatureBasedBuilder implements ScoreBuilderI {
             trackFeaturesAverage[i] /= tracksList.size();
         }
         TrackFeatures tF = new TrackFeatures(trackFeaturesAverage);
-        this.tracksList = tracksList;
+        Iterator tracksListIt = tracksList.entrySet().iterator();
+        while (tracksListIt.hasNext()) {
+            Map.Entry trackEntry = (Map.Entry) tracksListIt.next();
+            this.tracksList.put((String) trackEntry.getKey(), (Track) trackEntry.getValue());
+        }
         return tF;
     }
 
