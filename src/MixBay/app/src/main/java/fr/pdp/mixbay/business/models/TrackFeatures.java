@@ -11,7 +11,9 @@ package fr.pdp.mixbay.business.models;
 
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 public class TrackFeatures {
     public static final Name[] NAME_VALUES = Name.values();
@@ -90,5 +92,23 @@ public class TrackFeatures {
             for (int i = 0; i < SIZE; i++)
                 put(NAME_VALUES[i], trackFeatures[i]);
         }};
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TrackFeatures that = (TrackFeatures) o;
+        final double THRESHOLD = .0001;
+        Iterator thisMapIterator = allFeatures.entrySet().iterator();
+        Iterator thatMapIterator = that.allFeatures.entrySet().iterator();
+        while(thisMapIterator.hasNext() && thatMapIterator.hasNext()){
+            Map.Entry thisTrackEntry = (Map.Entry) thisMapIterator.next();
+            double thisValue = (double) thisTrackEntry.getValue();
+            Map.Entry thatTrackEntry = (Map.Entry) thatMapIterator.next();
+            double thatValue = (double) thatTrackEntry.getValue();
+            if (Math.abs(thisValue - thatValue) > THRESHOLD) return false;
+        }
+        return true;
     }
 }
