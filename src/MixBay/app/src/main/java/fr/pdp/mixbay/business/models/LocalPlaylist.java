@@ -12,6 +12,7 @@ package fr.pdp.mixbay.business.models;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import fr.pdp.mixbay.business.exceptions.PlayerException;
@@ -100,5 +101,29 @@ public class LocalPlaylist implements PlaylistI {
 
     public void restartPlaylist() {
         this.currentTrackIndex = 0;
+    }
+
+    private boolean contains(Track trackContained){
+        for (Track t : tracks) {
+            if (t.equals(trackContained)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LocalPlaylist that = (LocalPlaylist) o;
+        if (that.getTracks().size() != this.tracks.size()) return false;
+        for (Track t : this.getTracks()) {
+            if (!that.contains(t)) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tracks);
     }
 }
