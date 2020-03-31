@@ -97,10 +97,12 @@ public class FeatureBasedBuilderTest {
         FeatureBasedBuilder score = new FeatureBasedBuilder();
 
         Map<String, Track> tracksMapUser1 = new HashMap<>();
-        TrackFeatures computedTrackFeature = score.computeUserProfile(u1, tracksMapUser1);
-        TrackFeatures shouldBeTrackFeature = new TrackFeatures(0.5,0.225,0.575,0.525,0.3,0.425,0.475);
+        TrackFeatures computedTrackFeature = score.computeUserProfile(
+                u1, tracksMapUser1);
+        TrackFeatures shouldBeTrackFeature = new TrackFeatures(
+                0.5,0.225,0.575,0.525,0.3,0.425,0.475);
 
-        assertEquals(true, computedTrackFeature.equals(shouldBeTrackFeature));
+        assertTrue(computedTrackFeature.equals(shouldBeTrackFeature));
     }
 
     @Test
@@ -171,10 +173,10 @@ public class FeatureBasedBuilderTest {
         p4.addTrack(t9);
         p5.addTrack(t10);
         u1.addPlaylist(p1);
-        u1.addPlaylist(p5);
-        u2.addPlaylist(p2);
+        u1.addPlaylist(p2);
         u2.addPlaylist(p3);
-        u3.addPlaylist(p4);
+        u2.addPlaylist(p4);
+        u3.addPlaylist(p5);
 
         FeatureBasedBuilder score = new FeatureBasedBuilder();
 
@@ -194,8 +196,11 @@ public class FeatureBasedBuilderTest {
         HashMap<String, Map<String, Double>> computedMusicScorePerUser = score.computeMusicScorePerUser(userProfiles);
 
         double t1ScoreForUser1 = 0.801950746617272;
-        double TRESHOLD = Math.sqrt(TrackFeatures.SIZE*(FeatureBasedBuilder.RANDOM_RATIO*FeatureBasedBuilder.RANDOM_RATIO)) ; // needed since there is a random factor in computeMusicScorePerUser
+        double TRESHOLD = Math.sqrt(TrackFeatures.SIZE*(
+                FeatureBasedBuilder.RANDOM_RATIO*FeatureBasedBuilder.RANDOM_RATIO));
+        // needed since there is a random factor in computeMusicScorePerUser
         double computedt1ScoreForUser1 = computedMusicScorePerUser.get("1").get("1");
+
         assertTrue(Math.abs(computedt1ScoreForUser1 - t1ScoreForUser1) < TRESHOLD);
     }
 }
