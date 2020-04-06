@@ -48,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
             } catch (APIConnectionException e) {
-                // TODO Manage exception
                 System.out.println(e.getMessage());
             }
         }

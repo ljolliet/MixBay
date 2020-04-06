@@ -20,7 +20,8 @@ public interface ScoreBuilderI {
     String getName();
 
     /**
-     * TODO
+     * Compute the score builder algorithme in order to get a score per track
+     * pet user.
      *
      * @param users A set of users with datas loaded from a streaming API
      * @return A structure containing the computed personnal score of each

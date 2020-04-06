@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.d("MainActivity",
                             "Permission denied by the user");
-                    //TODO manage this case in LogManager
                 }
                 return;
             }

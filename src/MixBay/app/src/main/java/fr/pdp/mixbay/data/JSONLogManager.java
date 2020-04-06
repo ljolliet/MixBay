@@ -64,7 +64,6 @@ public class JSONLogManager implements LogManagerI {
                 + folderName + filename);
         Log.d("JsonLogManager", Environment.getExternalStorageDirectory()
                 + filename);
-        //TODO manage all possible cases
     }
 
     @Override
@@ -90,7 +89,6 @@ public class JSONLogManager implements LogManagerI {
             root.put(LOG, array);
             Log.d("JSONLogManager", root.toString());
             FileOutputStream file = new FileOutputStream(outputFile);
-            //TODO throws uncatchable exception on save unauthorized
 
             // get the content in bytes
             byte[] contentInBytes = root.toString().getBytes();

@@ -81,7 +81,8 @@ Tout nouveau Service intégrant de nouvelles techniques ou nouvelles caractéris
 
 Article 12. CONTACT
 
-Toute question relative à l’Application et/ou aux Services doit être adressée à : TODO
+Toute question relative à l’Application et/ou aux Services doit être adressée à
+: <mail à préciser>
 
 ARTICLE 13. LOI APPLICABLE 
 
