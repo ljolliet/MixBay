@@ -1,0 +1,563 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo} % Palatino font
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{ragged2e}
+\usepackage{subfig}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{diagbox}
+\usepackage{xurl}
+\usepackage[textwidth=12.7cm]{geometry}
+
+
+\usepackage{xcolor}
+\newcommand\todo[1]{\textcolor{red}{#1}}
+
+\bibliographystyle{abbrv} %format des citations
+
+\begin{document}
+\begin{titlepage}
+	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+					
+	\center
+					
+	\textsc{\LARGE Université de Bordeaux}\\[1.5cm]
+					
+	\textsc{\Large Master 1 Informatique}\\[0.5cm]
+					
+	\textsc{\large Projet de programmation}\\[0.5cm]
+					
+	\HRule\\[0.4cm]
+					
+	{\huge\bfseries Génération de playlistes musicales pour un groupe d'utilisateurs}\\[0.4cm]
+	{\huge\bfseries Mémoire}
+	\HRule\\[1.5cm]
+					
+	\begin{minipage}{0.4\textwidth}
+			
+		\begin{flushleft}
+			\large
+			\textit{Client}\\
+			\textsc{Hanna}  Pierre 
+		\end{flushleft}
+				
+		\begin{flushleft}
+			\large
+			\textit{Chargés de TD}\\
+			\textsc{Boussicault}  Adrien 
+			\textsc{Narbel}  Philippe 
+		\end{flushleft}
+				
+		\begin{flushleft}
+			\large
+			\textit{Auteurs}\\
+			\textsc{Bah} Elhajd Amadou
+			\\
+			\textsc{Deguillaume} Nicolas
+			\\
+			\textsc{Jolliet} Louis
+			\\
+			\textsc{Loison} Jules 
+			\\
+			\textsc{Vigneau} Paul 
+		\end{flushleft}
+				
+	\end{minipage}
+	\vfill\vfill\vfill
+					
+	{\large 6 Avril 2020}
+	\vfill\vfill
+	\includegraphics[width=0.5\textwidth]{ressources/Logo.jpg}\\[1cm]
+		\vfill
+		\end{titlepage}
+		\justify
+		\renewcommand{\contentsname}{Table des matières}
+		\tableofcontents
+		\newpage
+								
+		\section{Contexte}
+    	\subsection{Résumé}
+    	Lorsqu'un groupe de personnes écoute de la musique - par exemple, lors d'un trajet en voiture - il est fréquent que le monopole de la musique soit détenu par le propriétaire de l'appareil diffusant cette dernière. Ce projet vise à répondre à un besoin précis : à l'aide d'un logiciel permettant de connecter plusieurs utilisateurs d'un service de streaming musical, être capable de proposer à l'aide d'algorithmes un ensemble de musiques susceptible de satisfaire l'ensemble des personnes prés- entes.
+    	
+    	\subsection{Introduction du projet}
+		Notre client souhaite une application permettant de résoudre un problème lié à l'écoute de musique entre plusieurs personnes. En effet, il constate que lorsque plusieurs utilisateurs veulent écouter de la musique au même endroit, il n'y a pas d'autre choix que d'utiliser le compte d'un seul de ces utilisateurs, et donc d'imposer les goûts de cet utilisateur aux autres personnes présentes.
+		
+		Le client propose donc comme solution une application ayant pour objectif de générer des playlists de titres musicaux basées sur les écoutes et les goûts de chaque utilisateur connecté à l'application. Les données seront récupérées auprès des API de Spotify ou Deezer, deux services populaires de streaming musical.
+		
+    	L'intérêt principal de ce projet est de créer un produit qui puisse être utilisé par des chercheurs du LaBRI. En effet, il s'agit en particulier de faire de la recherche sur des algorithmes de recommandation musicale auprès d'utilisateurs. Une partie de notre travail sera donc de réfléchir et d'implémenter des algorithmes visant à générer des playlists musicales. Pour cela, l'application devra récupérer les informations d'écoute de ces utilisateurs (musiques appréciées, playlists personnelles, genres les plus écoutés, etc). 
+    	
+    	En plus de la génération de playlist, l'application devra permettre à l'utilisateur d'écouter cette playlist, en embarquant un lecteur de musique comprenant des options basiques telles que le changement de musique, la mise en pause et la reprise de l'écoute, pouvoir mettre un "j'aime", etc. Toutes ces actions devront être enregistrées sous formes de logs d'écoute afin de pouvoir analyser et évaluer les différents algorithmes proposés. Une fois l'application produite, les chercheurs du LaBRI pourront ensuite ajouter et analyser de nouveaux algorithmes adaptés à leurs besoins.
+								
+		L'application réalisée - dénommée \textit{Mixbay} - est une application destinée à l'uni- vers Android et le service de streaming est dans un premier temps Spotify car nous sommes plus familiers avec ce service.
+								
+		\subsubsection{Descriptions des termes}
+		\begin{itemize}
+		    \item Plateforme / Plateforme de streaming : site internet d’hébergement de mus- ique en ligne qui permet à ses utilisateurs de pouvoir écouter une musique instantanément. (Spotify, Deezer)
+			\item Track (Morceau): morceau de musique
+			\item Playlist (Liste de lecture) : liste de morceaux de musique. Dans ce document on ajoutera souvent un adjectif à la suite du mot \textit{playlist} parmi les suivants : 
+			      \begin{itemize}
+			      	\item Personnelle : playlist enregistrée sur le compte d'un utilisateur en particulier.
+			      	\item Locale : playlist créée sur notre application et qui n'existe que dans celle-ci. Elle n'existe sur aucun compte utilisateur (Spotify ou Deezer).
+			      	\item Publique : visibilité d'une playlist personnelle. Le contenu de la playlist est accessible par tout le monde.
+			      	\item Privée : visiblité d'une playlist personnelle. La playlist et son contenu n'est accessible que par l'utilisateur qui a créé et enregistré cette playlist sur une plateforme de streaming.
+			      \end{itemize}
+			\item Utilisateur : personne physique détentrice d'un compte Spotify ou Deezer. Un ensemble d'utilisateur constitue un groupe.\newline
+			Dans ce document on ajoutera souvent un adjectif à la suite du mot \textit{utilisateur} parmi les suivants:
+			      \begin{itemize}
+			      	\item Authentifié ou principal (main user) : utilisateur qui a autorisé notre application à utiliser son compte Spotify ou Deezer afin d'effectuer des requêtes.
+			      	\item Utilisateur courant (current user) : utilisateur qui a l'appareil en main et qui s'est désigné comme celui qui interagit avec l'application.
+			      	\item Utilisateur secondaire (other user) : utilisateur qui a renseigné son nom d'utilisateur afin de s'ajouter au groupe.
+			      \end{itemize}
+			\item Session d'écoute : moment durant lequel les titres de la playlist locale sont en écoute
+		\end{itemize}
+		
+		\subsubsection{Acteurs}
+		\begin{itemize}
+			\item Utilisateurs: principal, secondaires ou courants, ils utilisent et interagissent avec l'application
+			\item Serveur Spotify : serveur que l'on sollicite via l'API afin d'accéder aux informations des utilisateurs ainsi qu'à des fonctionnalités comme la création de playlists personnelles ou la modification de celles-ci 
+		\end{itemize}
+
+		\subsection{Description et analyse de l'existant}
+		\subsubsection{Services similaires}
+		Nous démarrons notre application de zéro, cependant il existe certains exemples nous permettant d'avoir des idées de fonctionnalités ou de design. Pour le moment, les seuls exemples dont nous pouvons nous inspirer qui correspondent le plus à ce que nous devons réaliser sont Friends Mix par Apple et Family Mix par Spotify. En effet, Apple Music propose un mix, renouvelé chaque semaine incluant les 25 chansons les plus écoutées par nos amis. De la même façon, Spotify, dans leur offre Premium Family (pouvoir avoir jusqu'à 6 utilisateurs sur un même compte), offre une playlist incluant les goûts de chacun. Ces applications possèdent un certain nombre des fonctionnalités énoncées en \ref{besoins}, mais il est bien sûr impossible de customiser l'algorithme de génération des playlists, ce qui est le but premier de notre client. Ces algorithmes sont propriétéaires et sont donc privés, nous devrons donc nous intéresser à des sources externes (cf. \ref{algos}). Nous pouvons cependant nous inspirer de certaines fonctionnalités disponibles et pouvons améliorer l'expérience utilisateur, telle que la provenance des musiques (de quel(s) utilisateur(s) provient la musique) comme on peut le voir sur la Figure \ref{fig:example_app}.
+		De plus nous allons nous servir de différents dépots GitHub utilisant les API Spotify \cite{spotify-web-api} ou Deezer.
+								
+		\begin{figure}[hb!]
+			\centering
+			\subfloat[Friends Mix - Apple Music]{{\includegraphics[width=5cm]{ressources/friends-mix-apple-music.jpg} }}%
+			\qquad
+			\subfloat[Family Mix - Spotify]{{\includegraphics[width=5cm]{ressources/Spotify_Family_Mix.jpg} }}%
+			\caption{Exemple d'applications similaires}%
+			\label{fig:example_app}%
+		\end{figure}
+		
+		\subsubsection{Algorithmes de génération de playlist}\label{algos}
+		La génération de playlist s'effectue en deux temps. Tout d'abord, on calcule un score pour chaque musique pour chaque utilisateur et ensuite on se sert de ce score pour séléctionner des musiques selon la stratégie de modélisation (Least Misery, Most Pleasure ou Fairness).
+		
+        \paragraph{} Chaque musique possède des caractéristiques qui permettent de la décrire et se sont actuellement les seules données que nous pouvons utiliser afin de faire fonctionner nos algorithmes. Nous nous servons de 7 d'entre celles : la danceabilité, l'énergie, la présence de mots dans la chanson, si la musique est plutôt accoustique, si la musique ne contient pas de paroles, la présence d'audience dans l'enregistrement et pour finir les émotions transmises par la chanson (si elles sont positives ou négatives)
+ 		\subsubsection{Calcul du score} Le calcul du score se fait en deux temps : 
+ 		\begin{itemize}
+ 		    \item Calculer le profil de chaque utilisateur. Chacune des musiques d'un utilisateur possèdent ces 7 caractéristiques. Cette étape vise à transformer ces nombreux tuples en un seul. Pour faire cela, nous faisons la moyenne de chacune des caractéristiques. Ces 7 valeurs forment le profil d'un utilisateur.
+ 		    \item Calculer le score par musique par utilisateur. Chacune des musiques possède donc 7 caractéristiques et grâce à l'étape précédente nous avons créé 7 caractéristiques "moyennes" pour un utilisateur. On peut réussir à attribuer un score par musique par utilisateur en comparant ces caractéristiques : la méthode que nous avons choisie est celle de la distance euclidienne. Ainsi, plus la distance entre le profil utilisateur et les caractéristiques d'une musique est faible, plus cette dernière devrait plaire à l'utilisateur. Un faible facteur aléatoire est ajouté lors du calcul de la distance afin d'éviter que des musiques puissent avoir le même score et que la génération de playlist soit déterministe. 
+ 		\end{itemize}
+		
+		\subsubsection{Stratégies de modélisation}
+		Nous disposons donc d'un score par musique par utilisateur que nous utilisons afin de calculer un score par musique pour le groupe d'utilisateurs : c'est la stratégie de modélisation. Nous sélectionnerons ensuite les musiques qui ont le meilleur score pour générer la playlist. 
+
+ 		\paragraph{Least Misery}
+ 		La stratégie Least Misery affecte comme score de groupe pour une musique le score le plus faible des scores individuels pour cette musique.
+ 		
+ 		\paragraph{Most Pleasure}
+ 		La stratégie Most Pleasure affecte comme score de groupe pour une musique le score le plus élevé des scores individuels pour cette musique.
+ 		
+ 		\paragraph{Fairness}
+ 		La stratégie Fairness permet à chaque utilisateur de choisir sa musique préférée à tour de rôle jusqu'à ce que la playlist ait atteint sa taille maximale ou qu'il n'y ait plus de musiques à ajouter.
+        
+		\paragraph{}
+		La pertinence d'une stratégie de modélisation dépend de facteurs comme la taille du groupe ou la volonté du groupe quant à la playlist générée. Utiliser Least Misery avec un grand groupe de personnes n'est pas pertinent car il suffit qu'un seul utilisateur déteste une musique pour qu'elle ne soit pas sélectionnée alors que peut-être tous les autres utilisateurs l'apprécient là où cela est moins injuste si le groupe est petit. Si les utilisateurs préfèrent une génération juste, ils devraient se tourner vers l'utilisation de la stratégie de Fairness qui leur assurerait d'avoir à coup sûr des musiques qui leur plaisent.
+
+		
+
+		\subsection{Exemples de base}
+
+        \subsubsection{Interface utilisateur}\label{interface_utilisateur}
+            	En nous inspirant des visuels présentés précédemment (Figure \ref{fig:example_app}) nous avons imaginé les prototypes d'interface ci-après (Figure \ref{fig:gui}). C'est une interface assez simpliste, qui permet d'accéder à toutes les fonctionnalités rapidement. Cette interface peut être divisée en plusieurs parties. En haut on peut accéder aux fonctionnalités qui ne sont pas directement liées à la musique comme les paramètres. Ensuite il y a la partie permettant de visualiser la playlist locale. Les lettres associées aux titres correspondent aux utilisateurs d'où provient le titre en question.
+            	Enfin, on peut voir en bas le "player" qui permet de gérer la lecture des titres, avec leur pochette visible à gauche.
+
+        \subsubsection{Cas global d'utilisation}\label{interface_utilisateur}
+        Afin de présenter dans les grandes lignes les fonctionnalités principales de l'applica- tion, nous allons voir un exemple global d'une utilisation du logiciel. Cet exemple ne va pas rentrer trop précisément dans les détails, une partie sera consacrée aux scénarios dans la suite de ce mémoire.
+        
+        Un utilisateur lance l'application sur son smartphone, il arrive sur la page de connexion. Il a le choix entre se connecter avec Spotify ou avec Deezer, il choisit Spotify. Une fois l'authentification auprès de Spotify faite, il arrive sur la page  principale de l'application. Il appuie sur le bouton pour ajouter des membres au groupe. Dans la fenêtre qui s'ouvre, il renseigne un à un les identifiants des utilisateurs qu'il souhaite lier. Une fois que toutes les personnes sont ajoutées, il ne lui reste plus qu'à appuyer sur le bouton de mix pour générer une playlist. Le contenu de cette playlist s'affiche alors à l'écran et le premier morceau se lance. Il ne reste plus qu'à profiter de la playlist ainsi créée.
+                \newpage	
+
+        		\begin{figure}[hb!]
+			\centering
+			\subfloat[Page de connexion]{{\includegraphics[width=4cm]{ressources/connection_page.jpg} }}\label{test}
+			\subfloat[Page principale]{{\includegraphics[width=4cm]{ressources/home_page.jpg} }}
+			\caption{Prototypes d'interface utilisateur}
+			\label{fig:gui}
+		\end{figure}
+        \newpage	
+        
+		\section{Description des besoins} \label{besoins}
+		Afin de décrire la priorité de chaque besoin, nous écrirons au début de la description d'un besoin un de ces mots :
+		\begin{itemize}
+			\item \textbf{Essentiel} : le logiciel ne sera pas acceptable sans que ce besoin ne soit réalisé
+			\item \textbf{Conditionnel} : besoin qui étend et améliore le logiciel, sans que ce besoin soit nécessaire pour rendre le logiciel acceptable
+			\item \textbf{Optionnel} : besoin dont la valeur n’est pas encore assurée. Donne au fournisseur l’occasion de proposer quelque chose qui va au-delà des besoins attendus
+		\end{itemize}
+		
+		\subsection{Besoins fonctionnels}
+		Nous détaillerons les besoins suivants, exprimés par le client :
+		
+		\subsubsection{Choisir une plateforme de streaming musical sur laquelle s'interfacer}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item Pouvoir choisir d'utiliser l'API de Spotify au démarrage de l'application
+		\end{itemize}
+		\textbf{[ Optionnel ]}
+		\begin{itemize}
+			\item Pouvoir choisir d'utiliser l'API de Deezer au démarrage de l'application
+		\end{itemize}
+		\subsubsection{Authentifier l'utilisateur principal} \label{authentification}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item Après avoir choisi quelle API utiliser, un utilisateur doit pouvoir s'authentifier
+		\end{itemize}
+		\textbf{Test du besoins} 
+		\begin{itemize}
+			\item On s'authentifie au début du test. On vérifie ensuite que l'authentification s'est bien passée ainsi que le bon fonctionnement des requêtes. Pour cela nous envoyons la requête suivante: \textit{GET https://api.spotify.com/v1/me} pour récupérer le profil de l'utilisateur authentifié. On regarde ensuite le code de retour de la requête. Si le code de retour est 200, cela signifie que la requête a réussi et que donc l'authentification aussi (car cette requête récupère les informations de l'utilisateur authentifié). Si le code de retour est 401, cela signifie que l'authentification a échouée
+		\end{itemize}
+		\newpage
+		\subsubsection{Créer un groupe d'utilisateurs}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item Réussir l'authentification crée un groupe d'utilisateurs contenant intialement seulement l'utilisateur principal
+		\end{itemize}
+		\subsubsection{Ajouter des membres secondaires au groupe}  \label{connexion}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item Cliquer sur un bouton et renseigner un identifiant utilisateur dans une boîte de texte permet d'ajouter un utilisateur au groupe
+		\end{itemize}
+		\textbf{Test du besoin} 
+		\begin{itemize}
+			\item On renseigne des identifiants utilisateur (id) au début du test. Pour chaque id renseigné, on envoie la requête \textit{GET https://api.spotify.com/v1/users/\{id\}} pour récupérer le profil de chaque utilisateur. On regarde ensuite le code de retour de la requête. Si le code de retour est 200, cela signifie que la requête a réussi: le test réussit. Si le code de retour de la requête est 404, cela signifie que l'utilisateur n'existe pas, le test échoue
+		\end{itemize}
+		\subsubsection{Supprimer des membres du groupe}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item Supprimer l'utilisateur principal le fera se déconnecter et supprimera la session d'écoute et le groupe
+		\end{itemize}
+		\textbf{[ Conditionnel ]}
+		\begin{itemize}
+			\item Un utilisateur secondaire doit pouvoir être supprimé du groupe
+		\end{itemize}
+						            
+		\subsubsection{Ignorer un utilisateur dans la génération de playlist}
+		\textbf{[ Conditionnel ]}
+		\begin{itemize}
+			\item Un utilisateur doit pouvoir être ignoré dans l'algorithme (fonction "mute") : ses données ne seront pas utilisées pour le calcul de la playlist locale (cf. \ref{interface_utilisateur} (c))
+		\end{itemize}
+		\subsubsection{Accès aux informations de chaque utilisateur} 
+		Une fois un utilisateur ajouté au groupe (cf. \ref{authentification} ou \ref{connexion}), il faut accéder à ses chansons préférées via l'API choisie. 
+		\newline \\
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item Récupérer et charger en mémoire les playlists publiques des utilisateurs au format JSON via l'API
+		\end{itemize}
+		\textbf{Test du besoin}
+		\begin{itemize}
+			\item On s'authentifie et on renseigne des identifiants utilisateur (id) au début du test. Pour chaque id renseigné, on envoie la requête \newline\textit{GET https://api.spotify.com/v1/users/\{id\}/playlists} pour récupérer les playlists de chaque utilisateur. Si le code de retour de la requête est 404, cela signifie que l'utilisateur n'existe pas: le test échoue. Si le code de retour de la requête est 200, on continue le test. On envoie ensuite la requête \textit{ GET https://api.spotify.com/v1/me/playlists} pour récupérer les playlists de l'utilisateur authentifié. Si le code de retour de la requête est 200 le test réussit, sinon le test échoue. \newline
+			      Tous les tests qui nécessitent les playlists les récupèrent au début du test de la même manière que dans ce test
+		\end{itemize}
+		\textbf{[ Conditionnel ]} \label{connexion de tous les utilisateurs}
+		\begin{itemize}
+			\item Récupérer et charger en mémoire d'autres informations (sous format JSON) comme les chansons aimées ou les artistes préférés.\\
+			Cependant, ces informations sont privées, cela nécessite d'implémenter une connexion de tout les utilisateurs. Il faut donc, au moment d'ajouter un utilisateur, lui proposer de s'authentifier auprès de Spotify (et donc de ne plus lui demander son identifiant) - comme pour la connexion du premier utilisateur. Cette connexion va permettre de récupérer un jeton propre à la connexion qui permettra par la suite d'effectuer des requêtes afin de récupérer les informations privées du compte.\\
+			Néanmoins, l'écoute de la musique doit se faire depuis un compte premium, qui sera celui de la première personne à se connecter à l'application, au moment de l'ouverture.\\
+			Cette solution n'est qu'une supposition de ce qu'il est possible de faire. Il n'y a eu aucun prototype visant à tester cette fonctionnalité.
+		\end{itemize}
+		\subsubsection{Proposition de playlist(s)}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item L'application devra pouvoir créer une playlist vide
+			\item L'application devra pouvoir ajouter les titres retournés par l'algorithme à cette playlist locale
+			\item L'utilisateur doit pouvoir lancer un mix (génération de playlist) : ce qui aura pour effet de lancer l'algorithme puis lancer automatiquement l'écoute de la première chanson de la playlist locale générée par ce dernier
+		\end{itemize}
+		\textbf{Test des besoins}
+		\begin{itemize}
+			\item On s'authentifie, on renseigne des identifiants utilisateur (id) et on récupère les playlists des utilisateurs au début du test. On crée une playlist, représentée par une structure de données sur laquelle on effectue un test pour savoir si elle est de taille 0 si c'est le cas le test continue, dans le cas contraire il échoue. On fait tourner l'algorithme de génération de playlist. On ajoute ces titres à la structure de données représentant la playlist. On teste si la taille de la playlist est de taille \textit{n} (\textit{n} étant le nombre de musiques générées). Si c'est le cas, le test réussit, sinon il échoue
+		\end{itemize}
+		\textbf{[ Optionnel ]}
+		\begin{itemize}
+			\item Pouvoir ajouter les playlists au compte Spotify de l'utilisateur principal
+			\item Pouvoir renseigner sur l'application des données qui seront incluses à la requête de création de playlist personnelle : 
+			      \begin{itemize}
+			      	\item Nom : renseigne le nom de la playlist (chaîne de caractères)
+			      	\item Visibilité : définit si la playlist est privée ou publique (booléen, \textit{true} pour publique et \textit{false} pour privée)
+			      	\item Collaboration : définit si la playlist est collaborative ou pas (booléen). Pour qu'une playlist soit collaborative, il faut qu'elle soit privée.
+			      	\item Description : renseigne la description de la playlist (chaîne de caractères)
+			      \end{itemize}
+		\end{itemize}
+		\textbf{Test du besoin}
+		\begin{itemize}
+			\item On s'authentifie, on renseigne des identifiants utilisateur (id) et on récupère les playlists des utilisateurs au début du test. On envoie la requête \textit{POST https://api.spotify.com/v1/users/\{id\}/playlists} pour créer une playlist sur le compte de l'utilisateur authentifié (id doit donc être son identifiant utilisateur). On envoie ensuite les requêtes \textit{POST https://api.spotify.com/v1/playlists/\{playlist\_id\}\newline/tracks} en renseignant l'identifiant des musiques à ajouter. Si le code de retour des requêtes est 200 le test réussit, sinon le test échoue.
+		\end{itemize}
+		\subsubsection{Proposer différents algorithmes de génération de playlists}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item  L'application implémentera un algorithme naïf qui proposera des musiques prises au hasard dans les playlists publiques des utilisateurs.\newline \\
+			      Le premier algorithme que nous allons implémenter est un algorithme de test, dit naïf qui sera utilisé pour tester l'achitecture que nous avons choisie (cf. \ref{archi_log}). Il consistera à récupérer un nombre égal de musiques provenant des playlists publiques de chaque utilisateur, sans critère particulier. Ce nombre sera défini comme la taille maximale d'une playlist locale (cf. \ref{performance}) divisée par le nombre d'utilisateurs.
+			      		
+		      \item  L'application proposera au moins un algorithme \cite{ICDM2017} permettant de tester les fonctionnalités proposées par le produit final.\newline \\
+		            Le premier algorithme à implémenter consiste à analyser les chansons des playlists publiques grâce au service \textit{Audio Features and Analysis} de l'API Spotify \cite{spotify-web-api}. Celle-ci permet d'obtenir des données sur une chanson comme son degré d'acoustique, son tempo, son énergie, etc. Nous allons par la suite analyser ces données \cite{Data_analysis} en effectuant les opérations suivantes : 
+		            \begin{itemize}
+		                \item Profil type de chaque utilisateur en effectuant la moyenne des données de chaque titre sous forme de vecteur
+		                \item Observer la diversification des utilisateurs (est-ce qu'un utilisateur écoute des musiques diversifiées selon les données) 
+		            \end{itemize}
+		            Cela permet de mettre en valeur les données les plus importantes pour chaque utilisateur. Par la suite, on compare le profil type de chaque utilisateur sur toutes les musiques de toutes les playlists. Pour faire cela, on calcule la différence terme à terme entre les données du profil d'un utilisateur et les données d'une musique. Cela nous donne un vecteur que nous transformons en une valeur en utilisant la formule de la distance euclidienne. La valeur calculée est le score d'une musique pour un utilisateur. On calcule donc cette valeur pour chaque musique pour chaque utilisateur. \\
+		            Par la suite, on attribut un score final à chaque musique en utilisant la \textit{Least Misery Strategy} \cite{Masthof2011} qui est une stratégie d'évaluation qui évalue un item avec le plus bas score qu'un utilisateur lui a attribué. De cette façon, il n'y aura pas de chanson détestée par un utilisateur dans la playlist générée.
+			      
+			\item L'application proposera de changer d'algorithme dans les options (car le client pourra ajouter des algorithmes)
+		\end{itemize} 
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item  L'application proposera d'autres algorithmes \cite{ICDM2017} plus complexes permettant une réelle analyse des données. \newline \\
+			      Le second algorithme que nous implémenterons se base sur un autre article scientifique \cite{Masthof2011} qui met en avant la notation des éléments pour déterminer comment les proposer à un groupe d'utilisateurs. Cet algorithme nécessite la réalisation du besoin fonctionnel conditionnel d'authentification de tous les utilisateurs (cf. \ref{connexion de tous les utilisateurs}) pour être implémenté. \newline
+			      Spotify ne propose pas de système de notation des chansons pour chaque utilisateur. Il nous faut donc attribuer nous même un score à chaque titre en fonction des données récupérées des utilisateurs. On récupère les 50 (limite de la requête) titres les plus écoutés de chaque utilisateur. On cherche ensuite à affecter un score à chacun des titres en fonction de plusieurs critères : 
+			      \begin{itemize}
+			      	\item Classement des titres en terme d'écoute
+			      	\item Si un titre est dans la liste des titres préférés d'autres utilisateurs
+			      	\item Si un titre dans la liste d'un utilisateur a le même artiste qu'un titre de la liste d'un autre utilisateur (et que les titres ne sont pas les mêmes)
+			      \end{itemize}
+			      Une fois ce classement terminé, on a au plus \textit{50 * nombre d'utilisateurs dans le groupe} titres à partir desquels créer la playlist locale. On sélectionne les \textit{x} premiers titres qui ont le score le plus élevé. Avec \textit{x} étant la taille maximale de la playlist locale (cf. \ref{performance}).
+		\end{itemize}
+		\subsubsection{Lecture de la playlist locale, avec possibilité de skipper des titres} \label{lecture}
+		\textbf{[ Essentiel ]} 
+		\begin{itemize}
+			\item L'utilisateur pourra écouter des chansons et pourra effectuer les interactions suivantes :
+			      \begin{itemize}
+			      	\item Resume/pause
+			      	\item NextTrack/previousTrack
+			      	\item Like
+			      \end{itemize}
+		\end{itemize}
+		\textbf{Tests du besoin}
+		\begin{itemize}
+			\item On s’authentifie. On initialise le lecteur (SDK). On ajoute un \textit{EventListener} sur l'évènement \textit{ready} et sur l'évènement \textit{not\_ready}. Si le premier évènement est déclenché on peut continuer le test, si le second l'est le test échoue. On ajoute un \textit{EventListener click} sur le bouton \textit{like} et sur l'évènement \textit{player\_state\_changed} qui est appelé dès que l'état du lecteur change, l'API nous retourne alors un objet contenant diverses informations sur la session. On lance 3 musiques. On met en pause, on vérifie que la variable \textit{paused} est \textit{true}. On relance la musique, on vérifie que la variable \textit{paused} est \textit{false}. On vérifie que la musique jouée est la 1ère des 3. On vérifie que la musique suivante est la 2ème. On accède à la musique suivante. On vérifie que la musique actuelle est la 2ème, que la musique précédente est la 1ère et que la suivante est la 3. On accède à la musique précédente. On vérifie que la musique actuelle est la 1 et que la musique suivante est la 2. On  \textit{like} le titre. On vérifie que l'on est bien passé dans l'évènement du \textit{like}. Si toutes les vérifications sont passées, c'est que le test réussit. Si une vérification ne passe pas, le test échoue
+		\end{itemize}
+		\textbf{[ Conditionnel ]}
+		\begin{itemize}
+			\item L'utilisateur courant est visible en haut de l'application (cf. \ref{interface_utilisateur} (b)) 
+			\item L'utilisateur physique pourra choisir qui est l'utilisateur courant (pour pouvoir associer les interactions précédemment énoncées à un utilisateur). Pour cela il devra cliquer sur l'icône utilisateur, puis sélectionner l'utilisateur cou- rant. Cela aura pour utilité d'identifier l'utilisateur qui interagit avec l'appli- cation
+		\end{itemize}
+		\textbf{[ Optionnel ]}
+		\begin{itemize}
+			\item L'utilisateur pourra se déplacer dans une chanson via une pop-up qui s'affichera en cliquant sur la chanson en cours. 
+			\item Cette pop-up fera apparaître l'ensemble des options précédemment présentées (cf. \ref{lecture})
+		\end{itemize}
+		\newpage
+		\subsubsection{Récupération des logs d'écoute pour évaluation des algorithmes} \label{logs}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item Ce besoin peut se découper en plusieurs sous-besoins :
+			      \begin{itemize}
+			      	\item Récupérer et charger en mémoire les méta-données correspondant aux interactions de la session d'écoute (cf. \ref{lecture}) grâce au WEB Player SDK et au bouton like
+			      	\item Créer un fichier JSON sur l'appareil de l'utilisateur
+			      	\item Y renseigner les méta-données précédemment stockées en mémoire
+			      \end{itemize}
+		\end{itemize}
+		\textbf{Tests du besoin}
+		\begin{itemize}
+			\item On s'authentifie. On initialise le lecteur (SDK). On ajoute les mêmes  \textit{EventListener} que dans le test précédent. On simule les mêmes interactions que dans le test précédent. A chaque interaction on vérifie qu'elle s'est bien ajoutée à l'object JSON. On vérifie que l'object JSON final a le contenu qui correspond aux interactions. On crée un fichier JSON, on vérifie si le fichier JSON a bien été créé. On écrit dans le fichier le contenu de l'objet JSON, on vérifie que le contenu du fichier et de l'objet sont les mêmes. Si toutes les vérifications sont passées, c’est que le test réussit. Si une vérification ne passe pas, le test échoue
+		\end{itemize}
+		\textbf{[ Conditionnel ]}
+		\begin{itemize}
+			\item Ajout de l'utilisateur qui effectue l'interaction recensée par le log. (Va de paire avec les besoins conditionnels du \ref{lecture})
+		\end{itemize}
+		\textbf{[ Optionnel ]}
+		\begin{itemize}
+			\item Envoi du fichier par email pour que le client obtienne les logs automatiquement, sans contact avec l'utilisateur ou stockage des fichiers du log sur le serveur
+		\end{itemize}
+		\subsubsection{Accord d'utilisation de données}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item L'application s'ouvrira affichant les conditions d'utilisation. Il sera alors demandé aux utilisateurs leur accord pour collecter les logs d'utilisation de l'application
+		\end{itemize}
+		\newpage
+		\subsection{Besoins non fonctionnels}
+		\subsubsection{Performance} \label{performance}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item La génération d'une playlist, suivie du lancement de la première musique ne doit pas dépasser 3 secondes. En effet d'après une étude menée en 2018 \cite{MobileSpeedGoogle2018}, l'utilisateur à 53\% de chance de quitter l'application passé ce délai.
+			      			
+			\item Les complexités des algorithmes proposés en \ref{algos} sont les suivantes : \newline
+			      Posons les variables suivantes pour calculer la complexité : 
+			      \begin{itemize}
+			      	\item[] \textbf{U} : le nombre d'utilisateurs connectés à l'application
+			      	\item[] \textbf{N} : le nombre de chansons récupérées
+			      \end{itemize}
+			      \begin{itemize}
+			      \item Calcul du score. Pour le calcul du profil pour chaque utilisateur, on obtient une complexité \textbf{$O(U*N^2)$}. Pour le calcul du score pour chaque musique pour chaque utilisateur , on obtient une complexité \textbf{$O(U*N^2)$}. Ainsi, la fonction qui calcule le score a une complexité \textbf{$O(U*N^2)$}
+			      	\item Algorithme naïf : il s'agit d'un simple parcours de liste, avec une complexité \textbf{$O(U*N)$}
+			      	\item Least Misery et Most Pleasure. Ces algorithmes ont une complexité de \textbf{$O(N^3 + U)$}
+			      	\item Fairness. Cet algorithme a une complexité de \textbf{$O(U^2*N + N^2*U)$}
+			      \end{itemize}
+			\item Sur Spotify, les playlists peuvent contenir jusqu'à 10 000 titres néanmoins nous ne les générerons qu'avec 25 titres pour commencer tout comme le fait Apple Music avec son Friends Mix. Le chiffre pourra éventuellement grandir dans le futur en fonction des performances de notre application et des algorithmes utilisés. (cf. \ref{performance})
+		\end{itemize}
+		\subsubsection{Portabilité}
+		\textbf{[ Essentiel ]}
+		\begin{itemize}
+			\item L'application devra fonctionner sur la majorité des versions d'Android à savoir celles supérieures à Android 6 Marshmallow soit ~75\% des versions couramment utilisées \cite{AndroidVersion2019}
+		\end{itemize}
+		\textbf{[ Optionnel ]}
+		\begin{itemize}
+			\item L'application devra fonctionner sur la majorité des versions d'iOS à savoir celles supérieures à iOS 12 soit ~90\% des versions couramment utilisées d'après Apple  \cite{iOSVersion2019}
+		\end{itemize}
+
+		\section{Architecture et logiciel}
+	    \subsection{Exemples de bon fonctionnements}\label{good_use}
+	    Afin de présenter des exemples d'utilisation de l'application, la partie ci-dessous va illustrer différents scénarios représentant diverses actions possibles.\newline
+	    
+        \noindent Connexion d'un utilisateur principal :
+		\begin{itemize}
+			\item L'utilisateur lance l'application
+			\item Il arrive sur une page lui proposant de se connecter à Spotify
+			\item Il rentre son identifiant et son mot de passe puis confirme
+			\item Si l'utilisateur est reconnu par Spotify, l'application le redirige vers la page principale
+			\item Sinon, la page lui informe qu'il a fait une erreur dans la saisie
+		\end{itemize}
+		Ajout d'un utilisateur secondaire :
+		\begin{itemize}
+			\item[] \textbf{Contexte} : l'utilisateur principal est connecté et il est sur la page principale de l'application.
+			\item L'utilisateur clique sur le bouton "plus" situé dans la barre de navigation en haut de l'écran
+			\item Une pop-up apparaît avec un champ de texte
+			\item L'utilisateur entre l'identifiant du compte Spotify à ajouter et valide
+			\item Si l'identifiant est correct, le nouvel utilisateur est ajouté au groupe et la pop-up disparaît
+			\item Sinon, l'application indique que l'identifiant est erroné
+		\end{itemize}
+		Écoute d'une playlist : (algorithme par défaut)
+		\begin{itemize}
+			\item[] \textbf{Contexte} : Un utilisateur principal est connecté, il a ajouté ou non des utilisateurs secondaires et l'application est sur la page principale.
+			\item L'utilisateur clique sur le bouton \textit{MIX} (cf. \ref{interface_utilisateur} (b))
+			\item Un traitement se fait alors et affiche tous les titres présents dans la playlist ainsi générée
+			\item Automatiquement, le premier titre de la playlist se lance
+		\end{itemize}
+		Changement de l'algorithme de génération de playlist :
+		\begin{itemize}
+			\item[] \textbf{Contexte} : Un utilisateur principal est connecté et il se trouve sur la plage principale.
+			\item L'utilisateur clique sur l'icône en forme d'engrenage (cf. \ref{interface_utilisateur} (b))
+			\item Il se retrouve sur la page des paramètres
+			\item Il cherche la partie affichant l'algorithme choisi et appuie dessus
+			\item Une liste des algorithmes proposés s'affiche alors
+			\item Il sélectionne celui de son choix
+			\item La liste se ferme et l'algorithme est automatiquement changé
+		\end{itemize}
+		Ne pas prendre en compte un membre lors de la génération d'une playlist (fonctionnalité "mute") :
+		\begin{itemize}
+			\item[] \textbf{Contexte} : Un utilisateur principal est connecté, il a ajouté au moins un membre secondaire et l'application est sur la page principale.
+			\item L'utilisateur clique sur l'icône en forme d'engrenage (cf. \ref{interface_utilisateur} (b))
+			\item Il se retrouve sur la page des paramètres
+			\item Une partie dédiée à l'affichage des membres se trouve dans la page
+			\item Il clique sur "Gestion des utilisateurs" et il est redirigé vers une nouvelle page
+			\item À côté de chaque membre se trouve un bouton "switch"
+			\item Il peut donc désactiver la ou les personnes de son choix
+			\item À chaque interaction, son action est sauvegardée
+		\end{itemize}
+        
+        \newpage
+		\subsection{Diagramme de Paquetage}    
+		\begin{figure}[h!]
+		    \center
+			\includegraphics[scale=0.5]{ressources/diagramme_paquetage.png}
+			\caption{Diagramme de paquetage de l'application}
+			\label{fig:package_diag}
+		\end{figure}
+		\newpage
+		Tout d'abord, pour avoir un haut niveau de granularité, nous avons imaginé une architecture en 3 couches (Figure \ref{fig:package_diag}). Celle-ci contient une couche "Présentation" qui correspond au côté Front. Elle contient les différentes pages de l'application. Cette couche communique avec la couche "Business" via une façade "Service" dont l'utilité est détaillée dans la sous-partie suivante (cf. \ref{class_diag}). Cette couche correspond à la partie métier, elle contient uniquement des concepts métiers tels que Playlist, User, Algorihmes, etc.. Elle contient aussi une partie "Data Access", qui comprend les interfaces des classes permettant d'écrire ou d'accéder à des données extérieures à l'application. C'est donc via cette sous-couche que la couche métier communique avec la couche "Data", dans laquelle on peut retrouver les implémentations de communication avec des API de services de streaming (Spotify, Deezer, ou autres), mais aussi l'implémentation de la gestion du Log (ici, au format JSON).
+		\subsection{Diagramme de Classes}\label{class_diag}
+		\paragraph{}
+		Une grande importance a été donnée à l'architecture de classes (Figure \ref{fig:class_diag}) de façon à permettre un maximum d'extension, mais aussi pour simplifier, le travail en équipe et la séparation des tâches. Ici, la classe Session est l'agrégat qui gère l'ensemble des autres classes. On peut observer un grand nombre d'interfaces (AlgoI, ScoreBuilderI, LogManager, APIManager) de façon à pouvoir, si besoin, ajouter des extensions à l'application. Par exemple, ajouter de nouveaux algorithmes, une autre façon d'écrire le log, ou  bien ajouter d'autres API de services de streaming. Le deuxième point majeur de notre architecture est la classe Service qui agit comme une façade avec le reste du code. De ce fait, cela permet de séparer complètement les tâches de Frontend et de Backend. En effet, les services sont appelés coté Front, ce qui permet à la partie de l'équipe concernée de ne pas se soucier de l'implémentation des méthodes appelées et de se concentrer sur la partie graphique uniquement.
+		
+		\newpage
+		\begin{figure}[h!]
+			\includegraphics[width=\linewidth]{ressources/diagramme_classes.png}
+			\caption{Diagramme de classes de l'application}
+			\label{fig:class_diag}
+		\end{figure}
+		
+		\newpage
+		
+		\subsection{Architecture de l'application}\label{archi_log}
+        Après avoir imaginé quelles seraient les différentes interactions avec l'utilisateur (cf. \ref{good_use}), nous avons souhaité préciser via un schéma (Figure \ref{fig:arch_diag}), de façon à bien mettre en lumière l'architecture de fonctionnement de l'application. Il est donc plus facile de comprendre comment l'application sera structurée et depuis quelle page de l'application l'utilisateur pourra utiliser les fonctionnalités proposées.
+		\begin{figure}[h!]
+			\includegraphics[width=\linewidth]{ressources/Architecture_Log.png}
+			\caption{Architecture de l'application}
+			\label{fig:arch_diag}
+		\end{figure}
+	
+	    \newpage
+		\section{Analyse du fonctionnement et tests}
+		\subsection{Fonctionnement de l'application}
+		L'ensemble des besoins fonctionnels essentiels a été réalisé, de ce fait, nous rendons une application fonctionnelle, avec un nombre de fonctionnalités limité. En ouvrant l'application MixBay, l'utilisateur peut se connecter via Spotify, puis après un court chargement, il arrive sur la page principale et son initiale apparaît en haut à droite pour signifier qu'il est l'utilisateur courant (par défaut). Ensuite, l'utilisateur peut ajouter d'autres utilisateurs en entrant leurs identifiants Spotify. Une fois fait, il peut vérifier que les autres utilisateurs ont bien été ajoutés en allant dans les paramètres. Dans ces mêmes paramètres, l'utilisateur peut supprimer  des utilisateurs ou les rendre "silencieux" pour qu'il ne soit pas pris en compte par l'algorithme. Il est également possible de changer l'algorithme qui génère les playlists ou se déconnecter. 
+		
+		Une fois revenu sur la page principale, l'utilisateur pourra générer une playlist via le bouton "MIX" ce qui aura pour effet de générer la playlist et de lancer la première chanson. Les algorithmes implémentés dépendent des notes attribuées aux chansons après analyse des playlists publiques des utilisateurs. Ils possèdent une partie de hasard de façon à varier les playlists d'un même groupe. Il pourra alors utiliser le lecteur pour faire pause, passer la chanson, revenir à celle d'avant ou signifier que la chanson lui plaît. Ces actions seront retranscrites dans un fichier log au format JSON dans un dossier dans le téléphone appelé MixBay. Il y a un fichier log par jour, avec la date dans son titre. Il retranscrit qui était l'utilisateur principal (via un identifiant anonyme), quelle était l'action en question, sur quelle chanson et à quelle heure. Sur la page principale, il est possible de modifier l'utilisateur courant en cliquant sur son initiale. L'utilisateur courant correspond à celui qui a le téléphone en main et qui interagit avec. Cela est crucial pour identifier l'auteur des interactions réalisées, de façon à analyser et améliorer les algorithmes de génération de playlist.
+		
+		\subsection{Prérequis}
+		Comme précisé plus haut, l'application ne peut se connecter que par le biais de Spotify. Pour cela, nous avons créé à partir de la plateforme développeur de Spotify une application. Cette application donne des identifiants afin d'avoir accès à l'API et propose plusieurs statistiques d'utilisation de l'API pour quiconque aura lié son logiciel (application mobile, site web, etc) à Spotify avec ces identifiants. C'est un principe courant d'authentification auprès d'une API et pourra donc être le même pour un autre service de streaming.
+		
+		L'application MixBay que nous rendons utilise l'API Spotify qui est actuellement liée à un de nos comptes personnels. Pour pouvoir tester l'application, il faut donc renseigner une empreinte propre à la machine qui va compiler le code, afin d'authentifier le développeur.
+		
+		Il est donc nécessaire de suivre les étapes précisées dans le fichier README.md du dépôt Git afin de nous faire connaître cette empreinte ou alors de créer une autre application depuis l'interface développer de Spotify et de changer les accès depuis le code.
+		
+		Un autre point important, afin de pouvoir profiter correctement des services proposés par l'application. Le compte principal et donc la personne ayant l'application sur son téléphone doit être un compte Premium Spotify. Sans cela, lors du lancement de la musique, le fonctionnement pourrait ne pas être celui attendu. L'application ne bloque cependant pas l'utilisation depuis un compte gratuit, mais cela peut provoquer des incohérences (mauvaise musique jouée, publicité, etc).
+		
+		\subsection{Tests}
+        \subsubsection{Tests sur les playlists}
+        La classe de tests sur les playlists contient deux tests : 
+        \begin{itemize}
+            \item Vérifie qu'il n'y ait pas plusieurs fois la même musique dans une playlist. La fonction qui est testée ici est l'ajout de musiques dans une playlist. Il ne faut pas qu'il y ait plusieurs fois la même musique dans une playlist dans deux situations. Tout d'abord, lorsque que nous récupérons les musiques des utilisateurs nous considérons que la musique n'apparaît qu'une seule fois au maximum car pouvoir comptabiliser une même musiques plusieurs fois déprécierait la playlist générée. Ensuite, lorsque nous créons la playlist, une musique n'apparaît au maximum qu'une fois car il ne nous semble pas souhaitable d'avoir plusieurs fois la même musique dans une playlist. Ce test vérifie donc qu'en ajoutant plusieurs fois la même musique à une playlist cette dernière ne la contient qu'une seule fois
+            \item Vérifie l'encapsulation. La classe \textit{Playlist} manipule des objets que nous ne pouvons pas permettre d'être modifiés car leur intégrité est essentielle pour le bon fonctionnement de nos algorithmes : ce test vérifie qu'il n'est pas possible de pouvoir modifier ces objets grâce à l'encapsulation mise en place
+        \end{itemize}
+                        
+        \subsubsection{Tests sur les musiques}
+         La classe de tests sur les musiques contient un test : 
+         \begin{itemize}
+             \item Vérifie le fonctionnement de la fonction \textit{equals}. Nous y effectuons plusieurs comparaisons afin de bien nous assurer que des musiques sont considérées égales seulement quand elles ont le même identifiant
+         \end{itemize}
+
+        \subsubsection{Tests sur le calcul de score}
+        La classe de tests sur le calcul de score contient deux tests fonctionnels : 
+        \begin{itemize}
+            \item Vérifie que le calcul d'un profil utilisateur est cohérent. Ce test compare le profil utilisateur calculé par le programme avec un calculé à la main afin de s'assurer que le programme calcule bien ce que nous espérions. Ces deux profils doivent être égaux. Ce test a mis en lumière le problème des valeurs calculées avec la méthode de la virgule flottante qui perdent en précision. Cependant cette perte de précision n'affecte que les nombres qui doivent être extrêmement précis ce qui n'est pas le cas de notre application : ce problème est négligeable
+            \item Vérifie que le calcul du score des musiques par utilisateur est cohérent. Ce test compare le score d'une musique pour un utilisateur calculé par le programme avec celui calculé à la main. Dans le calcul de ce score on génère une faible valeur aléatoire qui sert essentiellement à différencier des musiques qui auraient le même score, ainsi, la valeur calculée à la main ne peut pas avoir la même valeur que celle calculée par le programme. Afin de remédier à ce problème nous validons le test si la valeur absolue de la différence est plus faible que ce nombre aléatoire
+        \end{itemize}
+
+        \subsubsection{Tests sur les algorithmes}
+        Il y a une classe de tests pour les stratégie Least Misery et Most Pleasure ainsi qu'une classe servant à initialiser des objets. Elles contiennent chacunes un test fonctionnel : 
+        \begin{itemize}
+            \item Vérifie que le calcul d'une playlist est cohérent. Ce test compare la playlist générée par le programme avec une calculée à la main. Ces deux playlists doivent être égales. Une playlist est considérée égale à une autre si il y a une bijection entre les deux playlists. Nous ne tenons pas compte de l'ordre des musiques dans une playlist pour vérifier qu'une playlist est égale à une autre
+        \end{itemize}
+		
+		\subsection{Défauts et bugs}
+		\subsubsection{Utilisation de l'API Spotify}
+		La découverte et la prise en main de l'API proposée par Spotify nous a demandés du temps et beaucoup de patience. En effet, au premier abord, elle nous a semblés assez claire : on effectue des requêtes web vers un serveur et on reçoit en guise de réponse les données souhaitées. De plus, Spotify fournit des outils supplémentaires destinés à Android afin de communiquer plus facilement avec l'API et/ou d'en- richir ce qu'il est possible de faire. Cependant, la réalité est très différente, en Novembre 2019, Spotify décide de changer les outils qui sont proposés et met en ligne les nouveaux SDKs (kits de développements), toujours en version beta. Malheureusement, les anciennes versions (stables) ne sont plus disponibles et il faut faire avec les nouvelles. Il y a donc deux SDKs de proposés, le premier permettant de simplifier la partie liée à l'authentification et le deuxième nécessaire pour lancer l'écoute de la musique depuis l'application. Il faut savoir que ces deux outils sont indé- pendants l'un de l'autre, et se connectent tous les deux à Spotify de leur côté, ce qui n'est pas très pratique. Un autre point négatif concerne la documentation, si cette dernière est correcte pour la partie requêtes web, au niveau de la partie Android et description des SDKs c'est très différent. En effet, elle n'est que très peu à jour sur les dernières versions beta (alors que nous n'avons pas d'autre choix que de s'en servir), certains liens sont morts, et elle nous a parus très peu claire sur ce qu'il était vraiment possible de faire avec les outils mis en place.
+		
+		Après un long moment passé sur  l'analyse de l'état actuel de l'API Spotify, nous avons su toutefois intégrer les deux SDKs à l'application. Concernant la partie récupération des données liées aux utilisateurs, aux musiques, aux playlists, etc, pas de SDK fournit. Nous avons donc mis en place des requêtes web classiques pour communiquer avec les serveurs de Spotify.
+		
+		Enfin, l'API joue un rôle très important concernant la lecture de la musique. L'API Spotify ne permet pas de jouer de la musique sans passer par son propre lecteur. De ce fait lorsque l'on lance une musique via l'API, elle se lance en fait dans l'application Spotify de l'appareil. Il est donc obligatoire d'avoir l'application installée sur l'appareil pour que notre application MixBay fonctionne avec Spotify. De plus, l'implémentation de la lecture d'une playlist s'est avérée bien plus compliquée que prévu car il y a beaucoup de méthodes manquantes dans l'API. Étant donné que nous ne souhaitions pas créer la playlist sur le compte Spotify de l'utilisateur pour garder la main dessus, nous devions utiliser la queue de lecture. Cependant il n'y a pas de méthode native permettant de connaître sa taille, de la vider, ou bien d'ajouter une musique en tête de cette queue de lecture. Nous avons donc dû composer avec les méthodes disponibles, ce qui fait que l'implémentation est parfois contre intuitive et propice à l'apparition de bugs. 
+		
+		
+		\subsubsection{Génération de Playlist}
+		La création des algorithmes fût en processus long et rigoureux, et c'est sans doute la discipline dans laquelle nous étions le moins à l'aise. De ce fait, nous n'avons pas pu approfondir la partie algorithmique. En effet nous voulions mettre en place plus d'algorithmes et surtout ajouter une fonctionnalité majeure : la présence d'un historique. Celui ci aurait permit de modifier en temps réelle des coefficients correspondant à chaque utilisateur, de manière à corriger l'algorithme lorsqu'un utilisateur en particulier est frustré car rien ne lui plaît par exemple. 
+		
+		De plus, nos algorithmes parcourent les playlists publiques, ce qui est une limitation importante car, tout d'abord il faut que les utilisateurs aient des playlists publiques, et de plus si un des deux utilisateurs à plus de chansons dans ses playlists, il aura plus de chances que les siennes soient choisies.
+		
+		Enfin, nous utilisons essentiellement les "Track Features" fournie par l'API Spotify, qui sont en fait des valeurs chiffrées correspondant à une chanson. Cela nous permet d'attribuer un score par utilisateur et par personne (cf. \ref{algos}). Cependant, si l'on souhaite mettre en place une extension vers l'API Deezer par exemple, il faudra trouver une autre manière d'obtenir ces données chiffrées pour utiliser les algorithmes que nous avons implémentés (ou créer de nouveaux algorithmes).
+		\subsubsection{Android}
+		Le développement d'une application Android peut se faire grâce à différents langages, mais le plus répandu reste cependant Java. Nous avons tous étudié ce langage donc ce ne fût pas un problème.
+		
+		Là où nous avons dû nous adapter a été concernant le développement purement orienté Android. En effet, la gestion des accès internet, à la mémoire du téléphone, la partie graphique, etc, sont des traitements assez rigoureux et exigeants si on cherche à avoir la meilleure expérience utilisateur possible. En plus d'être un langage que nous connaissions déjà, nous avons été amené à découvrir la programmation sous Android, ce qui peut, en raison de notre faible expérience dans ce domaine, laisser passer des bugs ou des défauts bien que nous ayons fait très attention afin d'éviter cela.
+
+		\section{Conclusion}
+        Dans l'ensemble, ce projet s'est bien déroulé, nous avons su nous répartir le travail de sorte à avancer à un bon rythme et ce, tout au long du projet. Nous  rendons une application Android fonctionnelle, avec tous les besoins essentiels réalisés.
+        
+        Il reste néanmoins des besoins qui n'ont pu être implémentés, par faute de temps ou d'organisation. Cependant, lors de la partie conception de ce projet, nous avons beaucoup travaillé sur l'architecture du logiciel afin de rendre l'ajout de fonctionnalité le moins contraignant possible. Nous avons passé du temps à réfléchir autour de la structuration du code pour que sa compréhension et sa maintenabilité soient faciles.
+        
+        Il y a donc plusieurs fonctionnalités qui manquent. Premièrement, il aurait été intéressant d'ajouter tous les utilisateurs en les authentifiant auprès de Spotify, cela aurait permis d'accéder à plus de données que ce que récupère l'application actuellement, comme par exemple les titres "aimés", les plus écoutés, etc. Avec cette fonctionnalité en plus, un nouveau calcul du score par musique aurait pu être ajouté afin d'améliorer la pertinence des algorithmes de génération de playlist. Une partie du travail restant concerne l'adaptation à une autre plateforme de streaming : Deezer. L'architecture prévoit le fait qu'il y ait plusieurs APIs, donc il faudrait une implémentation spécifique des appels à l'API de Deezer. Cela aurait sûrement pour conséquences une adaptations des algorithmes ou du calcul du score car les données récupérées concernant les musiques et les utilisateurs sont différentes d'un service de streaming à un autre.
+        
+        D'autres ajouts manquent, mais sont plus mineurs et concernent surtout l'expé- rience utilisateur plus que les fonctionnalités de l'application. On y retrouve la possibilité d'une gestion plus avancée de la musique comme par exemple de pouvoir naviguer au sein d'une chanson à l'aide d'une barre de défilement. Il y a aussi une meilleure gestion des appels aux APIs en asynchrones avec un loader indiquant le chargement ou encore une gestion plus facile de l'export des fichiers de logs.
+        \newline
+        
+        Toutefois, nous finissons le projet sur une note positive. Cette expérience aura été très enrichissante sur la façon de concevoir et de gérer un projet sur plusieurs mois. La mise en place d'un découpage des tâches pour chaque membre du groupe fut compliqué au début du projet mais nous avons su nous organiser afin d'avancer. Nous rendons donc une application fonctionnelle, dont nous sommes satisfaits.
+			
+		\section{Bibliographie}
+		\bibliography{references}
+						
+								
+\end{document}
