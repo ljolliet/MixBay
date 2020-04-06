@@ -39,16 +39,4 @@ public class TrackTest {
 
     }
 
-    @Test
-    public void secondConstructorTest(){
-        Set <String> artists = new HashSet<>();
-        artists.add("The Beatles");
-        Track track = new Track("123", "Let it Be", "Let it Be", artists,
-                "random_url");
-        Track track2 = new Track("123", "Let it Be", "Let it Be", artists,
-                "random_url");
-
-        assertEquals(track.artists, track2.artists);
-    }
-
 }
