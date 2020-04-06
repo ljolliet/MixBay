@@ -11,7 +11,9 @@ package fr.pdp.mixbay.business.algorithms;
 
 import android.content.Context;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ import fr.pdp.mixbay.R;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.User;
+import fr.pdp.mixbay.business.utils.MapUtil;
 
 public class Fairness extends AlgoSuperclass {
 
@@ -31,6 +34,10 @@ public class Fairness extends AlgoSuperclass {
     public LocalPlaylist computeLocalePlaylist(Map<String,
             Map<String, Double>> musicScorePerUser, Set<User> users,
                                                Map<String, Track> tracksList) {
+        for(User u : users){
+            Map<String, Double> sortedScores = MapUtil.sortByValue(musicScorePerUser.get(u.id));
+            musicScorePerUser.put(u.id, (sortedScores));
+        }
         LocalPlaylist p = new LocalPlaylist();
         int index = 0;
         boolean empty = false;

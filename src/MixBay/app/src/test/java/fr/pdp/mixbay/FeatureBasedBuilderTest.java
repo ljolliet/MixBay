@@ -1,17 +1,20 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay;
+
 import org.junit.Test;
-
-
-import java.lang.annotation.Repeatable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import fr.pdp.mixbay.business.algorithms.FeatureBasedBuilder;
-import fr.pdp.mixbay.business.algorithms.LeastMisery;
-import fr.pdp.mixbay.business.models.AlgoI;
-import fr.pdp.mixbay.business.models.LocalPlaylist;
 import fr.pdp.mixbay.business.models.Playlist;
 import fr.pdp.mixbay.business.models.Track;
 import fr.pdp.mixbay.business.models.TrackFeatures;
@@ -19,6 +22,9 @@ import fr.pdp.mixbay.business.models.User;
 
 import static org.junit.Assert.*;
 
+/**
+ * Requires to comment the line 43 (generateColor();) of the class business.models.User to work
+ */
 public class FeatureBasedBuilderTest {
 
     @Test

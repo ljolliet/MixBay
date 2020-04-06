@@ -1,9 +1,21 @@
+/**
+ * Application MixBay
+ *
+ * @authors E. Bah, N. Deguillaume, L. Jolliet, J. Loison, P. Vigneau
+ * @version 1.0
+ * Génération de playlistes musicales pour un groupe d'utilisateurs
+ * PdP 2019-2020 Université de Bordeaux
+ */
+
 package fr.pdp.mixbay;
 import org.junit.Test;
 import fr.pdp.mixbay.business.algorithms.LeastMisery;
 import fr.pdp.mixbay.business.models.LocalPlaylist;
-
 import static org.junit.Assert.*;
+
+/**
+ * Requires to comment the line 43 (generateColor();) of the class business.models.User to work
+ */
 public class LeastMiseryTest extends AlgoTest {
 
     @Test
