@@ -54,4 +54,6 @@
     <string name="descr_more_button">Bouton d\'options</string>
     <string name="title">Title</string>
     <string name="artist">Artist</string>
+    <string name="disconnection">Déconnexion de l\'application</string>
+    <string name="advanced_param">Paramètres avancés</string>
 </resources>
