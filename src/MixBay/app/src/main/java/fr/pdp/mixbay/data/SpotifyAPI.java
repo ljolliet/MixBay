@@ -339,7 +339,7 @@ public class SpotifyAPI implements APIManagerI {
                 final JSONObject jsonObject = new JSONObject(call.execute()
                         .body().string());
 
-                // If user does not exist
+                // If playlist does not exist
                 if (jsonObject.has("error"))
                     throw new APIRequestException(context.getString(R.string.invalid_playlist_id));
 
@@ -458,8 +458,7 @@ public class SpotifyAPI implements APIManagerI {
                 double energy = trackObject.getDouble("energy");
                 double speechiness = trackObject.getDouble("speechiness");
                 double acousticness = trackObject.getDouble("acousticness");
-                double instrumentalness = trackObject
-                        .getDouble("instrumentalness");
+                double instrumentalness = trackObject.getDouble("instrumentalness");
                 double liveness = trackObject.getDouble("liveness");
                 double valence = trackObject.getDouble("valence");
 
